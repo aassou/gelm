@@ -68,7 +68,7 @@ class AppartementManager{
 
 	public function getAppartementById($id){
     	$query = $this->_db->prepare(' SELECT * FROM t_appartement
-		WHERE id=:id)')
+		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $id);
 		$query->execute();		

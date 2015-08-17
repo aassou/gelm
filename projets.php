@@ -413,7 +413,7 @@
 										<a href="projet-livraisons.php?idProjet=<?= $projet->id() ?>" class="btn green fixed-size">Gestion des livraisons</a>
 									</div>
 									<div class="portfolio-info">
-										<a href="projet-clients.php?idProjet=<?= $projet->id() ?>" class="btn red fixed-size">Gestion des Clients</a>
+										<a href="contrats-list.php?idProjet=<?= $projet->id() ?>" class="btn red fixed-size">Gestion des Clients</a>
 									</div>
 									<div class="portfolio-info">
 										<a href="employes-projet.php?idProjet=<?= $projet->id() ?>" class="btn fixed-size">Gestion des contrats</a>

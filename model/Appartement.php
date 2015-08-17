@@ -18,7 +18,7 @@ class Appartement{
 	private $_created;
 	private $_createdBy;
 
-	//le constructeur
+    //le constructeur
     public function __construct($data){
         $this->hydrate($data);
     }
