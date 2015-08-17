@@ -255,9 +255,6 @@
 												    </a>
 												    <ul class="dropdown-menu">
 												        <li>
-												        	<a target="_blank" href="contrat.php?codeContrat=<?= $contrat->code() ?>">
-																Consulter Contrat
-															</a>
 												        	<a href="#addReglement<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Nouveau réglement
 												        	</a>
