@@ -26,8 +26,8 @@
 		$redirectLink = 'Location:../clients-search.php';
 	}
 	if( $contrat->typeBien()=="appartement" ){
-		if( $appartementManager->getAppartementById($contrat->idBien())->status()=="Non" ){
-			$appartementManager->changeStatus($contrat->idBien(), "Vendu");
+		if( $appartementManager->getAppartementById($contrat->idBien())->status()=="Disponible" ){
+			$appartementManager->updateStatus("Vendu", $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
 			header($redirectLink);
@@ -40,8 +40,36 @@
 		}
 	}
 	else if( $contrat->typeBien()=="localCommercial" ){
-		if( $locauxManager->getLocauxById($contrat->idBien())->status()=="Non" ){
-			$locauxManager->changeStatus($contrat->idBien(), "Vendu");
+		if( $locauxManager->getLocauxById($contrat->idBien())->status()=="Diponible" ){
+			$locauxManager->updateStatus("Vendu", $contrat->idBien());
+			$contratManager->activerContrat($idContrat);
+			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
+			header($redirectLink);
+			exit;	
+		}
+		else{
+			$_SESSION['contrat-activation-error'] = "<strong>Erreur Activation Contrat : </strong>Le bien est déjà réservé par un autre client.";
+			header($redirectLink);
+			exit;		
+		}
+	}
+	else if( $contrat->typeBien()=="maison" ){
+		if( $maisonManager->getMaisonById($contrat->idBien())->status()=="Diponible" ){
+			$maisonManager->updateStatus("Vendu", $contrat->idBien());
+			$contratManager->activerContrat($idContrat);
+			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
+			header($redirectLink);
+			exit;	
+		}
+		else{
+			$_SESSION['contrat-activation-error'] = "<strong>Erreur Activation Contrat : </strong>Le bien est déjà réservé par un autre client.";
+			header($redirectLink);
+			exit;		
+		}
+	}
+	else if( $contrat->typeBien()=="terrain" ){
+		if( $terrainManager->getTerrainById($contrat->idBien())->status()=="Diponible" ){
+			$terrainManager->updateStatus("Vendu", $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
 			header($redirectLink);

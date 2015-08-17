@@ -64,7 +64,7 @@ class MaisonManager{
 
 	public function getMaisonById($id){
     	$query = $this->_db->prepare(' SELECT * FROM t_maison
-		WHERE id=:id)')
+		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $id);
 		$query->execute();		

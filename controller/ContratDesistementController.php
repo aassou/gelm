@@ -16,18 +16,27 @@
     $idProjet = $_POST['idProjet'];
 	$idContrat  = $_POST['idContrat'];
 	//create classes managers
-	$locauxManager = new LocauxManager($pdo);
 	$contratManager = new ContratManager($pdo);
+	$locauxManager = new LocauxManager($pdo);
 	$appartementManager = new AppartementManager($pdo);
+	$terrainManager = new TerrainManager($pdo);
+	$maisonManager = new MaisonManager($pdo);
 	//create classes
 	$contrat = $contratManager->getContratById($idContrat);
 	//change status of the old contrat Bien from reservé to non reservé
 	if( $contrat->typeBien()=="appartement" ){
-		$appartementManager->changeStatus($contrat->idBien(), "Non");
+		$appartementManager->updateStatus("Disponible", $contrat->idBien());
 	}
 	else if( $contrat->typeBien()=="localCommercial" ){
-		$locauxManager->changeStatus($contrat->idBien(), "Non");
+		$locauxManager->updateStatus("Disponible", $contrat->idBien());
 	}
+	else if( $contrat->typeBien()=="maison" ){
+		$maisonManager->updateStatus("Disponible", $contrat->idBien());
+	}
+	else if( $contrat->typeBien()=="terrain" ){
+		$terrainManager->updateStatus("Disponible", $contrat->idBien());
+	}
+	
 	$contratManager->desisterContrat($idContrat);
 	$_SESSION['contrat-desister-success'] = "<strong>Opération valide : </strong>Le contrat est désisté avec succès.";
 	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet;

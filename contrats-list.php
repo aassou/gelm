@@ -201,15 +201,12 @@
 								</div>
 							</div>
 							<div class="row-fluid">
-								<form action="" method="post">
-								    <div class="input-box autocomplet_container">
-										<input class="m-wrap" name="nomClient" id="nomClient" type="text" onkeyup="autocompletClient()" placeholder="Chercher un client...">
-											<ul id="clientList"></ul>
-										</input>
-										<input name="idClient" id="idClient" type="hidden" />
-										<button type="submit" class="btn red"><i class="icon-search"></i></button>
-								    </div>
-								</form>
+							    <div class="input-box autocomplet_container">
+									<input class="m-wrap" name="nomClient" id="nomClient" type="text" onkeyup="autocompletClient()" placeholder="Chercher un client...">
+										<ul id="clientList"></ul>
+									</input>
+									<input name="idClient" id="idClient" type="hidden" />
+							    </div>
 							</div>
 							<div class="portlet-body">
 								<table class="table table-striped table-bordered table-advance table-hover">
@@ -219,7 +216,7 @@
 											<th style="width:10%" class="hidden-phone">Type</th>
 											<th style="width:5%">Bien</th>
 											<th style="width:11%" class="hidden-phone">Prix</th>
-											<th style="width:10%" class="hidden-phone">Réglements</th>
+											<th style="width:10%" class="hidden-phone">Payé</th>
 											<th style="width:10%" class="hidden-phone">Reste</th>
 											<th style="width:8%">Paiements</th>
 											<th style="width:5%" class="hidden-phone">Status</th>
@@ -239,11 +236,19 @@
 											$typeBien = "";
 											if($contrat->typeBien()=="appartement"){
 												$bien = $appartementManager->getAppartementById($contrat->idBien());
-												$typeBien = "Appart";
+												$typeBien = "Appartement";
 											}
-											else{
+											else if($contrat->typeBien()=="localCommercial"){
 												$bien = $locauxManager->getLocauxById($contrat->idBien());
-												$typeBien = "Local.Com";
+												$typeBien = "Local Commercial";
+											}
+											else if($contrat->typeBien()=="terrain"){
+												$bien = $terrainManager->getTerrainById($contrat->idBien());
+												$typeBien = "Terrain";
+											}
+											else if($contrat->typeBien()=="maison"){
+												$bien = $maisonManager->getMaisonById($contrat->idBien());
+												$typeBien = "Maison";
 											}
 										?>		
 										<tr>
