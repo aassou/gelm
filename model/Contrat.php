@@ -7,16 +7,15 @@ class Contrat{
     private $_prixVente;
     private $_avance;
 	private $_modePaiement;
-	private $_dureePaiement;
-    private $_echeance;
-    private $_note;
-    private $_idClient;
     private $_idProjet;
     private $_idBien;
 	private $_typeBien;
-	private $_code;
 	private $_status;
 	private $_numeroCheque;
+	private $_nomClient;
+	private $_cin;
+	private $_adresse;
+	private $_telephone;
     
     //le constructeur
    	public function __construct($data){
@@ -54,21 +53,21 @@ class Contrat{
 	public function setModePaiement($modePaiement){
         $this->_modePaiement = $modePaiement;
     }
-	
-	public function setDureePaiement($dureePaiement){
-        $this->_dureePaiement = $dureePaiement;
-    }
-	
-	public function setEcheance($echeance){
-        $this->_echeance = $echeance;
-    }
     
-    public function setNote($note){
-        $this->_note = $note;
+    public function setNomClient($nomClient){
+        $this->_nomClient = $nomClient;
     }
-    
-    public function setIdClient($idClient){
-        $this->_idClient = $idClient;
+	
+	public function setCin($cin){
+        $this->_cin = $cin;
+    }
+	
+	public function setAdresse($adresse){
+        $this->_adresse = $adresse;
+    }
+	
+	public function setTelephone($telephone){
+        $this->_telephonee = $telephone;
     }
     
     public function setIdProjet($idProjet){
@@ -81,10 +80,6 @@ class Contrat{
 	
 	public function setTypeBien($typeBien){
         $this->_typeBien = $typeBien;
-    }
-	
-	public function setCode($code){
-        $this->_code = $code;
     }
 	
 	public function setStatus($status){
@@ -116,22 +111,6 @@ class Contrat{
 	public function modePaiement(){
         return $this->_modePaiement;
     }
-	
-	public function dureePaiement(){
-        return $this->_dureePaiement;
-    }
-	
-    public function echeance(){
-        return $this->_echeance;
-    }
-    
-    public function note(){
-        return $this->_note;
-    }
-    
-    public function idClient(){
-        return $this->_idClient;
-    }
     
     public function idProjet(){
         return $this->_idProjet;
@@ -145,15 +124,27 @@ class Contrat{
         return $this->_typeBien;
     }
 	
-	public function code(){
-        return $this->_code;
-    }
-	
 	public function status(){
         return $this->_status;
     }
 	
 	public function numeroCheque(){
         return $this->_numeroCheque;
+    }
+	
+	public function nomClient(){
+        return $this->_nomClient;
+    }
+	
+	public function cin(){
+        return $this->_cin;
+    }
+	
+	public function adresse(){
+        return $this->_adresse;
+    }
+	
+	public function telephone(){
+        return $this->_telephone;
     }
 }

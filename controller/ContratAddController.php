@@ -14,8 +14,8 @@
     session_start();    
     //post input processing
     $idProjet = $_POST['idProjet'];
-	$codeClient = $_POST['codeClient'];
-    if( !empty($_POST['idProjet']) and !empty($_POST['codeClient'])){	
+	//$codeClient = $_POST['codeClient'];
+    if( !empty($_POST['idProjet']) and !empty($_POST['nomClient'])){	
     	if( !empty($_POST['typeBien']) ){
     		if( !empty($_POST['prixNegocie']) ){
     			$prixNegocie = htmlentities($_POST['prixNegocie']);
@@ -25,14 +25,15 @@
 			header('Location:../contrats-add.php?idProjet='.$idProjet.'&codeClient='.$codeClient);
 			exit;
 			}
+			$nomClient = htmlentities($_POST['nomClient']);
+			$cin = htmlentities($_POST['cin']);
+			$telephone = htmlentities($_POST['telephone']);
+			$adresse = htmlentities($_POST['adresse']);
     		$typeBien = htmlentities($_POST['typeBien']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
 			$idBien = htmlentities($_POST['bien']);
 			$avance = htmlentities($_POST['avance']);
 			$modePaiement = htmlentities($_POST['modePaiement']);
-			$dureePaiement = htmlentities($_POST['dureePaiement']);
-			$echeance = htmlentities($_POST['echeance']);
-			$note = htmlentities($_POST['note']);
 			$idClient = htmlentities($_POST['idClient']);
 			$codeContrat = uniqid().date('YmdHis');
 			$numeroCheque = '0';
@@ -40,10 +41,10 @@
 				$numeroCheque = htmlentities($_POST['numeroCheque']);
 			}
 			$contratManager = new ContratManager($pdo);
-			$contrat = new Contrat(array('dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
-			'avance' => $avance, 'modePaiement' => $modePaiement, 'dureePaiement' => $dureePaiement, 
-			'echeance' => $echeance, 'note' => $note, 'idClient' => $idClient, 'idProjet' => $idProjet, 
-			'idBien' => $idBien, 'typeBien' => $typeBien, 'code' => $codeContrat, 'numeroCheque' => $numeroCheque));
+			$contrat = new Contrat(array('nomClient' => $nomClient, 'cin' => $cin, 'adresse' => $adresse,
+			'telephone' => $telephone, 'dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
+			'avance' => $avance, 'modePaiement' => $modePaiement, 'idProjet' => $idProjet, 
+			'idBien' => $idBien, 'typeBien' => $typeBien, 'numeroCheque' => $numeroCheque));
 			$contratManager->add($contrat);
 			if($typeBien=="appartement"){
 				$appartementManager = new AppartementManager($pdo);
@@ -61,11 +62,6 @@
 				$terrainManager = new TerrainManager($pdo);
 				$terrainManager->updateStatus("Vendu", $idBien);
 			}
-			//add note client into db and show it in the dashboard
-			/*$notesClientManager = new NotesClientManager($pdo);
-			$notesClient = new NotesClient(array('note' => $note, 'created' => date('Y-m-d'), 
-			'idProjet' => $idProjet, 'codeContrat' => $codeContrat));
-			$notesClientManager->add($notesClient);*/
 			header('Location:../contrats-list.php?idProjet='.$idProjet);
     	}
 		else{

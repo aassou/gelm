@@ -15,11 +15,22 @@
     session_start();
     if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
     	$idProjet = 0;
+		//classManagers
     	$projetManager = new ProjetManager($pdo);
-		$clientManager = new ClientManager($pdo);
-		if((isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId())){
+		$contratManager = new ContratManager($pdo);
+		$maisonManager = new MaisonManager($pdo);
+		$appartementManager = new AppartementManager($pdo);
+		$localManager = new LocauxManager($pdo);
+		$terrainManager = new TerrainManager($pdo);
+		//objects and vars
+		$projet = "";
+		$contrat = "";
+		if((isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId())
+		and (isset($_GET['idContrat']) and ($_GET['idContrat'])>0 and $_GET['idContrat']<=$contratManager->getLastId())){
 			$idProjet = $_GET['idProjet'];
+			$idContrat = $_GET['idContrat'];
 			$projet = $projetManager->getProjetById($idProjet);
+			$contrat = $contratManager->getContratById($idContrat);
 		}
 ?>
 <!DOCTYPE html>
@@ -90,7 +101,7 @@
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-								<a>Nouveau contrat</a>
+								<a>Modifier contrat</a>
 							</li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
@@ -102,17 +113,17 @@
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="tab-pane active" id="tab_1">
-	                         <?php if(isset($_SESSION['contrat-add-error'])){ ?>
+	                         <?php if(isset($_SESSION['contrat-update-error'])){ ?>
 	                         	<div class="alert alert-error">
 									<button class="close" data-dismiss="alert"></button>
-									<?= $_SESSION['contrat-add-error'] ?>		
+									<?= $_SESSION['contrat-update-error'] ?>		
 								</div>
 	                         <?php } 
-	                         	unset($_SESSION['contrat-add-error']);
+	                         	unset($_SESSION['contrat-update-error']);
 	                         ?>
                            <div class="portlet box grey">
                               <div class="portlet-title">
-                                 <h4><i class="icon-edit"></i>Nouveau Client/Contrat pour le projet : <strong><?= $projet->nom() ?></strong></h4>
+                                 <h4><i class="icon-edit"></i>Modifier Contrat/Client pour le projet : <strong><?= $projet->nom() ?></strong></h4>
                                  <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <a href="javascript:;" class="remove"></a>
@@ -127,7 +138,7 @@
                                           <div class="control-group autocomplet_container">
                                              <label class="control-label" for="nomClient">Nom</label>
                                              <div class="controls">
-                                                <input type="text" id="nomClient" name="nomClient" class="m-wrap span12" onkeyup="autocompletClient()">
+                                                <input type="text" id="nomClient" name="nomClient" class="m-wrap span12" value="<?= $contrat->nomClient() ?>" onkeyup="autocompletClient()">
                                                 <ul id="clientList"></ul>
                                              </div>
                                           </div>
@@ -136,7 +147,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="cin">CIN</label>
                                              <div class="controls">
-                                                <input type="text" id="cin" name="cin" class="m-wrap span12">
+                                                <input type="text" id="cin" name="cin" value="<?= $contrat->cin() ?>" class="m-wrap span12">
                                              </div>
                                           </div>
                                        </div>
@@ -144,7 +155,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="adresse">Adresse</label>
                                              <div class="controls">
-                                                <input type="text" id="adresse" name="adresse" class="m-wrap span12">
+                                                <input type="text" id="adresse" name="adresse" value="<?= $contrat->adresse() ?>" class="m-wrap span12">
                                              </div>
                                           </div>
                                        </div>
@@ -152,25 +163,73 @@
                                           <div class="control-group">
                                              <label class="control-label" for="telephone">Téléphone</label>
                                              <div class="controls">
-                                                <input type="text" id="telephone" name="telephone" class="m-wrap span12">
+                                                <input type="text" id="telephone" name="telephone" value="<?= $contrat->telephone() ?>" class="m-wrap span12">
                                              </div>
                                           </div>
                                        </div>
                                     </div>
                                     <legend>Informations Contrat :</legend>
                                     <div class="row-fluid">
-                                       <div class="span4">
+                                       <div class="span3">
                                           <div class="control-group">
                                              <label class="control-label" for="dateCreation">Date de création</label>
                                              <div class="controls">
                                                 <div class="input-append date date-picker" data-date="" data-date-format="yyyy-mm-dd">
-				                                    <input name="dateCreation" id="dateCreation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+				                                    <input name="dateCreation" id="dateCreation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= $contrat->dateCreation() ?>" />
 				                                    <span class="add-on"><i class="icon-calendar"></i></span>
 				                                 </div>
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="span4">
+                                       <?php
+                                       $localSelected = "";
+									   $maisonSelected = "";
+									   $terrainSelected = "";
+									   $appartementSelected = "";
+									   $bien = "";
+									   $title = "";
+									   if($contrat->typeBien()=="appartement"){
+									   		$appartementSelected = "checked";
+											$localSelected = "";
+										   	$maisonSelected = "";
+										   	$terrainSelected = "";
+											$bien = $appartementManager->getAppartementById($contrat->idBien());
+											$title = "Appart ";
+									   }
+									   else if($contrat->typeBien()=="localCommercial"){
+									   		$localSelected = "checked";
+										   	$maisonSelected = "";
+										   	$terrainSelected = "";
+										   	$appartementSelected = "";
+										   	$bien = $localManager->getLocauxById($contrat->idBien());
+											$title = "Local.Com ";
+									   }
+									   else if($contrat->typeBien()=="terrain"){
+									   		$terrainSelected = "checked";
+										   	$localSelected = "";
+										   	$maisonSelected = "";
+										   	$appartementSelected = "";
+											$bien = $terrainManager->getTerrainById($contrat->idBien());
+											$title = "Terrain ";
+									   }
+									   else if($contrat->typeBien()=="maison"){
+									   		$maisonSelected = "checked";
+											$localSelected = "";
+									   		$terrainSelected = "";
+									   		$appartementSelected = "";
+											$bien = $maisonManager->getMaisonById($contrat->idBien());
+											$title = "Maison ";
+									   }
+                                       ?>
+                                       <div class="span3">
+                                          <div class="control-group">
+                                             <label class="control-label" for="dateCreation">Détails Bien</label>
+                                             <div class="controls">
+				                             	<input name="detailsBien" id="detailsBien" class="m-wrap" type="text" disabled="disabled" value="<?= $title.$bien->nom() ?>- Prix : <?= number_format($bien->prix(), 2, ',', ' ') ?>" />
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="span3">
                                           <div class="control-group">
                                              <label class="control-label">Type du bien</label>
                                              <div class="controls">
@@ -193,7 +252,7 @@
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="span4 hidenBlock">
+                                       <div class="span3 hidenBlock">
                                           <div class="control-group">
                                              <div class="controls">
                                              	<label class="control-label" for="" id="nomBienLabel"></label>
@@ -247,7 +306,7 @@
                                     <div class="form-actions">
                                     	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>" class="m-wrap span12">
                                     	<a href="contrats-list.php?idProjet=<?= $idProjet ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
-                                       <button type="submit" class="btn blue">Terminer <i class="icon-ok m-icon-white"></i></button>
+                                       <button type="submit" class="btn green">Modifier <i class="icon-refresh m-icon-white"></i></button>
                                     </div>
                                  </form>
                                  <!-- END FORM--> 

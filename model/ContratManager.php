@@ -11,23 +11,22 @@ class ContratManager{
     //CRUD operations
     public function add(Contrat $contrat){
         $query = $this->_db->prepare('
-        INSERT INTO t_contrat (dateCreation, prixVente, avance, modePaiement, dureePaiement, echeance, 
-        note, idClient, idProjet, idBien, typeBien, code, status, numeroCheque)
-        VALUES (:dateCreation, :prixVente, :avance, :modePaiement, :dureePaiement, :echeance, :note, :idClient, 
-		 :idProjet, :idBien, :typeBien, :code, :status, :numeroCheque)') 
+        INSERT INTO t_contrat (dateCreation, prixVente, avance, modePaiement, 
+        nomClient, cin, adresse, telephone, idProjet, idBien, typeBien, status, numeroCheque)
+        VALUES (:dateCreation, :prixVente, :avance, :modePaiement, :nomClient, :cin, :adresse, :telephone,  
+		 :idProjet, :idBien, :typeBien, :status, :numeroCheque)') 
         or die(print_r($this->_db->errorInfo()));
+		$query->bindValue(':nomClient', $contrat->nomClient());
+		$query->bindValue(':cin', $contrat->cin());
+		$query->bindValue(':adresse', $contrat->adresse());
+		$query->bindValue(':telephone', $contrat->telephone());
         $query->bindValue(':dateCreation', $contrat->dateCreation());
         $query->bindValue(':prixVente', $contrat->prixVente());
         $query->bindValue(':avance', $contrat->avance());
 		$query->bindValue(':modePaiement', $contrat->modePaiement());
-		$query->bindValue(':dureePaiement', $contrat->dureePaiement());
-        $query->bindValue(':echeance', $contrat->echeance());
-		$query->bindValue(':note', $contrat->note());
-        $query->bindValue(':idClient', $contrat->idClient());
         $query->bindValue(':idProjet', $contrat->idProjet());
         $query->bindValue(':idBien', $contrat->idBien());
 		$query->bindValue(':typeBien', $contrat->typeBien());
-		$query->bindValue(':code', $contrat->code());
 		$query->bindValue(':status', 'actif');
 		$query->bindValue(':numeroCheque', $contrat->numeroCheque());
         $query->execute();
@@ -54,8 +53,17 @@ class ContratManager{
 	public function updateNumeroCheque($numeroCheque, $idContrat){
         $query = $this->_db->prepare('UPDATE t_contrat SET numeroCheque=:numeroCheque WHERE id=:id') 
         or die(print_r($this->_db->errorInfo()));
-		$query->bindValue(':id', $contrat->id());
-		$query->bindValue(':numeroCheque', $contrat->numeroCheque());
+		$query->bindValue(':id', $idContrat);
+		$query->bindValue(':numeroCheque', $numeroCheque);
+        $query->execute();
+        $query->closeCursor();
+    }
+	
+	public function updatePaiement($paye, $idContrat){
+        $query = $this->_db->prepare('UPDATE t_contrat SET avance=:avance WHERE id=:id') 
+        or die(print_r($this->_db->errorInfo()));
+		$query->bindValue(':id', $idContrat);
+		$query->bindValue(':avance', $paye);
         $query->execute();
         $query->closeCursor();
     }

@@ -21,6 +21,8 @@
 		$contratManager = new ContratManager($pdo);
 		$operationManager = new OperationManager($pdo);
 		$locauxManager = new LocauxManager($pdo);
+		$maisonManager = new MaisonManager($pdo);
+		$terrainManager = new TerrainManager($pdo);
 		$appartementManager = new AppartementManager($pdo);
 		if(isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId()){
 			$idProjet = $_GET['idProjet'];
@@ -124,7 +126,7 @@
 								<a href="projets.php" class="btn icn-only green"><i class="m-icon-swapleft m-icon-white"></i> Retour vers Liste des projets</a>
 							</div>
 							<div class="pull-right">
-								<a href="clients-add.php?idProjet=<?= $idProjet ?>" class="btn icn-only blue">Nouveau Contrat Client <i class="icon-plus-sign"></i></a>
+								<a href="contrats-add.php?idProjet=<?= $idProjet ?>" class="btn icn-only blue">Nouveau Contrat Client <i class="icon-plus-sign"></i></a>
 							</div>
 						</div>
 						<!-- BEGIN Terrain TABLE PORTLET-->
@@ -218,7 +220,6 @@
 											<th style="width:11%" class="hidden-phone">Prix</th>
 											<th style="width:10%" class="hidden-phone">Payé</th>
 											<th style="width:10%" class="hidden-phone">Reste</th>
-											<th style="width:8%">Paiements</th>
 											<th style="width:5%" class="hidden-phone">Status</th>
 											<?php if(isset($_SESSION['print-quittance'])){ ?>
 												<th>Quittance</th>
@@ -255,14 +256,11 @@
 											<td>
 												<div class="btn-group">
 												    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $clientManager->getClientById($contrat->idClient())->nom() ?> 
+												    	<?= $contrat->nomClient() ?> 
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
 												        <li>
-												        	<a href="#addReglement<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-												        		Nouveau réglement
-												        	</a>
 												        	<a target="_blank" href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>">
 												        		Imprimer Contrat
 												        	</a>
@@ -284,6 +282,12 @@
 															<?php	
 															}
 															?>
+															<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+												        		Modifier
+												        	</a>
+												        	<a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+												        		Supprimer
+												        	</a>
 												        </li>
 												    </ul>
 												</div>
@@ -291,41 +295,12 @@
 											<td class="hidden-phone"><?= $typeBien ?></td>
 											<td><?= $bien->nom() ?></td>
 											<td class="hidden-phone"><?= number_format($contrat->prixVente(), 2, ',', ' ') ?></td>
-											<td class="hidden-phone"><?= number_format($sommeOperations, 2, ',', ' ') ?></td>
-											<td class="hidden-phone"><?= number_format($contrat->prixVente()-$sommeOperations, 2, ',', ' ') ?></td>
+											<td class="hidden-phone">
+												<a href="#updatePaiementContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+													<?= number_format($contrat->avance(), 2, ',', ' ') ?></td>
+												</a>
+											<td class="hidden-phone"><?= number_format($contrat->prixVente()-$contrat->avance(), 2, ',', ' ') ?></td>
 											</td>
-											<!--td class="hidden-phone">
-												<a class="btn mini blue" href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>" data-toggle="modal" data-id="">
-													<i class="m-icon-white icon-print"></i>PDF
-												</a>
-											</td-->
-											<!--td class="hidden-phone">
-												<a class="btn mini purple" href="controller/ClientFichePrintController.php?idContrat=<?= $contrat->id() ?>" data-toggle="modal" data-id="">
-													<i class="m-icon-white icon-print"></i>PDF
-												</a>
-											</td-->
-											<td>
-												<a class="btn mini red" href="operations.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>" data-toggle="modal" data-id="">
-													<i class="m-icon-white icon-folder-open"></i> Voir
-												</a>
-											</td>
-											<!--td class="hidden-phone">
-												<?php if($contrat->status()=="actif"){
-												?>
-												<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-													Désister
-												</a>
-												<?php 
-												}
-												else{
-												?>	
-												<a href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-													Activer
-												</a>	
-												<?php	
-												}
-												?>
-											</td-->
 											<td class="hidden-phone">
 												<?php if($contrat->status()=="actif"){
 													$status = "<a class=\"btn mini green\">Actif</a>";	
@@ -345,15 +320,37 @@
 											<?php 
 											} ?>
 										</tr>
-										<!-- desistement box begin-->
-										<div id="desisterContrat<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+										<!-- updatePaiementContrat box begin -->
+										<div id="updatePaiementContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-												<h3>Désister le contrat </h3>
+												<h3>Modifier Montant Payé pour le Contrat <?= $contrat->id() ?></h3>
 											</div>
 											<div class="modal-body">
-												<form class="form-horizontal loginFrm" action="controller/ContratDesistementController.php" method="post">
-													<p>Êtes-vous sûr de vouloir désister le contrat <strong>N°<?= $contrat->id() ?></strong> ?</p>
+												<form class="form-horizontal loginFrm" action="controller/ContratUpdatePaiementController.php" method="post">
+													<div class="control-group">
+														<label class="right-label">Montant Payé</label>
+														<input type="text" name="paye" value="<?= $contrat->avance() ?>" />
+													</div>
+													<div class="control-group">
+														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
+														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
+													</div>
+												</form>
+											</div>
+										</div>
+										<!-- updatePaiementContrat box end -->		
+										<!-- delete box begin-->
+										<div id="deleteContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h3>Supprimer Contrat <?= $contrat->id() ?></h3>
+											</div>
+											<div class="modal-body">
+												<form class="form-horizontal loginFrm" action="controller/ContratDeleteController.php" method="post">
+													<p>Êtes-vous sûr de vouloir supprimer ce contrat <strong><?= $contrat->id() ?></strong> ?</p>
 													<div class="control-group">
 														<label class="right-label"></label>
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
@@ -364,55 +361,7 @@
 												</form>
 											</div>
 										</div>
-										<!-- desistement box end -->
-										<!-- addReglement box begin-->
-										<div id="addReglement<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-												<h3>Nouveau réglement </h3>
-											</div>
-											<div class="modal-body">
-												<form class="form-horizontal loginFrm" action="controller/OperationAddController.php?p=99" method="post">
-													<p>Êtes-vous sûr de vouloir ajouter un réglement pour le contrat <strong>N°<?= $contrat->id() ?></strong> ?</p>
-													<div class="control-group">
-			                                             <label class="control-label" for="code">Date opération</label>
-			                                             <div class="controls">
-			                                                <div class="input-append date date-picker" data-date="" data-date-format="yyyy-mm-dd">
-							                                    <input name="dateOperation" id="dateOperation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
-							                                    <span class="add-on"><i class="icon-calendar"></i></span>
-							                                 </div>
-			                                             </div>
-			                                          </div>
-													<div class="control-group">
-														<label class="control-label">Montant</label>
-														<div class="controls">
-															<input type="text" id="montant" name="montant" />
-														</div>
-													</div>
-													<div class="control-group">
-			                                             <label class="control-label" for="modePaiement">Mode de paiement</label>
-			                                             <div class="controls">
-			                                                <div class="controls">
-																<select name="modePaiement" id="modePaiement">
-																	<option value="Especes">Espèces</option>
-																	<option value="Cheque">Chèque</option>
-																	<option value="Versement">Versement</option>
-																	<option value="Virement">Virement</option>
-																</select>
-															</div>
-			                                             </div>
-			                                          </div>
-													<div class="control-group">
-														<label class="right-label"></label>
-														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
-														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
-														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
-														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
-													</div>
-												</form>
-											</div>
-										</div>
-										<!-- addReglement box end -->
+										<!-- delete box end -->		
 										<!-- activation box begin-->
 										<div id="activerContrat<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 											<div class="modal-header">
