@@ -30,7 +30,7 @@ class TerrainManager{
 
 	public function update(Terrain $terrain){
     	$query = $this->_db->prepare(' UPDATE t_terrain SET 
-		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,emplacement=:emplacement,prix=:prix,idProjet=:idProjet,created=:created,createdBy=:createdBy
+		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,emplacement=:emplacement,prix=:prix
 		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $terrain->id());
