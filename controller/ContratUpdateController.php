@@ -74,5 +74,3 @@
         $_SESSION['contrat-update-error'] = "<strong>Erreur Modification Contrat : </strong>Vous devez remplir au moins les champs 'Nom Client' et 'Prix Négocié'.";
 		header('Location:../contrats-update.php?idContrat='.$idContrat.'&idProjet='.$idProjet);
     }
-	
-    

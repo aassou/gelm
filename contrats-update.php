@@ -324,8 +324,8 @@
                                        ?>
                                     </div>
                                     <div class="form-actions">
-                                    	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>" class="m-wrap span12">
-                                    	<input type="hidden" id="idContrat" name="idContrat" value="<?= $contrat->id() ?>" class="m-wrap span12">
+                                    	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>">
+                                    	<input type="hidden" id="idContrat" name="idContrat" value="<?= $contrat->id() ?>">
                                     	<a href="contrats-list.php?idProjet=<?= $idProjet ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
                                        <button type="submit" class="btn green">Modifier <i class="icon-refresh m-icon-white"></i></button>
                                     </div>
