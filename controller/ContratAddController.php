@@ -36,7 +36,7 @@
 			$modePaiement = htmlentities($_POST['modePaiement']);
 			$idClient = htmlentities($_POST['idClient']);
 			$codeContrat = uniqid().date('YmdHis');
-			$numeroCheque = '0';
+			$numeroCheque = 0;
 			if( isset($_POST['numeroCheque']) ){
 				$numeroCheque = htmlentities($_POST['numeroCheque']);
 			}

@@ -1,4 +1,5 @@
 <?php
+include('config.php');
 if(isset($_POST['typeBien'])){
 	$typeBien = htmlentities($_POST['typeBien']);
 	$idProjet = htmlentities($_POST['idProjet']);
@@ -17,7 +18,7 @@ if(isset($_POST['typeBien'])){
 	
 	// connexion à la base de données
     try{
-        $bdd = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
+        $bdd = $pdo;
     } 
 	catch(Exception $e){
         exit('Impossible de se connecter à la base de données.');

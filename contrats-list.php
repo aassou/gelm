@@ -194,6 +194,14 @@
 						 <?php } 
 							unset($_SESSION['contrat-activation-error']);
 						 ?>
+						 <?php if(isset($_SESSION['contrat-update-success'])){ ?>
+							<div class="alert alert-success">
+								<button class="close" data-dismiss="alert"></button>
+								<?= $_SESSION['contrat-update-success'] ?>		
+							</div>
+						 <?php } 
+							unset($_SESSION['contrat-update-success']);
+						 ?>
 						<div class="portlet">
 							<div class="portlet-title">
 								<h4>Liste des contrats du projet : <strong><?= $projet->nom() ?></strong></h4>

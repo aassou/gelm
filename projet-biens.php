@@ -93,7 +93,7 @@
 								<a>Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
-							<li><a>Liste des charges</a></li>
+							<li><a>Gestion Immobilière</a></li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>

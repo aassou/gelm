@@ -131,7 +131,7 @@
                               </div>
                               <div class="portlet-body form">
                                  <!-- BEGIN FORM-->
-                                 <form action="controller/ContratAddController.php" method="POST" class="horizontal-form">
+                                 <form action="controller/ContratUpdateController.php" method="POST" class="horizontal-form">
                                  	<legend>Informations Client :</legend>
                                  	<div class="row-fluid">
                                        <div class="span3">
@@ -223,7 +223,7 @@
                                        ?>
                                        <div class="span3">
                                           <div class="control-group">
-                                             <label class="control-label" for="dateCreation">Détails Bien</label>
+                                             <label class="control-label" for="detailsBien">Détails Bien</label>
                                              <div class="controls">
 				                             	<input name="detailsBien" id="detailsBien" class="m-wrap" type="text" disabled="disabled" value="<?= $title.$bien->nom() ?>- Prix : <?= number_format($bien->prix(), 2, ',', ' ') ?>" />
                                              </div>
@@ -267,7 +267,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="prixNegocie">Prix négocié</label>
                                              <div class="controls">
-                                                <input type="text" id="prixNegocie" name="prixNegocie" class="m-wrap span12">
+                                                <input type="text" id="prixNegocie" name="prixNegocie" class="m-wrap span12" value="<?= $contrat->prixVente() ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -275,7 +275,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="avance">Avance</label>
                                              <div class="controls">
-                                                <input type="text" id="avance" name="avance" class="m-wrap span12">
+                                                <input type="text" id="avance" name="avance" class="m-wrap span12" value="<?= $contrat->avance() ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -285,6 +285,8 @@
                                              <div class="controls">
                                                 <div class="controls">
 													<select name="modePaiement" id="modePaiement">
+														<option value="<?= $contrat->modePaiement() ?>"><?= $contrat->modePaiement() ?></option>
+														<option disabled="disabled">----------------</option>
 														<option value="Especes">Espèces</option>
 														<option value="Cheque">Chèque</option>
 														<option value="Versement">Versement</option>
@@ -294,6 +296,21 @@
                                              </div>
                                           </div>
                                        </div>
+                                       <?php
+                                       if($contrat->modePaiement()=="Cheque"){
+                                       ?>
+                                       <div class="span3" id="numeroCheque">
+                                          <div class="control-group">
+                                             <label class="control-label">N°Chèque</label>
+                                             <div class="controls">
+                                                <input type="text" name="numeroCheque" class="m-wrap" value="<?= $contrat->numeroCheque() ?>">
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <?php
+									   }
+									   else{
+                                       ?>
                                        <div class="span3" id="numeroCheque" style="display: none">
                                           <div class="control-group">
                                              <label class="control-label">N°Chèque</label>
@@ -302,9 +319,13 @@
                                              </div>
                                           </div>
                                        </div>
+                                       <?php
+									   }
+                                       ?>
                                     </div>
                                     <div class="form-actions">
                                     	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>" class="m-wrap span12">
+                                    	<input type="hidden" id="idContrat" name="idContrat" value="<?= $contrat->id() ?>" class="m-wrap span12">
                                     	<a href="contrats-list.php?idProjet=<?= $idProjet ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
                                        <button type="submit" class="btn green">Modifier <i class="icon-refresh m-icon-white"></i></button>
                                     </div>
