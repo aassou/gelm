@@ -7,13 +7,13 @@
         elseif(file_exists('../controller/'.$myClass.'.php')){
             include('../controller/'.$myClass.'.php');
         }
-    }
+	}
     spl_autoload_register("classLoad"); 
     include('../config.php');  
     //classes loading end
     session_start();    
-    //post input processing
-    $idProjet = $_POST['idProjet'];
+     //post input processing
+     $idProjet = $_POST['idProjet'];
 	$idContrat = $_POST['idContrat'];
 	//old Contrat
 	$contratManager = new ContratManager($pdo);
@@ -35,7 +35,7 @@
 		//special treatment for bien of contrat object
 		$idBien = $contrat->idBien();
 		$typeBien = $contrat->typeBien();
-		if(isset(htmlentities($_POST['typeBien']))){
+		if(isset($_POST['typeBien'])){
 			//get bien form elements	
 			$idBien = htmlentities($_POST['bien']);
 			$typeBien = htmlentities($_POST['typeBien']);
@@ -61,13 +61,22 @@
 				$terrainManager->updateStatus("Disponible", $contrat->idBien());
 			}
 		}
-		
-		$newContrat = new Contrat(array('nomClient' => $nomClient, 'cin' => $cin, 'adresse' => $adresse,
-		'telephone' => $telephone, 'dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
-		'avance' => $avance, 'modePaiement' => $modePaiement, 'id' => $contrat->id(),
-		'idBien' => $idBien, 'typeBien' => $typeBien, 'numeroCheque' => $numeroCheque));
+		$newContrat = new Contrat(array(
+			'nomClient' => $nomClient, 
+			'cin' => $cin, 
+			'adresse' => $adresse,
+			'telephone' => $telephone,
+			'dateCreation' => $dateCreation,
+			'prixVente' => $prixNegocie, 
+			'avance' => $avance,
+			'modePaiement' => $modePaiement,
+			'id' => $contrat->id(),
+			'idBien' => $idBien,
+			'typeBien' => $typeBien,
+			'numeroCheque' => $numeroCheque));
 		$contratManager->update($newContrat);
 		$_SESSION['contrat-update-success'] = "<strong>Opération Valide : </strong>Bien Modifié avec succès.";
+		print_r($newContrat);
 		header('Location:../contrats-list.php?idProjet='.$idProjet);
     }
     else{

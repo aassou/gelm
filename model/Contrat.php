@@ -2,13 +2,13 @@
 class Contrat{
         
     //attributes
-    private $_id;
-    private $_dateCreation;
-    private $_prixVente;
-    private $_avance;
+	private $_id;
+	private $_dateCreation;
+	private $_prixVente;
+	private $_avance;
 	private $_modePaiement;
-    private $_idProjet;
-    private $_idBien;
+	private $_idProjet;
+	private $_idBien;
 	private $_typeBien;
 	private $_status;
 	private $_numeroCheque;
@@ -67,7 +67,7 @@ class Contrat{
     }
 	
 	public function setTelephone($telephone){
-        $this->_telephonee = $telephone;
+        $this->_telephone = $telephone;
     }
     
     public function setIdProjet($idProjet){

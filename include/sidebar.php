@@ -53,6 +53,7 @@
 				or $currentPage=="contrats-add.php"
 				or $currentPage=="contrats-update.php"
 				or $currentPage=="clients-add.php"
+				or $currentPage=="projet-employes.php"
 				){echo "active ";} ?>">
 					<a href="projets.php">
 					<i class="icon-briefcase"></i> 
@@ -77,6 +78,15 @@
 					</a>
 				</li>
 				<!---------------------------- Gestion des Fournisseurs End    -------------------------------------------->
+				<!---------------------------- Gestion des Employes Begin  -------------------------------------------->
+				<li class="start <?php if($currentPage=="employes.php"
+				){echo "active ";} ?>">
+					<a href="employes.php">
+					<i class="icon-group"></i> 
+					<span class="title">Gestion des employés</span>
+					</a>
+				</li>
+				<!---------------------------- Gestion des Employes End    -------------------------------------------->
 				<!---------------------------- Gestion de la caisse Begin  -------------------------------------------->
 				<li class="start <?php if($currentPage=="caisse.php"
 				or $currentPage=="caisse-entrees.php"

@@ -1,11 +1,11 @@
 <?php
 class Operation{
     //attributes
-    private $_id;
-    private $_date;
-    private $_montant;
+	private $_id;
+	private $_date;
+	private $_montant;
 	private $_modePaiement;
-    private $_idContrat;
+	private $_idContrat;
 	private $_numeroCheque;
     
     //le constructeur

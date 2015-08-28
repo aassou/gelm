@@ -130,10 +130,10 @@
 										<label class="control-label">Projet</label>
 										<div class="controls">
 											<select name="idProjet">
-                                            	<?php foreach($projets as $projet){ ?>
-                                            	<option value="<?= $projet->id() ?>"><?= $projet->nom() ?></option>
-                                            	<?php } ?>
-                                            </select>
+												<?php foreach($projets as $projet){ ?>
+												<option value="<?= $projet->id() ?>"><?= $projet->nom() ?></option>
+												<?php } ?>
+											</select>
 										</div>
 									</div>
 									<div class="control-group">

@@ -29,12 +29,11 @@
 			$cin = htmlentities($_POST['cin']);
 			$telephone = htmlentities($_POST['telephone']);
 			$adresse = htmlentities($_POST['adresse']);
-    		$typeBien = htmlentities($_POST['typeBien']);
+			$typeBien = htmlentities($_POST['typeBien']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
 			$idBien = htmlentities($_POST['bien']);
 			$avance = htmlentities($_POST['avance']);
 			$modePaiement = htmlentities($_POST['modePaiement']);
-			$idClient = htmlentities($_POST['idClient']);
 			$codeContrat = uniqid().date('YmdHis');
 			$numeroCheque = 0;
 			if( isset($_POST['numeroCheque']) ){

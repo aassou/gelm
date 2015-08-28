@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 //classes loading begin
     function classLoad ($myClass) {
         if(file_exists('model/'.$myClass.'.php')){
@@ -416,7 +416,7 @@
 										<a href="contrats-list.php?idProjet=<?= $projet->id() ?>" class="btn red fixed-size">Gestion des Clients</a>
 									</div>
 									<div class="portfolio-info">
-										<a href="employes-projet.php?idProjet=<?= $projet->id() ?>" class="btn fixed-size">Gestion des contrats</a>
+										<a href="projet-employes.php?idProjet=<?= $projet->id() ?>" class="btn fixed-size">Gestion des contrats</a>
 									</div>
 								</div>
 							</div>
