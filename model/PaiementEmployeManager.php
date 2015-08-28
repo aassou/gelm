@@ -80,6 +80,20 @@ class PaiementEmployeManager{
 		return $paiementEmployes;
 	}
 	
+	public function getPaiementsByIdProjetByIdEmploye($idProjet, $idEmploye){
+		$paiementEmployes = array();
+		$query = $this->_db->prepare('SELECT * FROM t_paiementEmploye 
+		WHERE idProjet=:idProjet AND idEmploye=:idEmploye ORDER BY id DESC');
+		$query->bindValue(':idProjet', $idProjet);
+		$query->bindValue(':idEmploye', $idEmploye);
+		$query->execute();
+		while($data = $query->fetch(PDO::FETCH_ASSOC)){
+			$paiementEmployes[] = new PaiementEmploye($data);
+		}
+		$query->closeCursor();
+		return $paiementEmployes;
+	}
+	
 	public function getTotalPaiementsByIdProjetByIdEmploye($idProjet, $idEmploye){
 		$query = $this->_db->prepare(' SELECT SUM(montant) AS total FROM t_paiementEmploye WHERE idProjet=:idProjet AND idEmploye=:idEmploye');
 		$query->bindValue(':idProjet', $idProjet);
