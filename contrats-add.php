@@ -222,6 +222,19 @@
                                        </div>
                                        <div class="span3">
                                           <div class="control-group">
+                                             <label class="control-label">Status</label>
+                                             <div class="controls">
+												<select name="status">
+													<option value="Promesse de Vente">Promesse de Vente</option>
+													<option value="Vendu">Vendu</option>
+												</select>
+											</div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                       <div class="span3">
+                                          <div class="control-group">
                                              <label class="control-label" for="modePaiement">Mode de paiement</label>
                                              <div class="controls">
                                                 <div class="controls">

@@ -37,11 +37,8 @@
 		$terrainManager->updateStatus("Disponible", $contrat->idBien());
 	}
 	
-	$contratManager->desisterContrat($idContrat);
+	$contratManager->desisterContrat($contrat->id());
 	$_SESSION['contrat-desister-success'] = "<strong>Opération valide : </strong>Le contrat est désisté avec succès.";
 	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet;
-	if(isset($_GET['p']) and $_GET['p']==99 ){
-		$redirectLink = 'Location:../clients-search.php';
-	}
 	header($redirectLink);
 	

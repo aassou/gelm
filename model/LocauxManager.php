@@ -63,6 +63,17 @@ class LocauxManager{
 		$query->closeCursor();
 	}
 
+	public function getNumberBienByIdProjet($idProjet){
+    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombre FROM t_locaux WHERE idProjet=:idProjet')
+		or die (print_r($this->_db->errorInfo()));
+		$query->bindValue(':idProjet', $idProjet);
+		$query->execute();		
+		$data = $query->fetch(PDO::FETCH_ASSOC);
+		$nombre = $data['nombre']; 
+		$query->closeCursor();
+		return $nombre;
+	}
+
 	public function getLocauxById($id){
     	$query = $this->_db->prepare(' SELECT * FROM t_locaux
 		WHERE id=:id')

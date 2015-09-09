@@ -29,13 +29,13 @@
 			$cin = htmlentities($_POST['cin']);
 			$telephone = htmlentities($_POST['telephone']);
 			$adresse = htmlentities($_POST['adresse']);
-    		$typeBien = htmlentities($_POST['typeBien']);
+			$typeBien = htmlentities($_POST['typeBien']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
 			$idBien = htmlentities($_POST['bien']);
 			$avance = htmlentities($_POST['avance']);
 			$modePaiement = htmlentities($_POST['modePaiement']);
-			$idClient = htmlentities($_POST['idClient']);
 			$codeContrat = uniqid().date('YmdHis');
+			$status = htmlentities($_POST['status']);
 			$numeroCheque = 0;
 			if( isset($_POST['numeroCheque']) ){
 				$numeroCheque = htmlentities($_POST['numeroCheque']);
@@ -48,31 +48,31 @@
 			$contratManager->add($contrat);
 			if($typeBien=="appartement"){
 				$appartementManager = new AppartementManager($pdo);
-				$appartementManager->updateStatus("Vendu", $idBien);
+				$appartementManager->updateStatus($status, $idBien);
 			}
 			else if($typeBien=="localCommercial"){
 				$locauxManager = new LocauxManager($pdo);
-				$locauxManager->updateStatus("Vendu", $idBien);
+				$locauxManager->updateStatus($status, $idBien);
 			}
 			else if($typeBien=="maison"){
 				$maisonManager = new MaisonManager($pdo);
-				$maisonManager->updateStatus("Vendu", $idBien);
+				$maisonManager->updateStatus($status, $idBien);
 			}
 			else if($typeBien=="terrain"){
 				$terrainManager = new TerrainManager($pdo);
-				$terrainManager->updateStatus("Vendu", $idBien);
+				$terrainManager->updateStatus($status, $idBien);
 			}
 			header('Location:../contrats-list.php?idProjet='.$idProjet);
     	}
 		else{
 			$_SESSION['contrat-add-error'] = "<strong>Erreur Création Contrat : </strong>Vous devez choisir un 'Type de bien'.";	
-			header('Location:../contrats-add.php?idProjet='.$idProjet.'&codeClient='.$codeClient);
+			header('Location:../contrats-add.php?idProjet='.$idProjet);
 			exit;
 		}
     }
     else{
         $_SESSION['contrat-add-error'] = "<strong>Erreur Création Contrat : </strong>Vous devez remplir au moins le champ 'Nom'.";
-		header('Location:../contrats-add.php?idProjet='.$idProjet.'&codeClient='.$codeClient);
+		header('Location:../contrats-add.php?idProjet='.$idProjet);
     }
 	
     

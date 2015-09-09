@@ -21,17 +21,17 @@
 		if(isset($_POST['terrain'])){
 			$chargesTerrainManager = new ChargesTerrainManager($pdo);
 			$totalChargesTerrain = number_format($chargesTerrainManager->getTotalByIdProjet($idProjet), 2, ',', ' ');
-			$chargesTerrainLastWeek = $chargesTerrainManager->getChargesTerrainsLastWeekByIdProjet($idProjet);	
+			$chargesTerrainLastWeek = $chargesTerrainManager->getChargesTerrainsByIdProjet($idProjet);	
 		}
 		if(isset($_POST['construction'])){
 			$chargesConstructionManager = new ChargesConstructionManager($pdo);
 			$totalChargesConstruction = number_format($chargesConstructionManager->getTotalByIdProjet($idProjet), 2, ',', ' ');
-			$chargesConstructionLastWeek = $chargesConstructionManager->getChargesConstructionsLastWeekByIdProjet($idProjet);		
+			$chargesConstructionLastWeek = $chargesConstructionManager->getChargesConstructionsByIdProjet($idProjet);		
 		}
 		if(isset($_POST['finition'])){
 			$chargesFinitionManager = new ChargesFinitionManager($pdo);
 			$totalChargesFinition = number_format($chargesFinitionManager->getTotalByIdProjet($idProjet), 2, ',', ' ');
-			$chargesFinitionLastWeek = $chargesFinitionManager->getChargesFinitionsLastWeekByIdProjet($idProjet);		
+			$chargesFinitionLastWeek = $chargesFinitionManager->getChargesFinitionsByIdProjet($idProjet);		
 		}
 		
 

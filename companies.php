@@ -251,7 +251,7 @@
 									</div>
 									<div class="modal-body">
 									<form class="form-horizontal" action="controller/CompteBancaireAddController.php" method="post" enctype="multipart/form-data">
-											<p>Ajouter un document pour la société <strong><?= $societe->raisonSociale() ?></strong></p>
+											<p>Ajouter un compte bancaire pour la société <strong><?= $societe->raisonSociale() ?></strong></p>
 											<div class="control-group">
 												<label class="control-label">Numéro du compte</label>
 												<div class="controls">
@@ -369,6 +369,9 @@
 									</div>
 									<div class="portfolio-info">
 										<a href="company-cheques.php?idSociete=<?= $societe->id() ?>" class="btn red fixed-size">Gestion des chèques</a>
+									</div>
+									<div class="portfolio-info">
+										<a href="company-accounts.php?idSociete=<?= $societe->id() ?>" class="btn purple fixed-size">Comptes Bancaires</a>
 									</div>
 								</div>
 							</div>

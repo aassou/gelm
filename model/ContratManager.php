@@ -33,25 +33,45 @@ class ContratManager{
         $query->closeCursor();
     }
     
-    public function update(Contrat $contrat){
-        $query = $this->_db->prepare('UPDATE t_contrat SET dateCreation=:dateCreation, prixVente=:prixVente,
-        avance=:avance, modePaiement=:modePaiement, nomClient=:nomClient, cin=:cin, adresse=:adresse, 
-        telephone=:telephone, idBien=:idBien, typeBien=:typeBien, numeroCheque=:numeroCheque WHERE id=:id') 
-        or die(print_r($this->_db->errorInfo()));
+	/*public function update(Contrat $contrat){
+		$query = $this->_db->prepare('UPDATE t_contrat SET dateCreation=:dateCreation, prixVente=:prixVente,
+		avance=:avance, modePaiement=:modePaiement, nomClient=:nomClient, cin=:cin, adresse=:adresse, 
+		telephone=:telephone, idBien=:idBien, typeBien=:typeBien, numeroCheque=:numeroCheque WHERE id=:id') 
+		or die(print_r($this->_db->errorInfo()));
 		$query->bindValue(':nomClient', $contrat->nomClient());
 		$query->bindValue(':cin', $contrat->cin());
 		$query->bindValue(':adresse', $contrat->adresse());
 		$query->bindValue(':telephone', $contrat->telephone());
-        $query->bindValue(':dateCreation', $contrat->dateCreation());
-        $query->bindValue(':prixVente', $contrat->prixVente());
-        $query->bindValue(':avance', $contrat->avance());
+		$query->bindValue(':dateCreation', $contrat->dateCreation());
+		$query->bindValue(':prixVente', $contrat->prixVente());
+		$query->bindValue(':avance', $contrat->avance());
 		$query->bindValue(':modePaiement', $contrat->modePaiement());
 		$query->bindValue(':idBien', $contrat->idBien());
 		$query->bindValue(':typeBien', $contrat->typeBien());
 		$query->bindValue(':prixVente', $contrat->prixVente());
-        $query->bindValue(':id', $contrat->id());
-        $query->execute();
-        $query->closeCursor();
+		$query->bindValue(':id', $contrat->id());
+		$query->execute();
+		$query->closeCursor();
+    }*/
+	public function update(Contrat $contrat){
+		$query = $this->_db->prepare('UPDATE t_contrat SET nomClient=:nomClient, cin=:cin, adresse=:adresse, telephone=:telephone,
+		dateCreation=:dateCreation, prixVente=:prixVente, avance=:avance, idBien=:idBien, typeBien=:typeBien, modePaiement=:modePaiement, 
+		numeroCheque=:numeroCheque WHERE id=:id') 
+		or die(print_r($this->_db->errorInfo()));
+		$query->bindValue(':nomClient', $contrat->nomClient());
+		$query->bindValue(':cin', $contrat->cin());
+		$query->bindValue(':adresse', $contrat->adresse());
+		$query->bindValue(':telephone', $contrat->telephone());
+		$query->bindValue(':dateCreation', $contrat->dateCreation());
+		$query->bindValue(':prixVente', $contrat->prixVente());
+		$query->bindValue(':avance', $contrat->avance());
+		$query->bindValue(':idBien', $contrat->idBien());
+		$query->bindValue(':typeBien', $contrat->typeBien());
+		$query->bindValue(':modePaiement', $contrat->modePaiement());
+		$query->bindValue(':numeroCheque', $contrat->numeroCheque());
+		$query->bindValue(':id', $contrat->id());
+		$query->execute();
+		$query->closeCursor();
     }
 	
 	public function updateNumeroCheque($numeroCheque, $idContrat){

@@ -25,22 +25,17 @@ class CompteBancaireManager{
 	}
 
 	public function update(CompteBancaire $compteBancaire){
-    	$query = $this->_db->prepare(' UPDATE t_compteBancaire SET 
-		numero=:numero, dateCreation=:dateCreation, createdBy=:createdBy, created=:created
-		WHERE id=:id')
-		or die (print_r($this->_db->errorInfo()));
+    	$query = $this->_db->prepare(' UPDATE t_compteBancaire SET numero=:numero, dateCreation=:dateCreation 
+    	WHERE id=:id') or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $compteBancaire->id());
 		$query->bindValue(':numero', $compteBancaire->numero());
 		$query->bindValue(':dateCreation', $compteBancaire->dateCreation());
-		$query->bindValue(':createdBy', $compteBancaire->createdBy());
-		$query->bindValue(':created', $compteBancaire->created());
 		$query->execute();
 		$query->closeCursor();
 	}
 
 	public function delete($id){
-    	$query = $this->_db->prepare(' DELETE FROM t_compteBancaire
-		WHERE id=:id')
+    	$query = $this->_db->prepare('DELETE FROM t_compteBancaire WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $id);
 		$query->execute();
@@ -49,7 +44,7 @@ class CompteBancaireManager{
 
 	public function getCompteBancaireById($id){
     	$query = $this->_db->prepare(' SELECT * FROM t_compteBancaire
-		WHERE id=:id)')
+		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $id);
 		$query->execute();		

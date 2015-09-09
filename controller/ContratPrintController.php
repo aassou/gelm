@@ -13,10 +13,11 @@
     //classes loading end
     session_start();
     if( isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin" ){
-        $clientManager = new ClientManager($pdo);
         $contratManager = new ContratManager($pdo);
         $projetManager = new ProjetManager($pdo);
         $appartementManager = new AppartementManager($pdo);
+		$terrainManager = new TerrainManager($pdo);
+		$maisonManager = new MaisonManager($pdo);
 		$locauxManager = new LocauxManager($pdo);
 		$biens = "";
 		$idContrat = 0;
@@ -28,16 +29,23 @@
 			exit;
 		}
         $contrat = $contratManager->getContratById($idContrat);
-        $client = $clientManager->getClientById($contrat->idClient());
         $projet = $projetManager->getProjetById($contrat->idProjet());
 		$typeBien = "";
         if( $contrat->typeBien()=="appartement" ){
         	$biens = $appartementManager->getAppartementById($contrat->idBien());
-			$typeBien = "Appartement";
+			$typeBien = "appartement";
         }
 		else if( $contrat->typeBien()=="localCommercial" ){
 			$biens = $locauxManager->getLocauxById($contrat->idBien());
-			$typeBien = "Local commercial";
+			$typeBien = "localCommercial";
+		}
+		else if( $contrat->typeBien()=="maison" ){
+			$biens = $maisonManager->getMaisonById($contrat->idBien());
+			$typeBien = "maison";
+		}
+		else if( $contrat->typeBien()=="terrain" ){
+			$biens = $terrainManager->getTerrainById($contrat->idBien());
+			$typeBien = "terrain";
 		}
 //property data
 
@@ -45,16 +53,13 @@ $programme  = $projet->nom();
 $superficie = $biens->superficie();
 $prixHt = number_format($contrat->prixVente(), 2, ',', ' ');
 //customer data
-$clientNom = $client->nom();
-$cin = $client->cin();
-$adresse = $client->adresse();
-$telephone = $client->telephone1(); 
-$email = $client->email();
+$clientNom = $contrat->nomClient();
+$cin = $contrat->cin();
+$adresse = $contrat->adresse();
+$telephone = $contrat->telephone(); 
 //contract text
 $somme = number_format($contrat->avance(), 2, ',', ' ');
-$montantMesuel = number_format($contrat->echeance(), 2, ',', ' ');
 $modePaiement = $contrat->modePaiement();
-$dureePaiement = $contrat->dureePaiement();
 
 $contratTexte = "La somme de : <strong>".$somme."</strong> Dirhams, <strong>{</strong>à verser au plus tard 10 jours après la date de 
 signature<strong>}</strong> , représentant un premier versement de réservation de l’appartement <strong>".$biens->nom()."</strong> dépendant 
@@ -62,7 +67,7 @@ du programme ci-dessus.
 Le client déclare accepte la désignation de l'appartement objet du présent reçu et les échéances 
 de paiement fixé comme suit :";
 
-$contratTexte2 = "<strong>Le reste à ventiler sur ".$dureePaiement." mois soit une constante mensuelle de ".$montantMesuel." DH</strong>";
+$contratTexte2 = "<strong>Le reste à ventiler sur 2 mois </strong>";
 
 $remarque = "Dans le cas où le client a marqué trois retards de paiements des mensualités fixés 
 ci-dessus, la société a le droit d’annuler la réservation de l’appartement objet de cet avis de 
@@ -126,10 +131,6 @@ ob_start();
         <tr>
             <td><strong>Téléphone</strong></td>
             <td> : <strong><em><?= $telephone ?></em></strong></td>
-        </tr>
-        <tr>
-            <td><strong>Email</strong></td>
-            <td> : <strong><em><?= $email ?></em></strong></td>
         </tr>
     </table>
     <br><br><br>

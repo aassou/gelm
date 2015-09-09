@@ -16,8 +16,8 @@
     //post input processing
 	$idProjet = $_POST['idProjet'];
 	$idContrat = $_POST['idContrat'];   
-    $contratManager = new ContratManager($pdo);
-	$contratManager->delete($idContrat);
+	$contratManager = new ContratManager($pdo);
+	$contrat = $contratManager->getContratById($idContrat);
 	if($contrat->typeBien()=="appartement"){
 		$appartementManager = new AppartementManager($pdo);
 		$appartementManager->updateStatus("Disponible", $contrat->idBien());
@@ -34,7 +34,7 @@
 		$maisonManager = new MaisonManager($pdo);
 		$maisonManager->updateStatus("Disponible", $contrat->idBien());
 	}
-	
+	$contratManager->delete($contrat->id());
 	$_SESSION['contrat-delete-success'] = "<strong>Opération valide : </strong>Contrat supprimé avec succès.";
 	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet;
 	header($redirectLink);

@@ -35,7 +35,7 @@
 			else{*/
 				$contratNumber = $contratManager->getContratsNumberByIdProjet($idProjet);
 				if($contratNumber != 0){
-					$contratPerPage = 10;
+					$contratPerPage = 1000;
 			        $pageNumber = ceil($contratNumber/$contratPerPage);
 			        $p = 1;
 			        if(isset($_GET['p']) and ($_GET['p']>0 and $_GET['p']<=$pageNumber)){
@@ -100,7 +100,7 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des contrats
+							Gestion des Contrats des Clients
 						</h3>
 						<ul class="breadcrumb">
 							<li>
@@ -113,7 +113,7 @@
 								<a>Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
-							<li><a>Liste des contrats</a></li>
+							<li><a>Liste des Contrats Clients</a></li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
@@ -202,23 +202,22 @@
 						 <?php } 
 							unset($_SESSION['contrat-update-success']);
 						 ?>
-						<div class="portlet">
+						 <div class="row-fluid">
+							    <div class="input-box autocomplet_container">
+									<input class="m-wrap" name="nomClient" id="nomClient" type="text" placeholder="Chercher un client..." />
+									<input name="idClient" id="idClient" type="hidden" />
+							    </div>
+							</div>
+						<div class="portlet box grey">
 							<div class="portlet-title">
-								<h4>Liste des contrats du projet : <strong><?= $projet->nom() ?></strong></h4>
+								<h4>Liste des Contrats Clients du Projet : <strong><?= $projet->nom() ?></strong></h4>
 								<div class="tools">
 									<a href="javascript:;" class="collapse"></a>
 									<a href="javascript:;" class="remove"></a>
 								</div>
 							</div>
-							<div class="row-fluid">
-							    <div class="input-box autocomplet_container">
-									<input class="m-wrap" name="nomClient" id="nomClient" type="text" onkeyup="autocompletClient()" placeholder="Chercher un client...">
-										<ul id="clientList"></ul>
-									</input>
-									<input name="idClient" id="idClient" type="hidden" />
-							    </div>
-							</div>
 							<div class="portlet-body">
+								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 									<thead>
 										<tr>
@@ -260,7 +259,7 @@
 												$typeBien = "Maison";
 											}
 										?>		
-										<tr>
+										<tr class="clients">
 											<td>
 												<div class="btn-group">
 												    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
@@ -276,21 +275,21 @@
 												        		Imprimer Fiche Client
 												        	</a>
 												        	<?php if($contrat->status()=="actif"){
-															?>
-															<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-																Désister
-															</a>
-															<?php 
-															}
-															else{
-															?>	
-															<a href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-																Activer
-															</a>	
-															<?php	
-															}
-															?>
-															<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+														?>
+														<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+															Désister
+														</a>
+														<?php 
+														}
+														else{
+														?>	
+														<a style="color:green" href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+															Activer
+														</a>	
+														<?php	
+														}
+														?>
+														<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Modifier
 												        	</a>
 												        	<a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
@@ -314,7 +313,7 @@
 													$status = "<a class=\"btn mini green\">Actif</a>";	
 												}
 												else{
-													$status = "<a class=\"btn mini black\">Désisté</a>";	
+													$status = "<a class=\"btn mini red\">Désisté</a>";	
 												}
 												echo $status;
 												?>	
@@ -390,15 +389,15 @@
 											</div>
 										</div>
 										<!-- activation box end -->	
-										<!-- delete box begin-->
-										<div id="deleteContrat<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+										<!-- desister box begin-->
+										<div id="desisterContrat<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-												<h3>Supprimer le contrat </h3>
+												<h3>Désister le contrat </h3>
 											</div>
 											<div class="modal-body">
-												<form class="form-horizontal loginFrm" action="controller/ContratDeleteController.php" method="post">
-													<p>Êtes-vous sûr de vouloir supprimer le contrat <strong>N°<?= $contrat->id() ?></strong> ?</p>
+												<form class="form-horizontal loginFrm" action="controller/ContratDesistementController.php" method="post">
+													<p>Êtes-vous sûr de vouloir désister le contrat <strong>N°<?= $contrat->id() ?></strong> ?</p>
 													<div class="control-group">
 														<label class="right-label"></label>
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
@@ -421,6 +420,7 @@
 									}
 									?>
 								</table>
+								</div><!-- END SCROLL DIV -->
 							</div>
 						</div>
 						<!-- END Terrain TABLE PORTLET-->
@@ -470,6 +470,8 @@
 	<script type="text/javascript" src="assets/uniform/jquery.uniform.min.js"></script>
 	<script type="text/javascript" src="assets/data-tables/jquery.dataTables.js"></script>
 	<script type="text/javascript" src="assets/data-tables/DT_bootstrap.js"></script>
+	<script src="assets/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
+	<script src="assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="assets/js/app.js"></script>
 	<script src="script.js"></script>		
 	<script>
@@ -477,6 +479,16 @@
 			// initiate layout and plugins
 			//App.setPage("table_editable");
 			App.init();
+		});
+		$('.clients').show();
+		$('#nomClient').keyup(function(){
+		    $('.clients').hide();
+		   var txt = $('#nomClient').val();
+		   $('.clients').each(function(){
+		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+		           $(this).show();
+		       }
+		    });
 		});
 	</script>
 </body>

@@ -78,7 +78,7 @@ class AppartementManager{
 	}
 	
 	public function getNumberAppartementByIdProjet($idProjet){
-    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombreAppartement FROM t_appartement WHERE idProjet=:idProjet)')
+    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombreAppartement FROM t_appartement WHERE idProjet=:idProjet')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();		
@@ -86,6 +86,17 @@ class AppartementManager{
 		$nombreAppartement = $data['nombreAppartement']; 
 		$query->closeCursor();
 		return $nombreAppartement;
+	}
+	
+	public function getNumberBienByIdProjet($idProjet){
+    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombre FROM t_appartement WHERE idProjet=:idProjet')
+		or die (print_r($this->_db->errorInfo()));
+		$query->bindValue(':idProjet', $idProjet);
+		$query->execute();		
+		$data = $query->fetch(PDO::FETCH_ASSOC);
+		$nombre = $data['nombre']; 
+		$query->closeCursor();
+		return $nombre;
 	}
 
 	public function getAppartements(){

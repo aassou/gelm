@@ -14,22 +14,18 @@
     session_start();
     if( isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin" ){
         //classes managers	
-        $clientManager = new ClientManager($pdo);
         $contratManager = new ContratManager($pdo);
         $projetManager = new ProjetManager($pdo);
 		//classes and attributes
 		$idContrat = $_GET['idContrat'];
         $contrat = $contratManager->getContratById($idContrat);
-        $client = $clientManager->getClientById($contrat->idClient());
         $projet = $projetManager->getProjetById($contrat->idProjet());
 //property data
 $programme  = $projet->nom();
-$nomClient = $client->nom();
-$adresse = $client->adresse();
-$cin = $client->cin();
-$telephone1 = $client->telephone1();
-$telephone2 = $client->telephone2();
-$email = $client->email();
+$nomClient = $contrat->nomClient();
+$adresse = $contrat->adresse();
+$cin = $contrat->cin();
+$telephone = $contrat->telephone();
 $dateContrat = date('d-m-Y', strtotime($contrat->dateCreation()));
 
 ob_start();

@@ -28,6 +28,11 @@
 			$locaux = $locauxManager->getLocauxByIdProjet($idProjet);
 			$maisons = $maisonManager->getMaisonsByIdProjet($idProjet);
 			$terrains = $terrainManager->getTerrainsByIdProjet($idProjet);
+			//Get Biens Number
+			$appartementNumber = $appartementManager->getNumberBienByIdProjet($idProjet);
+			$locauxNumber = $locauxManager->getNumberBienByIdProjet($idProjet);
+			$maisonNumber = $maisonManager->getNumberBienByIdProjet($idProjet);
+			$terrainNumber = $terrainManager->getNumberBienByIdProjet($idProjet);
 		}		
 ?>
 <!DOCTYPE html>
@@ -273,6 +278,7 @@
 								<input class="m-wrap" name="titre" id="titre" type="text" placeholder="Titre..." />
 						    </div>
 						</div>
+						<?php if($terrainNumber != 0){ ?>
 						<div class="portlet box grey biens">
 							<div class="portlet-title">
 								<h4>Les Terrains</h4>
@@ -325,17 +331,54 @@
 													<?php 
 													if($terrain->status()=="Disponible"){ 
 													?>
-														<a class="btn mini green"><?= $terrain->status() ?></a>
+														<a href="#updateTerrainStatus<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>" class="btn mini green"><?= $terrain->status() ?></a>
+													<?php 
+													}
+													else if($terrain->status()=="Vendu"){
+													?>
+														<a href="#updateTerrainStatus<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>" class="btn mini red"><?= $terrain->status() ?></a>
 													<?php 
 													}
 													else{
 													?>
-														<a class="btn mini red"><?= $terrain->status() ?></a>
+														<a href="#updateTerrainStatus<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>" class="btn mini purple"><?= $terrain->status() ?></a>
 													<?php 
 													}
 													?>
 												</td>
 											</tr>
+											<!-- updateTerrainStatus box begin-->
+											<div id="updateTerrainStatus<?= $terrain->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+													<h3>Modifier Status Terrain </h3>
+												</div>
+												<div class="modal-body">
+													<form class="form-horizontal" action="controller/BienUpdateStatusController.php" method="post">
+														<div class="control-group">
+															<label class="control-label">Staus</label>
+															<div class="controls">
+																<select name="status">
+																	<option value="<?= $terrain->status() ?>"><?= $terrain->status() ?></option>
+																	<option disabled="disabled">---------------------</option>
+																	<option value="Promesse de Vente">Promesse de Vente</option>
+					                                            	<option value="Vendu">Vendu</option>				
+					                                            </select>
+															</div>
+														</div>
+														<div class="control-group">
+															<input type="hidden" name="id" value="<?= $terrain->id() ?>" />
+															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+															<input type="hidden" name="typeImmobiliere" value="terrain" />
+															<div class="controls">	
+																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- updateTerrainStatus box end -->
 											<!-- updateTerrain box begin-->
 											<div id="updateTerrain<?= $terrain->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 												<div class="modal-header">
@@ -416,10 +459,12 @@
 								</div><!-- END DIV SCROLLER -->	
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END Terrain TABLE PORTLET-->
 						<!--**************************** TERRAIN END ****************************-->
 						<!--**************************** APPARTEMENTS BEGIN ****************************-->
 						<!-- BEGIN APPARTEMENTS TABLE PORTLET-->
+						<?php if($appartementNumber != 0){ ?>
 						<div class="portlet box red biens">
 							<div class="portlet-title">
 								<h4>Les Appartements</h4>
@@ -471,17 +516,57 @@
 											<td class="hidden-phone"><?= $appartement->facade() ?></td>
 											<td class="hidden-phone"><?= $appartement->nombrePiece() ?></td>
 											<td class="hidden-phone">
-												<?php if($appartement->status()=="Disponible"){ ?>
-													<a class="btn mini green"><?= $appartement->status() ?></a>
-												<?php }
-													else{
-												?>
-												<a class="btn mini red"><?= $appartement->status() ?></a>
 												<?php 
+													if($appartement->status()=="Disponible"){ 
+													?>
+														<a href="#updateAppartementStatus<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>" class="btn mini green"><?= $appartement->status() ?></a>
+													<?php 
 													}
-												?>
+													else if($appartement->status()=="Vendu"){
+													?>
+														<a href="#updateAppartementStatus<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>" class="btn mini red"><?= $appartement->status() ?></a>
+													<?php 
+													}
+													else{
+													?>
+														<a href="#updateAppartementStatus<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>" class="btn mini blue"><?= $appartement->status() ?></a>
+													<?php 
+													}
+													?>
 											</td>
 										</tr>
+										<!-- updateAppartementStatus box begin-->
+											<div id="updateAppartementStatus<?= $appartement->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+													<h3>Modifier Status Appartement </h3>
+												</div>
+												<div class="modal-body">
+													<form class="form-horizontal" action="controller/BienUpdateStatusController.php" method="post">
+														<div class="control-group">
+															<label class="control-label">Staus</label>
+															<div class="controls">
+																<select name="status">
+																	<option value="<?= $appartement->status() ?>"><?= $appartement->status() ?></option>
+																	<option disabled="disabled">---------------------</option>
+																	<option value="Promesse de Vente">Promesse de Vente</option>
+					                                            	<option value="Vendu">Vendu</option>				
+					                                            </select>
+															</div>
+														</div>
+														<div class="control-group">
+															<input type="hidden" name="id" value="<?= $appartement->id() ?>" />
+															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+															<input type="hidden" name="typeImmobiliere" value="appartement" />
+															<div class="controls">	
+																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- updateAppartementStatus box end -->
 										<!-- updateAppartement box begin-->
 										<div id="updateAppartement<?= $appartement->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 											<div class="modal-header">
@@ -596,10 +681,12 @@
 								</div><!-- END DIV SCROLLER -->
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END APPARTEMENTS TABLE PORTLET-->
 						<!--**************************** APPARTEMENTS END ****************************-->
 						<!--**************************** LOCAUX COMMERCIAUX BEGIN ****************************-->
 						<!-- BEGIN Finition TABLE PORTLET-->
+						<?php if($locauxNumber != 0){ ?>
 						<div class="portlet box blue biens">
 							<div class="portlet-title">
 								<h4>Les Locaux Commerciaux</h4>
@@ -654,17 +741,54 @@
 													<?php 
 													if($local->status()=="Disponible"){ 
 													?>
-														<a class="btn mini green"><?= $local->status() ?></a>
+														<a href="#updateLocalStatus<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>" class="btn mini green"><?= $local->status() ?></a>
+													<?php 
+													}
+													else if($local->status()=="Vendu"){
+													?>
+														<a href="#updateLocalStatus<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>" class="btn mini red"><?= $local->status() ?></a>
 													<?php 
 													}
 													else{
 													?>
-														<a class="btn mini red"><?= $local->status() ?></a>
+														<a href="#updateLocalStatus<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>" class="btn mini blue"><?= $local->status() ?></a>
 													<?php 
 													}
 													?>
 												</td>
 											</tr>
+											<!-- updateLocalStatus box begin-->
+											<div id="updateLocalStatus<?= $local->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+													<h3>Modifier Status Local Commercial </h3>
+												</div>
+												<div class="modal-body">
+													<form class="form-horizontal" action="controller/BienUpdateStatusController.php" method="post">
+														<div class="control-group">
+															<label class="control-label">Staus</label>
+															<div class="controls">
+																<select name="status">
+																	<option value="<?= $local->status() ?>"><?= $local->status() ?></option>
+																	<option disabled="disabled">---------------------</option>
+																	<option value="Promesse de Vente">Promesse de Vente</option>
+					                                            	<option value="Vendu">Vendu</option>				
+					                                            </select>
+															</div>
+														</div>
+														<div class="control-group">
+															<input type="hidden" name="id" value="<?= $local->id() ?>" />
+															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+															<input type="hidden" name="typeImmobiliere" value="local" />
+															<div class="controls">	
+																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- updateLocalStatus box end -->
 											<!-- updateLocal box begin-->
 											<div id="updateLocal<?= $local->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 												<div class="modal-header">
@@ -756,10 +880,12 @@
 								</div><!-- END DIV SCROLLER -->
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END LOCAUX COMMERCIAUX TABLE PORTLET-->
 						<!--**************************** LOCAUX COMMERCIAUX END ****************************-->
 						<!--**************************** MAISONS BEGIN ****************************-->
 						<!-- BEGIN MAISONS TABLE PORTLET-->
+						<?php if($maisonNumber != 0){ ?>
 						<div class="portlet box purple biens">
 							<div class="portlet-title">
 								<h4>Les Maisons</h4>
@@ -795,7 +921,7 @@
 													    </a>
 													    <ul class="dropdown-menu">
 													        <li>																
-													        	<a href="#updateMaison<?= $local->id();?>" data-toggle="modal" data-id="<?= $maison->id(); ?>">
+													        	<a href="#updateMaison<?= $maison->id();?>" data-toggle="modal" data-id="<?= $maison->id(); ?>">
 																	Modifier
 																</a>
 																<a href="#deleteMaison<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>">
@@ -814,17 +940,54 @@
 													<?php 
 													if($maison->status()=="Disponible"){ 
 													?>
-														<a class="btn mini green"><?= $maison->status() ?></a>
+														<a href="#updateMaisonStatus<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>" class="btn mini green"><?= $maison->status() ?></a>
+													<?php 
+													}
+													else if($maison->status()=="Vendu"){
+													?>
+														<a href="#updateMaisonStatus<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>" class="btn mini red"><?= $maison->status() ?></a>
 													<?php 
 													}
 													else{
 													?>
-														<a class="btn mini red"><?= $maison->status() ?></a>
+														<a href="#updateMaisonStatus<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>" class="btn mini blue"><?= $maison->status() ?></a>
 													<?php 
 													}
 													?>
 												</td>
 											</tr>
+											<!-- updateMaisonStatus box begin-->
+											<div id="updateMaisonStatus<?= $maison->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+													<h3>Modifier Status Maison </h3>
+												</div>
+												<div class="modal-body">
+													<form class="form-horizontal" action="controller/BienUpdateStatusController.php" method="post">
+														<div class="control-group">
+															<label class="control-label">Staus</label>
+															<div class="controls">
+																<select name="status">
+																	<option value="<?= $maison->status() ?>"><?= $maison->status() ?></option>
+																	<option disabled="disabled">---------------------</option>
+																	<option value="Promesse de Vente">Promesse de Vente</option>
+					                                            	<option value="Vendu">Vendu</option>				
+					                                            </select>
+															</div>
+														</div>
+														<div class="control-group">
+															<input type="hidden" name="id" value="<?= $maison->id() ?>" />
+															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+															<input type="hidden" name="typeImmobiliere" value="maison" />
+															<div class="controls">	
+																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- updateMaisonStatus box end -->
 											<!-- updateMaison box begin-->
 											<div id="updateMaison<?= $maison->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 												<div class="modal-header">
@@ -919,6 +1082,7 @@
 								</div><!-- END DIV SCROLLER -->
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END MAISONS TABLE PORTLET-->
 						<!--**************************** MAISONS END ****************************-->
 					</div>
