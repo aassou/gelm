@@ -17,23 +17,24 @@
         $projetManager = new ProjetManager($pdo);
 		$projets = $projetManager->getProjets();
 		$idProjet = htmlentities($_POST['idProjet']);
+		$dateFrom = htmlentities($_POST['dateFrom']);
+		$dateTo = htmlentities($_POST['dateTo']);
 		
 		if(isset($_POST['terrain'])){
 			$chargesTerrainManager = new ChargesTerrainManager($pdo);
 			$totalChargesTerrain = number_format($chargesTerrainManager->getTotalByIdProjet($idProjet), 2, ',', ' ');
-			$chargesTerrainLastWeek = $chargesTerrainManager->getChargesTerrainsByIdProjet($idProjet);	
+			$chargesTerrainLastWeek = $chargesTerrainManager->getChargesTerrainsByDatesByIdProjet($idProjet, $dateFrom, $dateTo);	
 		}
 		if(isset($_POST['construction'])){
 			$chargesConstructionManager = new ChargesConstructionManager($pdo);
 			$totalChargesConstruction = number_format($chargesConstructionManager->getTotalByIdProjet($idProjet), 2, ',', ' ');
-			$chargesConstructionLastWeek = $chargesConstructionManager->getChargesConstructionsByIdProjet($idProjet);		
+			$chargesConstructionLastWeek = $chargesConstructionManager->getChargesConstructionsByDatesByIdProjet($idProjet, $dateFrom, $dateTo);		
 		}
 		if(isset($_POST['finition'])){
 			$chargesFinitionManager = new ChargesFinitionManager($pdo);
 			$totalChargesFinition = number_format($chargesFinitionManager->getTotalByIdProjet($idProjet), 2, ',', ' ');
-			$chargesFinitionLastWeek = $chargesFinitionManager->getChargesFinitionsByIdProjet($idProjet);		
+			$chargesFinitionLastWeek = $chargesFinitionManager->getChargesFinitionsByDatesByIdProjet($idProjet, $dateFrom, $dateTo);		
 		}
-		
 
 ob_start();
 ?>
@@ -94,9 +95,13 @@ ob_start();
 		<tr>
 		    <?php
 		    if(isset($_POST['terrain']) and isset($_POST['construction']) and isset($_POST['finition']) ){
+		    	$grandTotal =
+		    				$chargesTerrainManager->getTotalByIdProjet($idProjet)+ 
+		    				$chargesConstructionManager->getTotalByIdProjet($idProjet)+
+		    				$chargesFinitionManager->getTotalByIdProjet($idProjet);
 		    ?>
 			<th><strong>Grand Total</strong></th>
-			<td><a><strong><?= number_format($totalChargesTerrain+$totalChargesConstruction+$totalChargesFinition, 2, ',', ' ') ?>&nbsp;DH</strong></a></td>
+			<td><a><strong><?= number_format($grandTotal, 2, ',', ' ') ?>&nbsp;DH</strong></a></td>
 			<?php
 		    }
 		    ?>

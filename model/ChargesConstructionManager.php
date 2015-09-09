@@ -101,6 +101,21 @@ class ChargesConstructionManager{
 		return $chargesConstructions;
 	}
 	
+	public function getChargesConstructionsByDatesByIdProjet($idProjet, $dateFrom, $dateTo){
+		$chargesConstructions = array();
+		$query = $this->_db->prepare('SELECT * FROM t_chargesconstruction WHERE idProjet=:idProjet
+		AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY id DESC');
+		$query->bindValue(':idProjet', $idProjet);
+		$query->bindValue(':dateFrom', $dateFrom);
+		$query->bindValue(':dateTo', $dateTo);
+		$query->execute();
+		while($data = $query->fetch(PDO::FETCH_ASSOC)){
+			$chargesConstructions[] = new ChargesConstruction($data);
+		}
+		$query->closeCursor();
+		return $chargesConstructions;
+	}
+	
 	public function getChargesConstructionsByLimits($begin, $end){
 		$chargesConstructions = array();
 		$query = $this->_db->query('SELECT * FROM t_chargesconstruction

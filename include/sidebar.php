@@ -35,6 +35,7 @@
 				or $currentPage=="company-pieces.php"
 				or $currentPage=="company-projets.php"
 				or $currentPage=="company-cheques.php"
+				or $currentPage=="company-accounts.php"
 				){echo "active ";} ?>">
 					<a href="companies.php">
 					<i class="icon-sitemap"></i> 

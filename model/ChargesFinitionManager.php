@@ -88,6 +88,21 @@ class ChargesFinitionManager{
 		return $chargesFinitions;
 	}
 
+	public function getChargesFinitionsByDatesByIdProjet($idProjet, $dateFrom, $dateTo){
+		$chargesFinitions = array();
+		$query = $this->_db->prepare('SELECT * FROM t_chargesfinition WHERE idProjet=:idProjet
+		AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY id DESC');
+		$query->bindValue(':idProjet', $idProjet);
+		$query->bindValue(':dateFrom', $dateFrom);
+		$query->bindValue(':dateTo', $dateTo);
+		$query->execute();
+		while($data = $query->fetch(PDO::FETCH_ASSOC)){
+			$chargesFinitions[] = new ChargesFinition($data);
+		}
+		$query->closeCursor();
+		return $chargesFinitions;
+	}
+
 	public function getChargesFinitionsLastWeekByIdProjet($idProjet){
 		$chargesFinitions = array();
 		$query = $this->_db->prepare('SELECT * FROM t_chargesfinition WHERE idProjet=:idProjet

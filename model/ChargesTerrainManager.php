@@ -101,6 +101,21 @@ class ChargesTerrainManager{
 		return $chargesTerrains;
 	}
 	
+	public function getChargesTerrainsByDatesByIdProjet($idProjet, $dateFrom, $dateTo){
+		$chargesTerrains = array();
+		$query = $this->_db->prepare('SELECT * FROM t_chargesterrain WHERE idProjet=:idProjet
+		AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY id DESC');
+		$query->bindValue(':idProjet', $idProjet);
+		$query->bindValue(':dateFrom', $dateFrom);
+		$query->bindValue(':dateTo', $dateTo);
+		$query->execute();
+		while($data = $query->fetch(PDO::FETCH_ASSOC)){
+			$chargesTerrains[] = new ChargesTerrain($data);
+		}
+		$query->closeCursor();
+		return $chargesTerrains;
+	}
+	
 	public function getChargesTerrainsByLimits($begin, $end){
 		$chargesTerrains = array();
 		$query = $this->_db->query('SELECT * FROM t_chargesterrain

@@ -193,6 +193,13 @@
 										</div>
 									</div>
 									<div class="control-group">
+										<div class="controls date date-picker" data-date="" data-date-format="yyyy-mm-dd">
+		                                   <input style="width:100px" name="dateFrom" id="dateFrom" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+		                                   &nbsp;-&nbsp;
+		                                   <input style="width:100px" name="dateTo" id="dateTo" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+		                                </div>
+		                            </div>
+									<div class="control-group">
 										<div class="controls">
 											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
