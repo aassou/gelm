@@ -28,14 +28,15 @@
 	        $superficie = htmlentities($_POST['superficie']);
 	        $description = htmlentities($_POST['description']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
+			$status = "En cours";
 			$createdBy = $_SESSION['userMerlaTrav']->login();
 			$created = date('Y-m-d');
 			$idSociete = htmlentities($_POST['idSociete']);
 			//create object
-	        $projet = new Projet(array('nom' => $nom, 'numeroTitre' => $numeroTitre, 
-	        'emplacement' => $emplacement,'superficie' => $superficie, 
-	        'description' =>$description, 'dateCreation' => $dateCreation, 'createdBy' => $createdBy,
-			'created' => $created, 'idSociete' => $idSociete));
+	        $projet = 
+	        new Projet(array('nom' => $nom, 'numeroTitre' => $numeroTitre, 'emplacement' => $emplacement,
+	        'superficie' => $superficie, 'description' =>$description, 'dateCreation' => $dateCreation, 
+	        'status' => $status, 'createdBy' => $createdBy, 'created' => $created, 'idSociete' => $idSociete));
 			//add it to db
 	        $projetManager->add($projet);
 	        $_SESSION['projet-add-success']="<strong>Opération valide : </strong>Le projet '".strtoupper($nomProjet)."' est ajouté avec succès !";	

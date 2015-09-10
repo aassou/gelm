@@ -16,6 +16,7 @@ class Contrat{
 	private $_cin;
 	private $_adresse;
 	private $_telephone;
+	private $_note;
     
     //le constructeur
    	public function __construct($data){
@@ -89,6 +90,10 @@ class Contrat{
 	public function setNumeroCheque($numeroCheque){
         $this->_numeroCheque = $numeroCheque;
     }
+	
+	public function setNote($note){
+		$this->_note = $note;
+	}
     
     //getters
     
@@ -147,4 +152,8 @@ class Contrat{
 	public function telephone(){
         return $this->_telephone;
     }
+	
+	public function note(){
+		return $this->_note;
+	}
 }

@@ -238,7 +238,7 @@
                                              <label class="control-label" for="modePaiement">Mode de paiement</label>
                                              <div class="controls">
                                                 <div class="controls">
-													<select name="modePaiement" id="modePaiement">
+													<select style="width:200px" name="modePaiement" id="modePaiement">
 														<option value="Especes">Espèces</option>
 														<option value="Cheque">Chèque</option>
 														<option value="Versement">Versement</option>
@@ -253,6 +253,14 @@
                                              <label class="control-label">N°Chèque</label>
                                              <div class="controls">
                                                 <input type="text" name="numeroCheque" class="m-wrap">
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="span6">
+                                          <div class="control-group">
+                                             <label class="control-label">Note client</label>
+                                             <div class="controls">
+                                             	<textarea cols="15" rows="4" name="note"></textarea>
                                              </div>
                                           </div>
                                        </div>

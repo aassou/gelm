@@ -24,6 +24,7 @@
 		$fournisseursManager = new FournisseurManager($pdo);*/
 		$caisseEntreesManager = new CaisseEntreesManager($pdo);
 		$caisseSortiesManager = new CaisseSortiesManager($pdo);
+		$contratManager = new ContratManager($pdo);		
 		//$operationsManager = new OperationManager($pdo);
 		//classes and vars
 		//users number
@@ -32,6 +33,7 @@
 		//$fournisseurNumber = $fournisseursManager->getFournisseurNumbers();
 		$mailsNumberToday = $mailsManager->getMailsNumberToday();
 		$mailsToday = $mailsManager->getMailsToday();
+		$contrats = $contratManager->getContratByNote();
 		//$clientWeek = $clientManager->getClientsWeek();
 		//$clientNumberWeek = $clientManager->getClientsNumberWeek();
 		//$livraisonsNumber = $livraisonsManager->getLivraisonNumber();
@@ -336,11 +338,29 @@
 											<ul class="feeds">
 												<?php
 												//$notesClient = $notesClientsManager->getNotes();
-												//foreach($notesClient as $notes){
-													//$contrat = $contratManager->getContratByCode($notes->codeContrat());
-													//$projetName = $projetManager->getProjetById($notes->idProjet())->nom();
-													//$client = $clientManager->getClientById($contrat->idClient());
-													//if( str_word_count($notes->note())>0 ){
+												foreach($contrats as $contrat){
+													$nomBien = "";
+													$typeBien = "";
+													if($contrat->typeBien()=="maison"){
+														$maisonManager = new MaisonManager($pdo);
+														$typeBien = "Maison";
+														$nomBien = $maisonManager->getMaisonById($contrat->idBien())->nom();
+													}
+													else if($contrat->typeBien()=="localCommercial"){
+														$locauxManager = new LocauxManager($pdo);
+														$typeBien = "Local Commercial";
+														$nomBien = $locauxManager->getLocauxById($contrat->idBien())->nom();
+													}
+													else if($contrat->typeBien()=="appartement"){
+														$appartementManager = new AppartementManager($pdo);
+														$typeBien = "Appartement";
+														$nomBien = $appartementManager->getAppartementById($contrat->idBien())->nom();
+													}
+													else if($contrat->typeBien()=="terrain"){
+														$terrainManager = new TerrainManager($pdo);
+														$typeBien = "Terrain";
+														$nomBien = $terrainManager->getTerrainById($contrat->idBien())->nom();
+													}
 												?>
 												<li>
 													<div class="col1">
@@ -352,26 +372,44 @@
 															</div>
 															<div class="cont-col2">
 																<div class="desc">	
-																	<strong>Note</strong> : <?php //echo $notes->note() ?><br>
-																	<strong>Client</strong> : <?php //echo $client->nom() ?><br>
-																	<a href="contrat.php?codeContrat=<?php //echo $notes->codeContrat() ?>" target="_blank">
-																		<strong>Contrat</strong> : <?php //echo $contrat->id() ?>
-																	</a><br> 
-																	<strong>Projet</strong> : <?php //echo $projetName ?>
+																	<strong>Note</strong> : <a href="#updateNote<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>"><?= $contrat->note() ?></a><br>
+																	<strong>Client</strong> : <?= $contrat->nomClient() ?><br>
+																	<strong>Bien</strong> : <?= $typeBien ?>&nbsp;-&nbsp;<?= $nomBien ?><br> 
+																	<strong>Projet</strong> : <?= $projetManager->getProjetById($contrat->idProjet())->nom() ?>
 																</div>
 															</div>
 														</div>
 													</div>
-													<div class="col2">
-														<div class="date">
-															<?php //echo $notes->created() ?>
-														</div>
-													</div>
+													<!-- updateNotebox begin-->
+                                                    <div id="updateNote<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                            <h3>Modifier Note Client</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form class="form-horizontal" action="controller/NoteUpdateController.php" method="post">
+                                                                <p>Êtes-vous sûr de vouloir modifier la note du client <strong><?= $contrat->nomClient() ?></strong> ?</p>
+                                                                <div class="control-group">
+                                                                    <label class="control-label">Note</label>
+                                                                    <div class="controls">
+                                                                        <textarea name="note"><?= $contrat->note() ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="control-group">
+                                                                    <div class="controls">  
+                                                                        <input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
+                                                                        <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+                                                                        <button type="submit" class="btn red" aria-hidden="true">Oui</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <!-- updateStatusProjet box end -->
 												</li>
 												<hr>
 												<?php 
-												//}//end if
-												//}
+												}
 												?>
 											</ul>
 										</div>

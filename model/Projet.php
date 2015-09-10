@@ -12,6 +12,7 @@ class Projet{
 	private $_createdBy;
 	private $_created;
 	private $_idSociete;
+	private $_status;
 
 	//le constructeur
     public function __construct($data){
@@ -69,6 +70,10 @@ class Projet{
 	public function setIdSociete($idSociete){
     	$this->_idSociete = $idSociete;
     }
+	
+	public function setStatus($status){
+    	$this->_status = $status;
+    }
 
 	//getters
 	public function id(){
@@ -108,6 +113,10 @@ class Projet{
 	
 	public function idSociete(){
     	return $this->_idSociete;
+    }
+	
+	public function status(){
+    	return $this->_status;
     }
 
 }

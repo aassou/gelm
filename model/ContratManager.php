@@ -12,13 +12,14 @@ class ContratManager{
     public function add(Contrat $contrat){
         $query = $this->_db->prepare('
         INSERT INTO t_contrat (dateCreation, prixVente, avance, modePaiement, 
-        nomClient, cin, adresse, telephone, idProjet, idBien, typeBien, status, numeroCheque)
-        VALUES (:dateCreation, :prixVente, :avance, :modePaiement, :nomClient, :cin, :adresse, :telephone,  
+        nomClient, cin, adresse, note, telephone, idProjet, idBien, typeBien, status, numeroCheque)
+        VALUES (:dateCreation, :prixVente, :avance, :modePaiement, :nomClient, :cin, :adresse, :note, :telephone,  
 		 :idProjet, :idBien, :typeBien, :status, :numeroCheque)') 
         or die(print_r($this->_db->errorInfo()));
 		$query->bindValue(':nomClient', $contrat->nomClient());
 		$query->bindValue(':cin', $contrat->cin());
 		$query->bindValue(':adresse', $contrat->adresse());
+		$query->bindValue(':note', $contrat->note());
 		$query->bindValue(':telephone', $contrat->telephone());
         $query->bindValue(':dateCreation', $contrat->dateCreation());
         $query->bindValue(':prixVente', $contrat->prixVente());
@@ -82,6 +83,15 @@ class ContratManager{
         $query->execute();
         $query->closeCursor();
     }
+    
+    public function updateNote($idContrat, $note){
+        $query = $this->_db->prepare('UPDATE t_contrat SET note=:note WHERE id=:id') 
+        or die(print_r($this->_db->errorInfo()));
+        $query->bindValue(':id', $idContrat);
+        $query->bindValue(':note', $note);
+        $query->execute();
+        $query->closeCursor();        
+    }
 	
 	public function updatePaiement($paye, $idContrat){
         $query = $this->_db->prepare('UPDATE t_contrat SET avance=:avance WHERE id=:id') 
@@ -128,6 +138,17 @@ class ContratManager{
 		$query->closeCursor();
 	}
     
+	public function getContratByNote(){
+		$contrats = array();
+        $query = $this->_db->query('SELECT * FROM t_contrat WHERE note!="0"');
+        //get result
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
+	}
+	
     public function getClientNameByIdContract($idContrat){
         $query = $this->_db->prepare('SELECT nom FROM t_client, t_contrat WHERE t_client.id=t_contrat.idClient AND t_contrat.id=:idContrat');
         $query->bindValue(':idContrat', $idContrat);

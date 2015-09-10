@@ -29,6 +29,7 @@
 			$cin = htmlentities($_POST['cin']);
 			$telephone = htmlentities($_POST['telephone']);
 			$adresse = htmlentities($_POST['adresse']);
+			$noteClient = htmlentities($_POST['note']);
 			$typeBien = htmlentities($_POST['typeBien']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
 			$idBien = htmlentities($_POST['bien']);
@@ -42,7 +43,7 @@
 			}
 			$contratManager = new ContratManager($pdo);
 			$contrat = new Contrat(array('nomClient' => $nomClient, 'cin' => $cin, 'adresse' => $adresse,
-			'telephone' => $telephone, 'dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
+			'note' => $noteClient,'telephone' => $telephone, 'dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
 			'avance' => $avance, 'modePaiement' => $modePaiement, 'idProjet' => $idProjet, 
 			'idBien' => $idBien, 'typeBien' => $typeBien, 'numeroCheque' => $numeroCheque));
 			$contratManager->add($contrat);

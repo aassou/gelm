@@ -12,9 +12,9 @@ class ProjetManager{
 	//BAISC CRUD OPERATIONS
 	public function add(Projet $projet){
     	$query = $this->_db->prepare(' INSERT INTO t_projet (
-		nom,numeroTitre,emplacement,superficie,description,dateCreation,createdBy,created, idSociete)
+		nom,numeroTitre,emplacement,superficie,description,dateCreation,status,createdBy,created, idSociete)
 		VALUES (:nom,:numeroTitre,:emplacement,:superficie,:description,
-		:dateCreation,:createdBy,:created, :idSociete)')
+		:dateCreation,:status,:createdBy,:created, :idSociete)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':nom', $projet->nom());
 		$query->bindValue(':numeroTitre', $projet->numeroTitre());
@@ -22,6 +22,7 @@ class ProjetManager{
 		$query->bindValue(':superficie', $projet->superficie());
 		$query->bindValue(':description', $projet->description());
 		$query->bindValue(':dateCreation', $projet->dateCreation());
+		$query->bindValue(':status', $projet->status());
 		$query->bindValue(':createdBy', $projet->createdBy());
 		$query->bindValue(':created', $projet->created());
 		$query->bindValue(':idSociete', $projet->idSociete());
@@ -49,6 +50,15 @@ class ProjetManager{
 		$query->execute();
 		$query->closeCursor();
 	}
+	
+	public function updateStatus($idProjet, $status){
+    	$query = $this->_db->prepare('UPDATE t_projet SET status=:status WHERE id=:id')
+		or die (print_r($this->_db->errorInfo()));
+		$query->bindValue(':id', $idProjet);
+		$query->bindValue(':status', $status);
+		$query->execute();
+		$query->closeCursor();
+	}
 
 	public function delete($id){
     	$query = $this->_db->prepare(' DELETE FROM t_projet
@@ -72,8 +82,7 @@ class ProjetManager{
 
 	public function getProjets(){
 		$projets = array();
-		$query = $this->_db->query('SELECT * FROM t_projet
-		ORDER BY id DESC');
+		$query = $this->_db->query('SELECT * FROM t_projet ORDER BY status ASC, id DESC');
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
 			$projets[] = new Projet($data);
 		}

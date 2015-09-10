@@ -132,6 +132,14 @@
                          <?php } 
                          	unset($_SESSION['projet-update-success']);
                          ?>
+                         <?php if(isset($_SESSION['projet-status-update-success'])){ ?>
+                         	<div class="alert alert-success">
+								<button class="close" data-dismiss="alert"></button>
+								<?= $_SESSION['projet-status-update-success'] ?>		
+							</div>
+                         <?php } 
+                         	unset($_SESSION['projet-status-update-success']);
+                         ?>
                          <?php if(isset($_SESSION['projet-update-error'])){ ?>
                          	<div class="alert alert-error">
 								<button class="close" data-dismiss="alert"></button>
@@ -243,7 +251,8 @@
 							<div class="row-fluid">
 							</div>
 							<br>
-						    <input class="m-wrap span6" id="filterProjet" type="text" placeholder="Filtrer par Nom de Projet ..." />
+						    <input class="m-wrap span4" id="filterProjet" type="text" placeholder="Nom du Projet..." />
+						    <input class="m-wrap span4" id="status" type="text" placeholder="Status (Terminé, En cours)" />
 						    <br>
 							<?php
 							foreach($projets as $projet){
@@ -258,15 +267,26 @@
 											if(isset($_GET['p'])){
 												$link = "projet-details.php?idProjet=".$projet->id()."&p=".$_GET['p'];	
 											}
+											$btnColor = "";
+											if($projet->status()=="En cours"){
+												$btnColor = "blue";
+											}
+											else{
+												$btnColor = "red";
+											}
 											?>
-										    <a class="btn blue big dropdown-toggle fixed-size" href="<?= $link ?>" data-toggle="dropdown">
-										    	<strong><?= ucfirst($projet->nom()) ?></strong> 
-										        <i class="icon-angle-down"></i>
+										    <a class="btn <?= $btnColor ?> big dropdown-toggle fixed-size" href="<?= $link ?>" data-toggle="dropdown">
+										    	<i class="icon-angle-down"></i>
+										    	<strong><?= ucfirst($projet->nom()) ?></strong> - <?= $projet->status() ?>
 										    </a>
+										    
 										    <ul class="dropdown-menu">
 										        <li>
 													<a href="#addProjetDocs<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
 														Ajouter un document
+													</a>
+													<a href="#updateStatusProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
+														Changer Status
 													</a>
 													<a href="#updateProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
 														Modifier
@@ -311,6 +331,39 @@
 									</div>
 								</div>
 								<!-- addSocieteDocs box end -->
+								<!-- updateStatusProjet box begin-->
+								<div id="updateStatusProjet<?= $projet->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+										<h3>Changer Status Projet </h3>
+									</div>
+									<div class="modal-body">
+										<form class="form-horizontal" action="controller/ProjetUpdateStatusController.php" method="post">
+											<p>Êtes-vous sûr de vouloir changer le status du projet <strong><?= $projet->nom() ?></strong> ?</p>
+											<div class="control-group">
+												<label class="control-label">Status</label>
+												<div class="controls">
+													<select name="status">
+														<option value="<?= $projet->status() ?>">
+															<?= $projet->status() ?>
+														</option>
+														<option disabled="disabled">----------------</option>
+														<option value="En cours">En cours</option>
+														<option value="Terminé">Terminé</option>
+		                                            </select>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls">	
+													<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+													<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+													<button type="submit" class="btn red" aria-hidden="true">Oui</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<!-- updateStatusProjet box end -->
 								<!-- updateProjet box begin-->
 								<div id="updateProjet<?= $projet->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 									<div class="modal-header">
@@ -470,6 +523,15 @@
 		$('#filterProjet').keyup(function(){
 		    $('.projets').hide();
 		   var txt = $('#filterProjet').val();
+		   $('.projets').each(function(){
+		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+		           $(this).show();
+		       }
+		    });
+		});
+		$('#status').keyup(function(){
+		   $('.projets').hide();
+		   var txt = $('#status').val();
 		   $('.projets').each(function(){
 		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
 		           $(this).show();
