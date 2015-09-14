@@ -92,10 +92,11 @@
 				<li class="start <?php if($currentPage=="caisse.php"
 				or $currentPage=="caisse-entrees.php"
 				or $currentPage=="caisse-sorties.php"
+				or $currentPage=="caisses.php"
 				){echo "active ";} ?>">
 					<a href="caisse.php">
 					<i class="icon-bar-chart"></i> 
-					<span class="title">Gestion de caisse</span>
+					<span class="title">Gestion des caisses</span>
 					</a>
 				</li>
 				<!---------------------------- Gestion des Livraisons End    -------------------------------------------->

@@ -94,7 +94,7 @@
 				</div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
-				<div class="row-fluid">
+				<!--div class="row-fluid">
 					<div class="span12 responsive">
 						<div class="dashboard-stat purple">
 							<div class="visual hidden-phone">
@@ -110,13 +110,10 @@
 								<div class="desc">									
 									Bilan de la caisse<br> (Les Entrées - Les Sorties)
 								</div>
-							</div>
-							<!--a class="more" href="#">
-								Générer le rapport des transactions <i class="m-icon-swapright m-icon-white"></i>
-							</a-->						
+							</div>					
 						</div>
 					</div>
-				</div>
+				</div-->
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="tab-pane active" id="tab_1">
