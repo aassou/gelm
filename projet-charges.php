@@ -47,7 +47,6 @@
 	<link href="assets/css/style_responsive.css" rel="stylesheet" />
 	<link href="assets/css/style_default.css" rel="stylesheet" id="style_color" />
 	<link href="assets/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
-	<link rel="stylesheet" type="text/css" href="assets/uniform/css/uniform.default.css" />
 	<link rel="stylesheet" type="text/css" href="assets/chosen-bootstrap/chosen/chosen.css" />
 	<link rel="stylesheet" type="text/css" href="assets/bootstrap-datepicker/css/datepicker.css" />
 	<link rel="stylesheet" href="assets/data-tables/DT_bootstrap.css" />

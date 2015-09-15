@@ -93,6 +93,7 @@
 				or $currentPage=="caisse-entrees.php"
 				or $currentPage=="caisse-sorties.php"
 				or $currentPage=="caisses.php"
+				or $currentPage=="caisse-details.php"
 				){echo "active ";} ?>">
 					<a href="caisse.php">
 					<i class="icon-bar-chart"></i> 

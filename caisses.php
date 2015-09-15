@@ -158,7 +158,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="caisse-details?idCaisse=<?= $caisse->id() ?>" data-toggle="modal" data-id="<?= $caisse->id(); ?>">
+                                                <a href="caisse-details.php?idCaisse=<?= $caisse->id() ?>" data-toggle="modal" data-id="<?= $caisse->id(); ?>">
                                                     Détails de caisse
                                                 </a>
                                                 <a href="#updateCaisse<?= $caisse->id() ?>" data-toggle="modal" data-id="<?= $caisse->id(); ?>">
