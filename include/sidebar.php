@@ -55,6 +55,7 @@
 				or $currentPage=="contrats-update.php"
 				or $currentPage=="clients-add.php"
 				or $currentPage=="projet-employes.php"
+				or $currentPage=="projet-contrat-employe.php"
 				){echo "active ";} ?>">
 					<a href="projets.php">
 					<i class="icon-briefcase"></i> 
