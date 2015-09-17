@@ -21,34 +21,37 @@
     $actionMessage = "";
     $typeMessage = "";
     $idContratEmploye = htmlentities($_POST['idContratEmploye']);
+    $idProjet = htmlentities($_POST['idProjet']);
     //Component Class Manager
 
     $contratDetailsManager = new ContratDetailsManager($pdo);
 	//Action Add Processing Begin
     	if($action == "add"){
-        if( !empty($_POST['montant']) ){
-			$dateOperation = htmlentities($_POST['dateOperation']);
-			$montant = htmlentities($_POST['montant']);
-			$numeroCheque = htmlentities($_POST['numeroCheque']);
-			$createdBy = $_SESSION['userMerlaTrav']->login();
-            $created = date('Y-m-d h:i:s');
-            //create object
-            $contratDetails = new ContratDetails(array(
-				'dateOperation' => $dateOperation,
-				'montant' => $montant,
-				'numeroCheque' => $numeroCheque,
-				'idContratEmploye' => $idContratEmploye
-			));
-            //add it to db
-            $contratDetailsManager->add($contratDetails);
-            $actionMessage = "Opération Valide : ContratDetails Ajouté(e) avec succès.";  
-            $typeMessage = "success";
+            if( !empty($_POST['montant']) ){
+    			$dateOperation = htmlentities($_POST['dateOperation']);
+    			$montant = htmlentities($_POST['montant']);
+    			$numeroCheque = htmlentities($_POST['numeroCheque']);
+    			$createdBy = $_SESSION['userMerlaTrav']->login();
+                $created = date('Y-m-d h:i:s');
+                //create object
+                $contratDetails = new ContratDetails(array(
+    				'dateOperation' => $dateOperation,
+    				'montant' => $montant,
+    				'numeroCheque' => $numeroCheque,
+    				'idContratEmploye' => $idContratEmploye,
+    				':created' => $created,
+    				':createdBy' => $createdBy
+    			));
+                //add it to db
+                $contratDetailsManager->add($contratDetails);
+                $actionMessage = "Opération Valide : ContratDetails Ajouté(e) avec succès.";  
+                $typeMessage = "success";
+            }
+            else{
+                $actionMessage = "Erreur Ajout contratDetails : Vous devez remplir le champ 'dateOperation'.";
+                $typeMessage = "error";
+            }
         }
-        else{
-            $actionMessage = "Erreur Ajout contratDetails : Vous devez remplir le champ 'dateOperation'.";
-            $typeMessage = "error";
-        }
-    }
     //Action Add Processing End
     //Action Update Processing Begin
     else if($action == "update"){
@@ -61,8 +64,7 @@
 				'id' => $idContratDetails,
 				'dateOperation' => $dateOperation,
 				'montant' => $montant,
-				'numeroCheque' => $numeroCheque,
-				'idContratEmploye' => $idContratEmploye
+				'numeroCheque' => $numeroCheque
 			));
             $contratDetailsManager->update($contratDetails);
             $actionMessage = "Opération Valide : ContratDetails Modifié(e) avec succès.";
@@ -84,5 +86,5 @@
     //Action Delete Processing End
     $_SESSION['contratDetails-action-message'] = $actionMessage;
     $_SESSION['contratDetails-type-message'] = $typeMessage;
-    header('Location:../contrat-employe-detail.php?idContratEmploye='.$idContratEmploye);
+    header('Location:../contrat-employe-detail.php?idContratEmploye='.$idContratEmploye."&idProjet=".$idProjet);
 

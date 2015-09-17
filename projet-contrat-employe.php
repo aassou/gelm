@@ -18,12 +18,13 @@
         $idProjet = 0;
         $projetManager = new ProjetManager($pdo);
         $contratEmployeManager = new ContratEmployeManager($pdo);
+        $contratDetaislManager = new ContratDetailsManager($pdo);
         $employesManager = new EmployeManager($pdo);
         if(isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId()){
             $idProjet = $_GET['idProjet'];
             $projet = $projetManager->getProjetById($idProjet);
             $contratEmployes = $contratEmployeManager->getContratEmployesByIdProjet($idProjet);
-            $employes = $employesManager->getEmployes();            
+            $employes = $employesManager->getEmployes();
             //} 
 ?>
 <!DOCTYPE html>
@@ -89,7 +90,10 @@
                                 <a>Gestion des projets</a>
                                 <i class="icon-angle-right"></i>
                             </li>
-                            <li><a>Liste des contrats des employés</a></li>
+                            <li>
+                                <i class="icon-group"></i>
+                                <a>Gestion des Contrats Employés</a>
+                            </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
                     </div>
@@ -202,12 +206,12 @@
                          <?php } 
                             unset($_SESSION['contratEmploye-action-message']);
                          ?>
-                         <div class="row-fluid">
-                                <div class="input-box autocomplet_container">
-                                    <input class="m-wrap" name="nomEmploye" id="nomEmploye" type="text" placeholder="Chercher Employé..." />
-                                </div>
+                         <!--div class="row-fluid">
+                            <div class="input-box autocomplet_container">
+                                <input class="m-wrap" name="nomEmploye" id="nomEmploye" type="text" placeholder="Chercher Employé..." />
                             </div>
-                        <div class="portlet box purple">
+                        </div-->
+                        <div class="portlet box blue">
                             <div class="portlet-title">
                                 <h4>Liste des Contrats Employés du Projet : <strong><?= $projet->nom() ?></strong></h4>
                                 <div class="tools">
@@ -220,10 +224,11 @@
                                 <table class="table table-striped table-bordered table-advance table-hover">
                                     <thead>
                                         <tr>
-                                            <th style="width:25%">Employé</th>
-                                            <th style="width:25%" class="hidden-phone">Date Contrat</th>
-                                            <th style="width:25%" class="hidden-phone">Total Paiements</th>
-                                            <th style="width:25%" class="hidden-phone">Total à Payer</th>
+                                            <th style="width:20%">Employé</th>
+                                            <th style="width:20%">Date Contrat</th>
+                                            <th style="width:20%">Total Paiements</th>
+                                            <th style="width:20%">Total à Payer</th>
+                                            <th style="width:20%">Reste</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -253,8 +258,9 @@
                                                 </div>
                                             </td>
                                             <td class="hidden-phone"><?= date('d/m/Y', strtotime($contrat->dateContrat()) ) ?></td>
-                                            <td class="hidden-phone"><?= number_format(0, 2, ',', ' ') ?></td>
-                                            <td class="hidden-phone"><?= number_format($contrat->total(), 2, ',', ' ') ?></td>
+                                            <td><?= number_format($contratDetaislManager->getContratDetailsTotalByIdContratEmploye($contrat->id()), 2, ',', ' ') ?></td>
+                                            <td><?= number_format($contrat->total(), 2, ',', ' ') ?></td>
+                                            <td><?= number_format($contrat->total()-$contratDetaislManager->getContratDetailsTotalByIdContratEmploye($contrat->id()), 2, ',', ' ') ?></td>
                                         </tr>
                                         <!-- updatePaiement box begin -->
                                         <div id="updateContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >

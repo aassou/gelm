@@ -27,14 +27,12 @@ class ContratDetailsManager{
 
 	public function update(ContratDetails $contratDetails){
     	$query = $this->_db->prepare(' UPDATE t_contratDetails SET 
-		dateOperation=:dateOperation, montant=:montant, numeroCheque=:numeroCheque, idContratEmploye=:idContratEmploye
-		WHERE id=:id')
+		dateOperation=:dateOperation, montant=:montant, numeroCheque=:numeroCheque WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $contratDetails->id());
 		$query->bindValue(':dateOperation', $contratDetails->dateOperation());
 		$query->bindValue(':montant', $contratDetails->montant());
 		$query->bindValue(':numeroCheque', $contratDetails->numeroCheque());
-		$query->bindValue(':idContratEmploye', $contratDetails->idContratEmploye());
 		$query->execute();
 		$query->closeCursor();
 	}
@@ -59,26 +57,48 @@ class ContratDetailsManager{
 		return new ContratDetails($data);
 	}
 
-	public function getContratDetailss(){
-		$contratDetailss = array();
+	public function getContratDetails(){
+		$contratDetails = array();
 		$query = $this->_db->query('SELECT * FROM t_contratDetails
 		ORDER BY id DESC');
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
-			$contratDetailss[] = new ContratDetails($data);
+			$contratDetails[] = new ContratDetails($data);
 		}
 		$query->closeCursor();
-		return $contratDetailss;
+		return $contratDetails;
 	}
+    
+    public function getContratDetailsByIdContratEmploye($idContratEmploye){
+        $contratDetails = array();
+        $query = $this->_db->prepare('SELECT * FROM t_contratDetails WHERE idContratEmploye=:idContratEmploye
+        ORDER BY id DESC');
+        $query->bindValue(':idContratEmploye', $idContratEmploye);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contratDetails[] = new ContratDetails($data);
+        }
+        $query->closeCursor();
+        return $contratDetails;
+    }
+    
+    public function getContratDetailsTotalByIdContratEmploye($idContratEmploye){
+        $query = $this->_db->prepare('SELECT SUM(montant) AS total FROM t_contratDetails WHERE idContratEmploye=:idContratEmploye');
+        $query->bindValue(':idContratEmploye', $idContratEmploye);
+        $query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $total = $data['total'];
+        return $total;
+    }
 
-	public function getContratDetailssByLimits($begin, $end){
+	public function getContratDetailsByLimits($begin, $end){
 		$contratDetailss = array();
 		$query = $this->_db->query('SELECT * FROM t_contratDetails
 		ORDER BY id DESC LIMIT '.$begin.', '.$end);
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
-			$contratDetailss[] = new ContratDetails($data);
+			$contratDetails[] = new ContratDetails($data);
 		}
 		$query->closeCursor();
-		return $contratDetailss;
+		return $contratDetails;
 	}
 
 	public function getLastId(){

@@ -25,6 +25,8 @@
             $idContratEmploye = $_GET['idContratEmploye'];
             $projet = $projetManager->getProjetById($idProjet);
             $contratEmploye = $contratEmployeManager->getContratEmployeById($idContratEmploye);
+            $contratDetails = $contratDetaislManager->getContratDetailsByIdContratEmploye($idContratEmploye);
+            $totalPaye = $contratDetaislManager->getContratDetailsTotalByIdContratEmploye($idContratEmploye);
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -89,7 +91,12 @@
                                 <a>Gestion des projets</a>
                                 <i class="icon-angle-right"></i>
                             </li>
-                            <li><a>Détails des contrats des employés</a></li>
+                            <li>
+                                <i class="icon-group"></i>
+                                <a>Gestion des Contrats Employés</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li><a>Détails des Contrats Employés</a></li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
                     </div>
@@ -99,91 +106,48 @@
                     <div class="span12">
                         <div class="row-fluid add-portfolio">
                             <div class="pull-left">
-                                <a href="projets.php" class="btn icn-only green"><i class="m-icon-swapleft m-icon-white"></i> Retour vers Liste des projets</a>
+                                <a href="projet-contrat-employe.php?idProjet=<?= $idProjet ?>" class="btn icn-only green"><i class="m-icon-swapleft m-icon-white"></i> Retour vers Liste des Contrats</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#addContratEmploye" data-toggle="modal" class="btn icn-only black">Nouveau Contrat Employé <i class="icon-plus-sign"></i></a>
+                                <a href="controller/ContratDetailsPrintController.php?idContratEmploye=<?= $contratEmploye->id() ?>&idProjet=<?= $projet->id() ?>" class="btn icn-only blue"><i class="icon-print"></i> Détails Contrat</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#addPaiement" data-toggle="modal" class="btn icn-only black">Nouveau Paiement <i class="icon-plus-sign"></i></a>
                             </div>
                         </div>
-                        <!-- addEmploye box begin-->
-                        <div id="addEmploye" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h3>Ajouter un nouveau employé </h3>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" action="controller/EmployeAddController.php" method="post">
-                                    <div class="control-group">
-                                        <label class="control-label">Nom</label>
-                                        <div class="controls">
-                                            <input type="text" name="nom" value="" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">CIN</label>
-                                        <div class="controls">
-                                            <input type="text" name="cin" value="" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Adresse</label>
-                                        <div class="controls">
-                                            <input type="text" name="adresse" value="" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Téléphone</label>
-                                        <div class="controls">
-                                            <input type="text" name="telephone" value="" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">  
-                                            <input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
-                                            <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
-                                            <button type="submit" class="btn red" aria-hidden="true">Oui</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- addEmploye box end -->
                         <!-- addContratEmploye box begin-->
-                        <div id="addContratEmploye" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+                        <div id="addPaiement" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h3>Ajouter un nouveau contrat employé </h3>
+                                <h3>Nouveau Paiement</h3>
                             </div>
                             <div class="modal-body">
-                                <form class="form-horizontal" action="controller/ContratEmployeActionController.php" method="post">
+                                <form class="form-horizontal" action="controller/ContratDetailsActionController.php" method="post">
                                     <div class="control-group">
-                                        <label class="control-label">Employé</label>
-                                        <div class="controls">
-                                            <select name="employe">
-                                                <?php foreach($employes as $employe){ ?>
-                                                <option value="<?= $employe->nom() ?>"><?= $employe->nom() ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Date Contrat</label>
+                                        <label class="control-label">Date Opération</label>
                                         <div class="controls">
                                             <div class="input-append date date-picker" data-date="" data-date-format="yyyy-mm-dd">
-                                                <input name="dateContrat" id="dateContrat" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+                                                <input name="dateOperation" id="dateOperation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
                                                 <span class="add-on"><i class="icon-calendar"></i></span>
                                             </div>
                                          </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Total</label>
+                                        <label class="control-label">Montant</label>
                                         <div class="controls">
-                                            <input type="text" name="total" value="" />
+                                            <input type="text" name="montant" value="" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <div class="controls">  
-                                            <input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+                                        <label class="control-label">Numéro Chèque</label>
+                                        <div class="controls">
+                                            <input type="text" name="numeroCheque" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />  
+                                            <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
                                             <input type="hidden" name="action" value="add" />
                                             <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
                                             <button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -202,14 +166,9 @@
                          <?php } 
                             unset($_SESSION['contratEmploye-action-message']);
                          ?>
-                         <div class="row-fluid">
-                                <div class="input-box autocomplet_container">
-                                    <input class="m-wrap" name="nomEmploye" id="nomEmploye" type="text" placeholder="Chercher Employé..." />
-                                </div>
-                            </div>
                         <div class="portlet box purple">
                             <div class="portlet-title">
-                                <h4>Liste des Contrats Employés du Projet : <strong><?= $projet->nom() ?></strong></h4>
+                                <h4>Détails Contrat <strong><?= strtoupper($contratEmploye->employe()) ?></strong> - Projet : <strong><?= $projet->nom() ?></strong></h4>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <a href="javascript:;" class="remove"></a>
@@ -220,21 +179,22 @@
                                 <table class="table table-striped table-bordered table-advance table-hover">
                                     <thead>
                                         <tr>
-                                            <th style="width:25%">Employé</th>
-                                            <th style="width:25%" class="hidden-phone">Date Contrat</th>
-                                            <th style="width:25%" class="hidden-phone">Total Paiements</th>
-                                            <th style="width:25%" class="hidden-phone">Total à Payer</th>
+                                            <th style="width:20%">Date Opération</th>
+                                            <th style="width:20%">Numéro Chèque</th>
+                                            <th style="width:20%">Montant</th>
+                                            <th style="width:20%"></th>
+                                            <th style="width:20%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach($contratEmployes as $contrat){
+                                        foreach($contratDetails as $contrat){
                                         ?>      
                                         <tr class="clients">
                                             <td>
                                                 <div class="btn-group">
-                                                    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
-                                                        <?= $contrat->employe() ?> 
+                                                    <a class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
+                                                        <?= date('d/m/Y', strtotime($contrat->dateOperation()) ) ?>
                                                         <i class="icon-angle-down"></i>
                                                     </a>
                                                     <ul class="dropdown-menu">
@@ -252,47 +212,43 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td class="hidden-phone"><?= date('d/m/Y', strtotime($contrat->dateContrat()) ) ?></td>
-                                            <td class="hidden-phone"><?= number_format(0, 2, ',', ' ') ?></td>
-                                            <td class="hidden-phone"><?= number_format($contrat->total(), 2, ',', ' ') ?></td>
+                                            <td><?= $contrat->numeroCheque() ?></td>
+                                            <td><?= number_format($contrat->montant(), 2, ',', ' ') ?></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         <!-- updatePaiement box begin -->
                                         <div id="updateContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                <h3>Modifier Contrat de  <?= $contrat->employe() ?></h3>
+                                                <h3>Modifier Contrat de  <?= $contratEmploye->employe() ?></h3>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="form-horizontal loginFrm" action="controller/ContratEmployeActionController.php" method="post">
-                                                    <div class="control-group">
-                                                        <label class="control-label">Employé</label>
-                                                        <div class="controls">
-                                                            <select name="employe">
-                                                                <option value="<?= $contrat->employe() ?>"><?= $contrat->employe() ?></option>
-                                                                <option disabled="disabled">-----------------</option>
-                                                                <?php foreach($employes as $employe){ ?>
-                                                                <option value="<?= $employe->nom() ?>"><?= $employe->nom() ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                                <form class="form-horizontal loginFrm" action="controller/ContratDetailsActionController.php" method="post">
                                                     <div class="control-group">
                                                         <label class="control-label">Date Opération</label>
                                                         <div class="controls">
                                                             <div class="input-append date date-picker" data-date="" data-date-format="yyyy-mm-dd">
-                                                                <input name="dateContrat" id="dateContrat" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= $contrat->dateContrat() ?>" />
+                                                                <input name="dateOperation" id="dateOperation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= $contrat->dateOperation() ?>" />
                                                                 <span class="add-on"><i class="icon-calendar"></i></span>
                                                             </div>
                                                          </div>
                                                     </div>
                                                     <div class="control-group">
-                                                        <label class="control-label">Total à payer</label>
+                                                        <label class="control-label">Montant</label>
                                                         <div class="controls">
-                                                            <input type="text" name="total" value="<?= $contrat->total() ?>" />
+                                                            <input type="text" name="montant" value="<?= $contrat->montant() ?>" />
                                                         </div>
                                                     </div>
                                                     <div class="control-group">
-                                                        <input type="hidden" name="idContratEmploye" value="<?= $contrat->id() ?>" />
+                                                        <label class="control-label">Numéro Chèque</label>
+                                                        <div class="controls">
+                                                            <input type="text" name="numeroCheque" value="<?= $contrat->numeroCheque() ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <input type="hidden" name="idContratDetails" value="<?= $contrat->id() ?>" />
+                                                        <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />
                                                         <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
                                                         <input type="hidden" name="action" value="update" />
                                                         <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -306,14 +262,15 @@
                                         <div id="deleteContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                <h3>Supprimer Contrat <?= $contrat->employe() ?></h3>
+                                                <h3>Supprimer Paiement <?= $contratEmploye->employe() ?></h3>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="form-horizontal loginFrm" action="controller/ContratEmployeActionController.php" method="post">
-                                                    <p>Êtes-vous sûr de vouloir supprimer contrat <strong><?= $contrat->employe() ?></strong> ?</p>
+                                                <form class="form-horizontal loginFrm" action="controller/ContratDetailsActionController.php" method="post">
+                                                    <p>Êtes-vous sûr de vouloir supprimer contrat <strong><?= $contratEmploye->employe() ?></strong> ?</p>
                                                     <div class="control-group">
                                                         <label class="right-label"></label>
-                                                        <input type="hidden" name="idContratEmploye" value="<?= $contrat->id() ?>" />
+                                                        <input type="hidden" name="idContratDetails" value="<?= $contrat->id() ?>" />
+                                                        <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />
                                                         <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
                                                         <input type="hidden" name="action" value="delete" />
                                                         <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -326,6 +283,26 @@
                                         <?php
                                         }//end of loop
                                         ?>
+                                    </tbody>
+                                </table>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:20%"></th>
+                                            <th style="width:20%"></th>
+                                            <th style="width:20%">Total Payé</th>
+                                            <th style="width:20%">Total à Payer</th>
+                                            <th style="width:20%">Reste</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>     
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td><?= number_format($totalPaye, 2, ',', ' ') ?></td>
+                                            <td><?= number_format($contratEmploye->total(), 2, ',', ' ') ?></td>
+                                            <td><?= number_format($contratEmploye->total()-$totalPaye, 2, ',', ' ') ?></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 </div><!-- END SCROLL DIV -->
