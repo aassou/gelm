@@ -12,14 +12,11 @@
     include('../config.php');  
     //classes loading end
     session_start();
-    
-    //post input processing
-	$idProjet = $_POST['idProjet'];
-	$idLivraison = $_POST['idLivraison'];   
-    $livraisonManager = new LivraisonManager($pdo);
-	$livraisonManager->delete($idLivraison);
-	$_SESSION['livraison-delete-success'] = "<strong>Opération valide : </strong>Livraison supprimée avec succès.";
-	$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet;
-	header($redirectLink);
+    //post input processing   
+	$idProjet = htmlentities($_POST['idProjet']);
+    $projetManager = new ProjetManager($pdo);
+	$projetManager->delete($idProjet);
+	$_SESSION['projet-delete-success'] = "<strong>Opération valide : </strong>Le projet est supprimé avec succès.";
+	header('Location:../projets.php');
     
     

@@ -482,6 +482,7 @@
 											<th class="hidden-phone">Code</th>
 											<th class="hidden-phone">Prix</th>
 											<th class="hidden-phone">Superficie</th>
+											<th class="hidden-phone">Niveau</th>
 											<th class="hidden-phone">Façade</th>
 											<th class="hidden-phone">Nombre Pièces</th>
 											<th class="hidden-phone">Status</th>
@@ -513,6 +514,7 @@
 											<td class="hidden-phone"><?= $appartement->nom() ?></td>
 											<td class="hidden-phone"><?= number_format($appartement->prix(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone"><?= $appartement->superficie() ?></td>
+											<td class="hidden-phone"><?= $appartement->niveau() ?></td>
 											<td class="hidden-phone"><?= $appartement->facade() ?></td>
 											<td class="hidden-phone"><?= $appartement->nombrePiece() ?></td>
 											<td class="hidden-phone">

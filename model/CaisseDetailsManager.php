@@ -12,8 +12,8 @@ class CaisseDetailsManager{
 	//BAISC CRUD OPERATIONS
 	public function add(CaisseDetails $caisseDetails){
     	$query = $this->_db->prepare(' INSERT INTO t_caisseDetails (
-		dateOperation,personne,designation,projet,type,montant,commentaire,idCaisse,created,createdBy)
-		VALUES (:dateOperation,:personne,:designation,:projet,:type,:montant,:commentaire,:idCaisse,:created,:createdBy)')
+		dateOperation, personne, designation, projet, type, montant, commentaire, idCaisse, created, createdBy)
+		VALUES (:dateOperation, :personne, :designation, :projet, :type, :montant, :commentaire, :idCaisse, :created, :createdBy)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':dateOperation', $caisseDetails->dateOperation());
 		$query->bindValue(':personne', $caisseDetails->personne());

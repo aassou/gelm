@@ -113,7 +113,7 @@
 					<div class="span12">
 						<div class="row-fluid add-portfolio">
 							<div class="pull-left">
-								<a href="companies.php" data-toggle="modal" class="btn green">
+								<a href="companies.php" class="btn green">
 									<i class="m-icon-swapleft m-icon-white"></i>&nbsp;Retours vers Liste des sociétés
 								</a>
 							</div>

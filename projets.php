@@ -275,7 +275,7 @@
 												$btnColor = "red";
 											}
 											?>
-										    <a class="btn <?= $btnColor ?> big dropdown-toggle fixed-size" href="<?= $link ?>" data-toggle="dropdown">
+										    <a style="width:250px" class="btn <?= $btnColor ?> big dropdown-toggle" href="<?= $link ?>" data-toggle="dropdown">
 										    	<i class="icon-angle-down"></i>
 										    	<strong><?= ucfirst($projet->nom()) ?></strong> - <?= $projet->status() ?>
 										    </a>
@@ -456,21 +456,23 @@
 								<!-- delete box end -->		
 								<div class="span9" style="overflow:hidden;">
 									<div class="portfolio-info">
-										<a href="projet-charges.php?idProjet=<?= $projet->id() ?>" class="btn black fixed-size">Gestion des charges</a>
-										<!--a href="appartements.php?idProjet=<?= $projet->id() ?>" class="btn blue fixed-size">Appartements</a-->
+										<a href="projet-livraisons.php?idProjet=<?= $projet->id() ?>" class="btn green fixed-size">Gestion des livraisons</a>
 									</div>
 									<div class="portfolio-info">
 										<a href="projet-biens.php?idProjet=<?= $projet->id() ?>" class="btn purple fixed-size">Gestion Immobilière</a>
 									</div>
+									
 									<div class="portfolio-info">
-										<a href="projet-livraisons.php?idProjet=<?= $projet->id() ?>" class="btn green fixed-size">Gestion des livraisons</a>
-									</div>
-									<div class="portfolio-info">
-										<a href="contrats-list.php?idProjet=<?= $projet->id() ?>" class="btn red fixed-size">Gestion des Clients</a>
+										<a href="projet-charges.php?idProjet=<?= $projet->id() ?>" class="btn black fixed-size">Gestion des charges</a>
+										<!--a href="appartements.php?idProjet=<?= $projet->id() ?>" class="btn blue fixed-size">Appartements</a-->
 									</div>
 									<div class="portfolio-info">
 										<a href="projet-contrat-employe.php?idProjet=<?= $projet->id() ?>" class="btn fixed-size">Gestion des contrats</a>
 									</div>
+									<div class="portfolio-info">
+										<a href="contrats-list.php?idProjet=<?= $projet->id() ?>" class="btn red fixed-size">Gestion des Clients</a>
+									</div>
+									
 								</div>
 							</div>
 							<?php }//end foreach loop for projets elements ?>

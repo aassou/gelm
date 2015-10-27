@@ -603,7 +603,7 @@
 												<h3>Modifier les informations de la livraison </h3>
 											</div>
 											<div class="modal-body">
-												<form class="form-horizontal" action="controller/LivraisonUpdateController.php" method="post">
+												<form class="form-horizontal" action="controller/LivraisonUpdateController.php?p=99" method="post">
 													<p>Êtes-vous sûr de vouloir modifier la livraison <strong>N°<?= $livraison->id() ?></strong>  ?</p>
 													<div class="control-group">
 														<label class="control-label">Date Livraison</label>
@@ -620,7 +620,6 @@
 													</div>
 													<div class="control-group">
 														<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>" />
-														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 														<div class="controls">	
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 															<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -637,12 +636,11 @@
 												<h3>Supprimer la livraison </h3>
 											</div>
 											<div class="modal-body">
-												<form class="form-horizontal loginFrm" action="controller/LivraisonDeleteController.php" method="post">
+												<form class="form-horizontal loginFrm" action="controller/Livraison2DeleteController.php" method="post">
 													<p>Êtes-vous sûr de vouloir supprimer la livraison <strong>N°<?= $livraison->id() ?></strong> ?</p>
 													<div class="control-group">
 														<label class="right-label"></label>
 														<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>" />
-														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -687,7 +685,7 @@
 	<!-- END CONTAINER -->
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
-		  015 &copy; GELM. Management Application.
+		2015 &copy; GELM. Management Application.
 		<div class="span pull-right">
 			<span class="go-top"><i class="icon-angle-up"></i></span>
 		</div>

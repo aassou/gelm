@@ -141,20 +141,22 @@
 								</div>
 							</div>
 							</a>
-							<a href="caisse.php">
+							<?php if($_SESSION['userMerlaTrav']->login()=="abdessamad"){ ?>
+							<a href="caisses.php">
 							<div class="tile bg-grey">
 								<div class="tile-body">
 									<i class="icon-bar-chart"></i>
 								</div>
 								<div class="tile-object">
 									<div class="name">
-										La caisse
+										Les caisses
 									</div>
 									<div class="number">
 									</div>
 								</div>
 							</div>
 							</a>
+							<?php } ?>
 							<a href="users.php">
 							<div class="tile bg-red">
 								<div class="corner"></div>
@@ -216,7 +218,7 @@
 							</div>			
 						</div>
 					</div>	
-					<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+					<!--div class="span3 responsive" data-tablet="span6" data-desktop="span3">
 						<a class="more" href="caisse.php">
 						<div class="dashboard-stat purple">
 							<div class="visual">
@@ -231,7 +233,7 @@
 							</div>					
 						</div>
 						</a>
-					</div>	
+					</div-->	
 				</div>
 				<!-- END DASHBOARD STATS -->
 				<!-- BEGIN DASHBOARD FEEDS -->

@@ -90,6 +90,7 @@
 					</a>
 				</li>
 				<!---------------------------- Gestion des Employes End    -------------------------------------------->
+				<?php if($_SESSION['userMerlaTrav']->login()=="abdessamad"){ ?>
 				<!---------------------------- Gestion de la caisse Begin  -------------------------------------------->
 				<li class="start <?php if($currentPage=="caisse.php"
 				or $currentPage=="caisse-entrees.php"
@@ -97,12 +98,13 @@
 				or $currentPage=="caisses.php"
 				or $currentPage=="caisse-details.php"
 				){echo "active ";} ?>">
-					<a href="caisse.php">
+					<a href="caisses.php">
 					<i class="icon-bar-chart"></i> 
 					<span class="title">Gestion des caisses</span>
 					</a>
 				</li>
-				<!---------------------------- Gestion des Livraisons End    -------------------------------------------->
+				<!---------------------------- Gestion des Caisses End    -------------------------------------------->
+				<?php } ?>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
