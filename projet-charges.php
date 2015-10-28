@@ -23,6 +23,8 @@
 		if(isset($_GET['idProjet']) and 
     	($_GET['idProjet'] >=1 and $_GET['idProjet'] <= $projetManager->getLastId()) ){
     		$idProjet = $_GET['idProjet'];
+            $idSociete = $_GET['idSociete'];
+            $type = $_GET['type'];
     		$chargesTerrain = $chargesTerrainManager->getChargesTerrainsByIdProjet($idProjet);
     		$chargesConstruction = $chargesConstructionManager->getChargesConstructionsByIdProjet($idProjet);
 			$chargesFinition = $chargesFinitionManager->getChargesFinitionsByIdProjet($idProjet);
@@ -77,20 +79,32 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des charges du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
+							Gestion des charges du Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
-								<i class="icon-home"></i>
-								<a>Accueil</a> 
-								<i class="icon-angle-right"></i>
-							</li>
+                                <i class="icon-dashboard"></i>
+                                <a href="dashboard.php">Accueil</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-briefcase"></i>
+                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-bar-chart"></i>
+                                <a href="projets-charges-categories.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion des charges</a>
+                                <i class="icon-angle-right"></i> 
+                            </li>
 							<li>
-								<i class="icon-briefcase"></i>
-								<a>Gestion des projets</a>
-								<i class="icon-angle-right"></i>
-							</li>
-							<li><a>Liste des charges</a></li>
+							    <a>Liste des charges</a>
+						    </li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
@@ -98,13 +112,13 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
+						<!--div class="row-fluid add-portfolio">
 							<div class="pull-right">
 								<a href="#addCharge" data-toggle="modal" class="btn green">
 									Nouvelle Charge <i class="icon-plus-sign "></i>
 								</a>
 							</div>
-						</div>
+						</div-->
 						<!-- addCharge box begin-->
 						<div id="addCharge" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -156,7 +170,9 @@
 									</div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
+											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+											<input type="hidden" name="type" value="<?= $type ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 											<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 										</div>
@@ -173,6 +189,9 @@
 								<a target="_blank" href="#printCharges" class="btn black" data-toggle="modal">
 									<i class="icon-print"></i>&nbsp;Les Charges
 								</a>
+								<a href="#addCharge" data-toggle="modal" class="btn green pull-right">
+                                    Nouvelle Charge <i class="icon-plus-sign "></i>
+                                </a>
 						    </div>
 						</div>
 						<!-- printCharge box begin-->
@@ -186,7 +205,7 @@
 									<p><strong>Séléctionner les charges à imprimer</strong></p>
 									<div class="control-group">
 										<div class="controls">
-											<input type="checkbox" name="terrain">Terrain
+											<input type="checkbox" name="terrain" id="terrain">Terrain
 											<input type="checkbox" name="construction">Construction
 											<input type="checkbox" name="finition">Finition
 										</div>
@@ -200,7 +219,9 @@
 		                            </div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
+											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                            <input type="hidden" name="type" value="<?= $type ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 											<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 										</div>
@@ -264,7 +285,8 @@
 								</tr>
 							</thead>
 						</table>
-						<div class="portlet box grey charges">
+						<?php if($type=="terrain"){ ?>
+						<div class="portlet box green charges">
 							<div class="portlet-title">
 								<h4>Les charges du Terrain</h4>
 								<div class="tools">
@@ -354,6 +376,8 @@
 													<div class="control-group">
 														<input type="hidden" name="idCharge" value="<?= $terrain->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="type" value="<?= $type ?>" />
 														<input type="hidden" name="typeCharge" value="terrain" />
 														<div class="controls">	
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -377,6 +401,8 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idCharge" value="<?= $terrain->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="type" value="<?= $type ?>" />
 														<input type="hidden" name="typeCharge" value="terrain" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -400,10 +426,12 @@
 								</div><!-- END DIV SCROLLER -->	
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END Terrain TABLE PORTLET-->
 						<!--**************************** CHARGES TERRAIN END ****************************-->
 						<!--**************************** CHARGES CONSTRUCTION BEGIN ****************************-->
 						<!-- BEGIN Construction TABLE PORTLET-->
+						<?php if($type=="construction"){ ?>
 						<div class="portlet box red charges">
 							<div class="portlet-title">
 								<h4>Les charges de Construction</h4>
@@ -494,6 +522,8 @@
 													<div class="control-group">
 														<input type="hidden" name="idCharge" value="<?= $construction->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="type" value="<?= $type ?>" />
 														<input type="hidden" name="typeCharge" value="construction" />
 														<div class="controls">	
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -517,6 +547,8 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idCharge" value="<?= $construction->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="type" value="<?= $type ?>" />
 														<input type="hidden" name="typeCharge" value="construction" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -547,10 +579,12 @@
 								</div><!-- END DIV SCROLLER -->
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END Construction TABLE PORTLET-->
 						<!--**************************** CHARGES CONSTRUCTION END ****************************-->
 						<!--**************************** CHARGES FINITION BEGIN ****************************-->
 						<!-- BEGIN Finition TABLE PORTLET-->
+						<?php if($type=="finition"){ ?>
 						<div class="portlet box blue charges">
 							<div class="portlet-title">
 								<h4>Les charges de Finition</h4>
@@ -641,6 +675,8 @@
 													<div class="control-group">
 														<input type="hidden" name="idCharge" value="<?= $finition->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="type" value="<?= $type ?>" />
 														<input type="hidden" name="typeCharge" value="finition" />
 														<div class="controls">	
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -664,6 +700,8 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idCharge" value="<?= $finition->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="type" value="<?= $type ?>" />
 														<input type="hidden" name="typeCharge" value="finition" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -694,6 +732,7 @@
 								</div><!-- END DIV SCROLLER -->
 							</div>
 						</div>
+						<?php } ?>
 						<!-- END Finition TABLE PORTLET-->
 						<!--**************************** CHARGES FINITION END ****************************-->
 					</div>

@@ -112,8 +112,8 @@ class ProjetManager{
 	
 	public function getProjetsByIdSociete($idSociete){
 		$projets = array();
-		$query = $this->_db->prepare('SELECT * FROM t_projet WHERE idSociete=:idSociete
-		ORDER BY id DESC');
+		$query = $this->_db->prepare('SELECT * FROM t_projet WHERE idSociete=:idSociete 
+		ORDER BY status ASC, id DESC');
 		$query->bindValue(':idSociete', $idSociete);
 		$query->execute();	
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
@@ -138,6 +138,15 @@ class ProjetManager{
 	
 	public function getProjetsNumber(){
         $query = $this->_db->query('SELECT COUNT(*) AS projectNumbers FROM t_projet');
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $data['projectNumbers'];
+    }
+    
+    public function getProjetsNumberByIdSociete($idSociete){
+        $query = $this->_db->prepare('SELECT COUNT(*) AS projectNumbers FROM t_projet WHERE idSociete=:idSociete');
+        $query->bindValue(':idSociete', $idSociete);
+        $query->execute();
         $data = $query->fetch(PDO::FETCH_ASSOC);
         $query->closeCursor();
         return $data['projectNumbers'];

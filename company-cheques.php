@@ -96,9 +96,14 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
+							<li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
 							<li>
 								<i class="icon-money"></i>
 								<a>Gestion des chèques</a>
@@ -210,7 +215,7 @@
                                     	<?php } ?>
                                     </select>
                                     <input class="m-wrap span2" name="designation" id="designation" type="text" placeholder="Désignation ..." />
-                                    <input class="m-wrap span2" name="annee" id="annee" type="text" value="2014" />
+                                    <input class="m-wrap span2" name="annee" id="annee" type="text" placeholder="Année..." />
                                     <input class="m-wrap span2" name="status" id="status" type="text" placeholder="Status..." />
 									<!--input name="idSociete" value="<?= $idSociete ?>" id="idSociete" type="hidden" /-->
 									<!--input id="search" type="button" class="btn red" value="filtrer"-->

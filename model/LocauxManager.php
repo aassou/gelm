@@ -97,7 +97,7 @@ class LocauxManager{
 
 	public function getLocauxByIdProjet($idProjet){
 		$locaux = array();
-		$query = $this->_db->prepare('SELECT * FROM t_locaux WHERE idProjet=:idProjet ORDER BY id DESC');
+		$query = $this->_db->prepare('SELECT * FROM t_locaux WHERE idProjet=:idProjet ORDER BY status ASC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){

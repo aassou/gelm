@@ -20,6 +20,7 @@
 		if((isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId())){
 			$idProjet = $_GET['idProjet'];
 			$projet = $projetManager->getProjetById($idProjet);
+            $idSociete = $_GET['idSociete'];
 		}
 ?>
 <!DOCTYPE html>
@@ -72,21 +73,26 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des Contrats
+							Nouveau Contrat Client - Projet : <?= $projetManager->getProjetById($idProjet)->nom() ?> 
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
+							<li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
 							<li>
 								<i class="icon-briefcase"></i>
-								<a>Gestion des projets</a>
+								<a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-								<a>Gestion des contrats</a>
+								<a href="contrats-list.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Liste des contrats clients</a>
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
@@ -222,6 +228,14 @@
                                        </div>
                                        <div class="span3">
                                           <div class="control-group">
+                                             <label class="control-label" for="taille">Taille</label>
+                                             <div class="controls">
+                                                <input type="text" id="taille" name="taille" class="m-wrap span12">
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="span3">
+                                          <div class="control-group">
                                              <label class="control-label">Status</label>
                                              <div class="controls">
 												<select name="status">
@@ -266,7 +280,8 @@
                                        </div>
                                     </div>
                                     <div class="form-actions">
-                                    	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>" class="m-wrap span12">
+                                    	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>">
+                                    	<input type="hidden" id="idSociete" name="idSociete" value="<?= $idSociete ?>">
                                     	<a href="contrats-list.php?idProjet=<?= $idProjet ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
                                        <button type="submit" class="btn blue">Terminer <i class="icon-ok m-icon-white"></i></button>
                                     </div>

@@ -16,6 +16,8 @@
     
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
+    $type = htmlentities($_POST['type']);
 	if( !empty($_POST['idProjet']) ){
 		$id = htmlentities($_POST['id']);
 		if(htmlentities($_POST['typeImmobiliere'])=="appartement"){
@@ -36,11 +38,11 @@
 		}
         
         $_SESSION['bien-delete-success']='<strong>Opération valide</strong> : Le Bien Immobilière est supprimé avec succès !';
-        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet;
+        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
         header($redirectLink);
 	}
 	else{
-		header('Location:../projet-biens.php?idProjet='.$idProjet);
+		header('Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete);
 	}
     
     

@@ -95,7 +95,7 @@ class TerrainManager{
 	
 	public function getTerrainsByIdProjet($idProjet){
 		$terrains = array();
-		$query = $this->_db->prepare('SELECT * FROM t_terrain WHERE idProjet=:idProjet ORDER BY id DESC');
+		$query = $this->_db->prepare('SELECT * FROM t_terrain WHERE idProjet=:idProjet ORDER BY status ASC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){

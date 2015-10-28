@@ -16,6 +16,8 @@
     
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
+    $type = htmlentities($_POST['type']);
 	if( !empty($_POST['idProjet']) ){
 		if( !empty($_POST['numeroTitre']) ){
 	        $numeroTitre = htmlentities($_POST['numeroTitre']);
@@ -67,18 +69,18 @@
 			}
 	        
 	        $_SESSION['bien-add-success']='<strong>Opération valide</strong> : Le Bien Immobilière est ajouté avec succès !';
-	        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet;
+	        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
 	        header($redirectLink);
     	}
 	    else{
 	    	$_SESSION['bien-add-error'] = "<strong>Erreur Ajout Bien Immobilière</strong> : Vous devez remplir au moins le champ 'Numéro Titre'.";
-	        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet;
+	        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
 	        header($redirectLink);
 			exit;
     	}	
 	}
 	else{
-		header('Location:../projet-biens.php?idProjet='.$idProjet);
+		header('Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete);
 	}
     
     

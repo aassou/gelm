@@ -13,7 +13,8 @@
     //classes loading end
     session_start();    
      //post input processing
-     $idProjet = $_POST['idProjet'];
+    $idProjet = $_POST['idProjet'];
+    $idSociete = $_POST['idSociete'];
 	$idContrat = $_POST['idContrat'];
 	//old Contrat
 	$contratManager = new ContratManager($pdo);
@@ -26,6 +27,7 @@
 		$adresse = htmlentities($_POST['adresse']);
 		$dateCreation = htmlentities($_POST['dateCreation']);
 		$avance = htmlentities($_POST['avance']);
+        $taille = htmlentities($_POST['taille']);
 		$prixNegocie = htmlentities($_POST['prixNegocie']);
 		$modePaiement = htmlentities($_POST['modePaiement']);
 		$numeroCheque = $contrat->numeroCheque();
@@ -69,6 +71,7 @@
 			'dateCreation' => $dateCreation,
 			'prixVente' => $prixNegocie, 
 			'avance' => $avance,
+			'taille' => $taille,
 			'modePaiement' => $modePaiement,
 			'id' => $contrat->id(),
 			'idBien' => $idBien,
@@ -77,9 +80,9 @@
 		$contratManager->update($newContrat);
 		$_SESSION['contrat-update-success'] = "<strong>Opération Valide : </strong>Bien Modifié avec succès.";
 		print_r($newContrat);
-		header('Location:../contrats-list.php?idProjet='.$idProjet);
+		header('Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     }
     else{
         $_SESSION['contrat-update-error'] = "<strong>Erreur Modification Contrat : </strong>Vous devez remplir au moins les champs 'Nom Client' et 'Prix Négocié'.";
-		header('Location:../contrats-update.php?idContrat='.$idContrat.'&idProjet='.$idProjet);
+		header('Location:../contrats-update.php?idContrat='.$idContrat.'&idProjet='.$idProjet.'&idSociete='.$idSociete);
     }

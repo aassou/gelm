@@ -11,9 +11,9 @@ class ContratManager{
     //CRUD operations
     public function add(Contrat $contrat){
         $query = $this->_db->prepare('
-        INSERT INTO t_contrat (dateCreation, prixVente, avance, modePaiement, 
+        INSERT INTO t_contrat (dateCreation, prixVente, avance, taille, modePaiement, 
         nomClient, cin, adresse, note, telephone, idProjet, idBien, typeBien, status, numeroCheque)
-        VALUES (:dateCreation, :prixVente, :avance, :modePaiement, :nomClient, :cin, :adresse, :note, :telephone,  
+        VALUES (:dateCreation, :prixVente, :avance, :taille, :modePaiement, :nomClient, :cin, :adresse, :note, :telephone,  
 		 :idProjet, :idBien, :typeBien, :status, :numeroCheque)') 
         or die(print_r($this->_db->errorInfo()));
 		$query->bindValue(':nomClient', $contrat->nomClient());
@@ -24,6 +24,7 @@ class ContratManager{
         $query->bindValue(':dateCreation', $contrat->dateCreation());
         $query->bindValue(':prixVente', $contrat->prixVente());
         $query->bindValue(':avance', $contrat->avance());
+        $query->bindValue(':taille', $contrat->taille());
 		$query->bindValue(':modePaiement', $contrat->modePaiement());
         $query->bindValue(':idProjet', $contrat->idProjet());
         $query->bindValue(':idBien', $contrat->idBien());
@@ -56,7 +57,7 @@ class ContratManager{
     }*/
 	public function update(Contrat $contrat){
 		$query = $this->_db->prepare('UPDATE t_contrat SET nomClient=:nomClient, cin=:cin, adresse=:adresse, telephone=:telephone,
-		dateCreation=:dateCreation, prixVente=:prixVente, avance=:avance, idBien=:idBien, typeBien=:typeBien, modePaiement=:modePaiement, 
+		dateCreation=:dateCreation, prixVente=:prixVente, avance=:avance, taille=:taille, idBien=:idBien, typeBien=:typeBien, modePaiement=:modePaiement, 
 		numeroCheque=:numeroCheque WHERE id=:id') 
 		or die(print_r($this->_db->errorInfo()));
 		$query->bindValue(':nomClient', $contrat->nomClient());
@@ -66,6 +67,7 @@ class ContratManager{
 		$query->bindValue(':dateCreation', $contrat->dateCreation());
 		$query->bindValue(':prixVente', $contrat->prixVente());
 		$query->bindValue(':avance', $contrat->avance());
+        $query->bindValue(':taille', $contrat->taille());
 		$query->bindValue(':idBien', $contrat->idBien());
 		$query->bindValue(':typeBien', $contrat->typeBien());
 		$query->bindValue(':modePaiement', $contrat->modePaiement());

@@ -15,6 +15,8 @@
     
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete =htmlentities($_POST['idSociete']);
+    $type = htmlentities($_POST['type']);
 	$idCharge = htmlentities($_POST['idCharge']);
 	if( !empty($_POST['dateOperation']) ){
 		
@@ -46,12 +48,12 @@
 		}
         $chargeManager->update($charge);
         $_SESSION['charge-update-success']='<strong>Opération valide</strong> : La charge est modifiée avec succès !';
-        $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet;
+        $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet.'&idSociete='.$idSociete.'&type='.$type;
         header($redirectLink);
 	}
     else{
     	$_SESSION['charge-update-error'] = "<strong>Erreur Modiciation Charge</strong> : Vous devez remplir au moins les champs 'Date opération'.";
-        $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet;
+        $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet.'&idSociete='.$idSociete.'&type='.$type;
         header($redirectLink);
 		exit;
 	}

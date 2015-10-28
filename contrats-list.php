@@ -26,6 +26,7 @@
 		$appartementManager = new AppartementManager($pdo);
 		if(isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId()){
 			$idProjet = $_GET['idProjet'];
+            $idSociete = $_GET['idSociete'];
 			$projet = $projetManager->getProjetById($idProjet);
 			/*if(isset($_POST['idClient']) and $_POST['idClient']>0){
 				$idClient = $_POST['idClient'];
@@ -100,17 +101,22 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des Contrats des Clients
+							Gestion des Contrats des Clients - Projet : <?= $projet->nom() ?>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+							<li>
 								<i class="icon-briefcase"></i>
-								<a>Gestion des projets</a>
+								<a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
 							<li><a>Liste des Contrats Clients</a></li>
@@ -121,14 +127,14 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
+						<!--div class="row-fluid add-portfolio">
 							<div class="pull-left">
 								<a href="projets.php" class="btn icn-only green"><i class="m-icon-swapleft m-icon-white"></i> Retour vers Liste des projets</a>
 							</div>
 							<div class="pull-right">
 								<a href="contrats-add.php?idProjet=<?= $idProjet ?>" class="btn icn-only blue">Nouveau Contrat Client <i class="icon-plus-sign"></i></a>
 							</div>
-						</div>
+						</div-->
 						<!-- BEGIN Terrain TABLE PORTLET-->
 						<?php if(isset($_SESSION['operation-add-error'])){ ?>
 							<div class="alert alert-error">
@@ -203,11 +209,13 @@
 							unset($_SESSION['contrat-update-success']);
 						 ?>
 						 <div class="row-fluid">
-							    <div class="input-box autocomplet_container">
-									<input class="m-wrap" name="nomClient" id="nomClient" type="text" placeholder="Chercher un client..." />
-									<input name="idClient" id="idClient" type="hidden" />
-							    </div>
-							</div>
+						    <div class="input-box autocomplet_container">
+								<input class="m-wrap" name="nomClient" id="nomClient" type="text" placeholder="Chercher un client..." />
+								<input class="m-wrap span2" name="annee" id="annee" type="text" placeholder="Année..." />
+								<input name="idClient" id="idClient" type="hidden" />
+                                <a href="contrats-add.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" class="btn icn-only blue pull-right">Nouveau Contrat Client <i class="icon-plus-sign"></i></a>
+						    </div>
+						</div>
 						<div class="portlet box grey">
 							<div class="portlet-title">
 								<h4>Liste des Contrats Clients du Projet : <strong><?= $projet->nom() ?></strong></h4>
@@ -225,6 +233,7 @@
 											<th style="width:10%" class="hidden-phone">Type</th>
 											<th style="width:5%">Bien</th>
 											<th style="width:10%" class="hidden-phone">Prix</th>
+											<th style="width:10%" class="hidden-phone">Taille</th>
 											<th style="width:10%" class="hidden-phone">Payé</th>
 											<th style="width:10%" class="hidden-phone">Reste</th>
 											<th style="width:20%" class="hidden-phone">Note</th>
@@ -290,7 +299,7 @@
 														<?php	
 														}
 														?>
-														<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+														<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Modifier
 												        	</a>
 												        	<a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
@@ -303,6 +312,8 @@
 											<td class="hidden-phone"><?= $typeBien ?></td>
 											<td><?= $bien->nom() ?></td>
 											<td class="hidden-phone"><?= number_format($contrat->prixVente(), 2, ',', ' ') ?></td>
+											<td class="hidden-phone"><?= number_format($contrat->taille(), 2, ',', ' ') ?></td>
+											<td class="hidden"><?= date('Y', strtotime($contrat->dateCreation())) ?></td>
 											<td class="hidden-phone">
 												<a href="#updatePaiementContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 													<?= number_format($contrat->avance(), 2, ',', ' ') ?></td>
@@ -344,6 +355,7 @@
 													<div class="control-group">
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -364,6 +376,7 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -384,6 +397,7 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -404,6 +418,7 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -492,6 +507,16 @@
 		       }
 		    });
 		});
+		$('#annee').keyup(function(){
+            $('.clients').hide();
+           var txt = $('#annee').val();
+           //$('.cheque:contains("'+txt+'")').show();
+           $('.clients').each(function(){
+               if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+                   $(this).show();
+               }
+            });
+        });
 	</script>
 </body>
 <!-- END BODY -->

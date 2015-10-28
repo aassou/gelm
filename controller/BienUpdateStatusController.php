@@ -16,6 +16,8 @@
     
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
+    $type = htmlentities($_POST['type']);
 	if( !empty($_POST['idProjet']) ){
 		$id = htmlentities($_POST['id']);
 		$status = htmlentities($_POST['status']);
@@ -38,11 +40,11 @@
 		}
         
         $_SESSION['bien-update-success']='<strong>Opération valide</strong> : Le Bien Immobilière est modifié avec succès !';
-        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet;
+        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
         header($redirectLink);
 	}
 	else{
-		header('Location:../projet-biens.php?idProjet='.$idProjet);
+		header('Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete);
 	}
     
     

@@ -4965,3 +4965,10 @@ div#fancy_print {
 .dropDownButton{
 	width: 100px;
 }
+
+.btn-box{
+	height: 50px;
+	width: 180px;
+	font-size: 24px;
+	font-weight: bold;
+}

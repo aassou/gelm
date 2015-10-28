@@ -24,6 +24,7 @@
 		if(isset($_GET['idProjet']) and 
     	($_GET['idProjet'] >=1 and $_GET['idProjet'] <= $projetManager->getLastId()) ){
     		$idProjet = $_GET['idProjet'];
+            $idSociete = $_GET['idSociete'];
     		$appartements = $appartementManager->getAppartementsByIdProjet($idProjet);
 			$locaux = $locauxManager->getLocauxByIdProjet($idProjet);
 			$maisons = $maisonManager->getMaisonsByIdProjet($idProjet);
@@ -33,6 +34,8 @@
 			$locauxNumber = $locauxManager->getNumberBienByIdProjet($idProjet);
 			$maisonNumber = $maisonManager->getNumberBienByIdProjet($idProjet);
 			$terrainNumber = $terrainManager->getNumberBienByIdProjet($idProjet);
+            //Get Bien Type
+            $type = $_GET['type'];
 		}		
 ?>
 <!DOCTYPE html>
@@ -90,15 +93,26 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-								<i class="icon-briefcase"></i>
-								<a>Gestion des projets</a>
+								<i class="icon-sitemap"></i>
+								<a href="companies.php">Gestion des sociétés</a>
 								<i class="icon-angle-right"></i>
 							</li>
-							<li><a>Gestion Immobilière</a></li>
+							<li>
+                                <i class="icon-briefcase"></i>
+                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+							<li>
+							    <a href="biens-by-projects.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion Immobilière</a>
+							     <i class="icon-angle-right"></i>    
+					       </li>
+					       <li>
+                                <a>Liste des <?= $type ?></a>    
+                           </li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
@@ -106,13 +120,13 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
+						<!--div class="row-fluid add-portfolio">
 							<div class="pull-right">
 								<a href="#addCharge" data-toggle="modal" class="btn green">
 									Nouveau Bien Immobilière <i class="icon-plus-sign "></i>
 								</a>
 							</div>
-						</div>
+						</div-->
 						<!-- addCharge box begin-->
 						<div id="addCharge" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -221,7 +235,9 @@
 									</div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
+											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+											<input type="hidden" name="type" value="<?= $type ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 											<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 										</div>
@@ -273,13 +289,18 @@
 							unset($_SESSION['bien-delete-success']);
 						 ?>
 						<div class="row-fluid">
+						    <div class="pull-right">
+                                <a href="#addCharge" data-toggle="modal" class="btn green">
+                                    Nouveau Bien Immobilière <i class="icon-plus-sign "></i>
+                                </a>
+                            </div>
 						    <div class="input-box autocomplet_container">
 								<input class="m-wrap" name="code" id="code" type="text" placeholder="Code..." />
 								<input class="m-wrap" name="titre" id="titre" type="text" placeholder="Titre..." />
 						    </div>
 						</div>
-						<?php if($terrainNumber != 0){ ?>
-						<div class="portlet box grey biens">
+						<?php if($type == "terrains"){ ?>
+						<div class="portlet box yellow biens">
 							<div class="portlet-title">
 								<h4>Les Terrains</h4>
 								<div class="tools">
@@ -288,12 +309,12 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="250px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Code</th>
+												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
 												<th class="hidden-phone">Emplacement</th>
@@ -308,7 +329,7 @@
 												<td>
 													<div class="btn-group">
 													    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-													    	<?= $terrain->numeroTitre() ?> 
+													    	<?= $terrain->nom() ?> 
 													        <i class="icon-angle-down"></i>
 													    </a>
 													    <ul class="dropdown-menu">
@@ -323,7 +344,7 @@
 													    </ul>
 													</div>
 												</td>
-												<td class="hidden-phone"><?= $terrain->nom() ?></td>
+												<td class="hidden-phone"><?= $terrain->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($terrain->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $terrain->superficie() ?></td>
 												<td class="hidden-phone"><?= $terrain->emplacement() ?></td>
@@ -361,6 +382,7 @@
 																<select name="status">
 																	<option value="<?= $terrain->status() ?>"><?= $terrain->status() ?></option>
 																	<option disabled="disabled">---------------------</option>
+																	<option value="Disponible">Disponible</option>
 																	<option value="Promesse de Vente">Promesse de Vente</option>
 					                                            	<option value="Vendu">Vendu</option>				
 					                                            </select>
@@ -370,6 +392,8 @@
 															<input type="hidden" name="id" value="<?= $terrain->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="terrain" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -421,6 +445,8 @@
 															<input type="hidden" name="id" value="<?= $terrain->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="terrain" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -444,6 +470,8 @@
 															<input type="hidden" name="id" value="<?= $terrain->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="terrain" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 															<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 														</div>
@@ -464,7 +492,7 @@
 						<!--**************************** TERRAIN END ****************************-->
 						<!--**************************** APPARTEMENTS BEGIN ****************************-->
 						<!-- BEGIN APPARTEMENTS TABLE PORTLET-->
-						<?php if($appartementNumber != 0){ ?>
+						<?php if($type == "appartements"){ ?>
 						<div class="portlet box red biens">
 							<div class="portlet-title">
 								<h4>Les Appartements</h4>
@@ -474,12 +502,12 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="250px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 									<thead>
 										<tr>
-											<th class="hidden-phone">Titre</th>
 											<th class="hidden-phone">Code</th>
+											<th class="hidden-phone">Titre</th>
 											<th class="hidden-phone">Prix</th>
 											<th class="hidden-phone">Superficie</th>
 											<th class="hidden-phone">Niveau</th>
@@ -496,7 +524,7 @@
 											<td>
 												<div class="btn-group">
 												    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $appartement->numeroTitre() ?> 
+												    	<?= $appartement->nom() ?> 
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
@@ -511,7 +539,7 @@
 												    </ul>
 												</div>
 											</td>
-											<td class="hidden-phone"><?= $appartement->nom() ?></td>
+											<td class="hidden-phone"><?= $appartement->numeroTitre() ?></td>
 											<td class="hidden-phone"><?= number_format($appartement->prix(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone"><?= $appartement->superficie() ?></td>
 											<td class="hidden-phone"><?= $appartement->niveau() ?></td>
@@ -551,6 +579,7 @@
 																<select name="status">
 																	<option value="<?= $appartement->status() ?>"><?= $appartement->status() ?></option>
 																	<option disabled="disabled">---------------------</option>
+																	<option value="Disponible">Disponible</option>
 																	<option value="Promesse de Vente">Promesse de Vente</option>
 					                                            	<option value="Vendu">Vendu</option>				
 					                                            </select>
@@ -560,6 +589,8 @@
 															<input type="hidden" name="id" value="<?= $appartement->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="appartement" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -645,6 +676,8 @@
 														<input type="hidden" name="id" value="<?= $appartement->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 														<input type="hidden" name="typeImmobiliere" value="appartement" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+														<input type="hidden" name="type" value="<?= $type ?>" />
 														<div class="controls">	
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 															<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -668,6 +701,8 @@
 														<input type="hidden" name="id" value="<?= $appartement->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 														<input type="hidden" name="typeImmobiliere" value="appartement" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+														<input type="hidden" name="type" value="<?= $type ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -688,7 +723,7 @@
 						<!--**************************** APPARTEMENTS END ****************************-->
 						<!--**************************** LOCAUX COMMERCIAUX BEGIN ****************************-->
 						<!-- BEGIN Finition TABLE PORTLET-->
-						<?php if($locauxNumber != 0){ ?>
+						<?php if($type == "locaux"){ ?>
 						<div class="portlet box blue biens">
 							<div class="portlet-title">
 								<h4>Les Locaux Commerciaux</h4>
@@ -698,12 +733,12 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="250px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Code</th>
+												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
 												<th class="hidden-phone">Façade</th>
@@ -719,7 +754,7 @@
 												<td>
 													<div class="btn-group">
 													    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-													    	<?= $local->numeroTitre() ?> 
+													    	<?= $local->nom() ?> 
 													        <i class="icon-angle-down"></i>
 													    </a>
 													    <ul class="dropdown-menu">
@@ -734,7 +769,7 @@
 													    </ul>
 													</div>
 												</td>
-												<td class="hidden-phone"><?= $local->nom() ?></td>
+												<td class="hidden-phone"><?= $local->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($local->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $local->superficie() ?></td>
 												<td class="hidden-phone"><?= $local->facade() ?></td>
@@ -773,6 +808,7 @@
 																<select name="status">
 																	<option value="<?= $local->status() ?>"><?= $local->status() ?></option>
 																	<option disabled="disabled">---------------------</option>
+																	<option value="Disponible">Disponible</option>
 																	<option value="Promesse de Vente">Promesse de Vente</option>
 					                                            	<option value="Vendu">Vendu</option>				
 					                                            </select>
@@ -782,6 +818,8 @@
 															<input type="hidden" name="id" value="<?= $local->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="local" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -844,6 +882,8 @@
 															<input type="hidden" name="id" value="<?= $local->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="local" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -867,6 +907,8 @@
 															<input type="hidden" name="id" value="<?= $local->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="local" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 															<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 														</div>
@@ -887,8 +929,8 @@
 						<!--**************************** LOCAUX COMMERCIAUX END ****************************-->
 						<!--**************************** MAISONS BEGIN ****************************-->
 						<!-- BEGIN MAISONS TABLE PORTLET-->
-						<?php if($maisonNumber != 0){ ?>
-						<div class="portlet box purple biens">
+						<?php if($type == "maisons"){ ?>
+						<div class="portlet box green biens">
 							<div class="portlet-title">
 								<h4>Les Maisons</h4>
 								<div class="tools">
@@ -897,12 +939,12 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="250px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th class="hidden-phone">Titre</th>
-												<th class="hidden-phone">Code</th>
+                                                <th class="hidden-phone">Code</th>
+                                                <th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
 												<th class="hidden-phone">Etages</th>
@@ -918,7 +960,7 @@
 												<td>
 													<div class="btn-group">
 													    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-													    	<?= $maison->numeroTitre() ?> 
+													    	<?= $maison->nom() ?> 
 													        <i class="icon-angle-down"></i>
 													    </a>
 													    <ul class="dropdown-menu">
@@ -933,7 +975,7 @@
 													    </ul>
 													</div>
 												</td>
-												<td class="hidden-phone"><?= $maison->nom() ?></td>
+												<td class="hidden-phone"><?= $maison->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($maison->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $maison->superficie() ?></td>
 												<td class="hidden-phone"><?= $maison->nombreEtage() ?></td>
@@ -972,6 +1014,7 @@
 																<select name="status">
 																	<option value="<?= $maison->status() ?>"><?= $maison->status() ?></option>
 																	<option disabled="disabled">---------------------</option>
+																	<option value="Disponible">Disponible</option>
 																	<option value="Promesse de Vente">Promesse de Vente</option>
 					                                            	<option value="Vendu">Vendu</option>				
 					                                            </select>
@@ -981,6 +1024,8 @@
 															<input type="hidden" name="id" value="<?= $maison->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="maison" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -1046,6 +1091,8 @@
 															<input type="hidden" name="id" value="<?= $maison->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="maison" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<div class="controls">	
 																<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 																<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -1069,6 +1116,8 @@
 															<input type="hidden" name="id" value="<?= $maison->id() ?>" />
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 															<input type="hidden" name="typeImmobiliere" value="maison" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+															<input type="hidden" name="type" value="<?= $type ?>" />
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 															<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 														</div>

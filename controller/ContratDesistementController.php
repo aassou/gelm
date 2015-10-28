@@ -14,6 +14,7 @@
     session_start();    
     //post input processing
     $idProjet = $_POST['idProjet'];
+    $idSociete = $_POST['idSociete'];
 	$idContrat  = $_POST['idContrat'];
 	//create classes managers
 	$contratManager = new ContratManager($pdo);
@@ -39,6 +40,6 @@
 	
 	$contratManager->desisterContrat($contrat->id());
 	$_SESSION['contrat-desister-success'] = "<strong>Opération valide : </strong>Le contrat est désisté avec succès.";
-	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet;
+	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	header($redirectLink);
 	

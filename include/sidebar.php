@@ -57,8 +57,11 @@
 				or $currentPage=="projet-employes.php"
 				or $currentPage=="projet-contrat-employe.php"
 				or $currentPage=="contrat-employe-detail.php"
+				or $currentPage=="projects-by-company.php"
+				or $currentPage=="biens-by-projects.php"
+				or $currentPage=="projets-charges-categories.php"
 				){echo "active ";} ?>">
-					<a href="projets.php">
+					<a>
 					<i class="icon-briefcase"></i> 
 					<span class="title">Gestion des projets</span>
 					</a>

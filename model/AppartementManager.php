@@ -113,7 +113,7 @@ class AppartementManager{
 	public function getAppartementsByIdProjet($idProjet){
 		$appartements = array();
 		$query = $this->_db->prepare('SELECT * FROM t_appartement
-		WHERE idProjet=:idProjet ORDER BY id DESC');
+		WHERE idProjet=:idProjet ORDER BY status ASC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){

@@ -6,6 +6,7 @@ class Contrat{
 	private $_dateCreation;
 	private $_prixVente;
 	private $_avance;
+    private $_taille;
 	private $_modePaiement;
 	private $_idProjet;
 	private $_idBien;
@@ -49,6 +50,10 @@ class Contrat{
     
     public function setAvance($avance){
         $this->_avance = $avance;
+    }
+    
+    public function setTaille($taille){
+        $this->_taille = $taille;
     }
     
 	public function setModePaiement($modePaiement){
@@ -111,6 +116,10 @@ class Contrat{
     
     public function avance(){
         return $this->_avance;
+    }
+    
+    public function taille(){
+        return $this->_taille;
     }
     
 	public function modePaiement(){

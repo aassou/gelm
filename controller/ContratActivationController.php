@@ -14,6 +14,7 @@
     session_start();    
     //post input processing
     $idProjet = $_POST['idProjet'];
+    $idSociete = $_POST['idSociete'];
 	$idContrat  = $_POST['idContrat'];
 	//create classes managers
 	$contratManager = new ContratManager($pdo);
@@ -21,7 +22,7 @@
 	$appartementManager = new AppartementManager($pdo);
 	//create classes
 	$contrat = $contratManager->getContratById($idContrat);
-	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet;
+	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	if( isset($_GET['p']) and $_GET['p']==99 ){
 		$redirectLink = 'Location:../clients-search.php';
 	}

@@ -28,6 +28,7 @@
 		if((isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId())
 		and (isset($_GET['idContrat']) and ($_GET['idContrat'])>0 and $_GET['idContrat']<=$contratManager->getLastId())){
 			$idProjet = $_GET['idProjet'];
+            $idSociete = $_GET['idSociete'];
 			$idContrat = $_GET['idContrat'];
 			$projet = $projetManager->getProjetById($idProjet);
 			$contrat = $contratManager->getContratById($idContrat);
@@ -83,25 +84,30 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des Contrats
+							Modifier Contrat Client - Projet : <?= $projetManager->getProjetById($idProjet)->nom() ?>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
-								<i class="icon-home"></i>
-								<a>Accueil</a> 
-								<i class="icon-angle-right"></i>
-							</li>
+                                <i class="icon-home"></i>
+                                <a href="dashboard.php">Accueil</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-briefcase"></i>
+                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="contrats-list.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Liste des contrats clients</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
 							<li>
-								<i class="icon-briefcase"></i>
-								<a>Gestion des projets</a>
-								<i class="icon-angle-right"></i>
-							</li>
-							<li>
-								<a>Gestion des contrats</a>
-								<i class="icon-angle-right"></i>
-							</li>
-							<li>
-								<a>Modifier contrat</a>
+								<a>Modifier contrat client</a>
 							</li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
@@ -123,7 +129,7 @@
 	                         ?>
                            <div class="portlet box grey">
                               <div class="portlet-title">
-                                 <h4><i class="icon-edit"></i>Modifier Contrat/Client pour le projet : <strong><?= $projet->nom() ?></strong></h4>
+                                 <h4><i class="icon-edit"></i>Modifier Contrat Client pour le projet : <strong><?= $projet->nom() ?></strong></h4>
                                  <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <a href="javascript:;" class="remove"></a>
@@ -281,6 +287,14 @@
                                        </div>
                                        <div class="span3">
                                           <div class="control-group">
+                                             <label class="control-label" for="taille">Taille</label>
+                                             <div class="controls">
+                                                <input type="text" id="taille" name="taille" class="m-wrap span12" value="<?= $contrat->taille() ?>">
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="span3">
+                                          <div class="control-group">
                                              <label class="control-label" for="modePaiement">Mode de paiement</label>
                                              <div class="controls">
                                                 <div class="controls">
@@ -325,8 +339,9 @@
                                     </div>
                                     <div class="form-actions">
                                     	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>">
+                                    	<input type="hidden" id="idSociete" name="idSociete" value="<?= $idSociete ?>">
                                     	<input type="hidden" id="idContrat" name="idContrat" value="<?= $contrat->id() ?>">
-                                    	<a href="contrats-list.php?idProjet=<?= $idProjet ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
+                                    	<a href="contrats-list.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
                                        <button type="submit" class="btn green">Modifier <i class="icon-refresh m-icon-white"></i></button>
                                     </div>
                                  </form>

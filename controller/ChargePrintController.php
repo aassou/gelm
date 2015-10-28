@@ -17,6 +17,8 @@
         $projetManager = new ProjetManager($pdo);
 		$projets = $projetManager->getProjets();
 		$idProjet = htmlentities($_POST['idProjet']);
+        $idSociete = htmlentities($_POST['idSociete']);
+        $type = htmlentities($_POST['type']);
 		$dateFrom = htmlentities($_POST['dateFrom']);
 		$dateTo = htmlentities($_POST['dateTo']);
 		
@@ -39,7 +41,7 @@
 ob_start();
 ?>
 <style type="text/css">
-	p, h1{
+	p, h1, h2{
 		text-align: center;
 		text-decoration: underline;
 	}
@@ -62,7 +64,7 @@ ob_start();
 <page backtop="15mm" backbottom="20mm" backleft="10mm" backright="10mm">
     <img src="../assets/img/logo_company.png" style="width: 110px" />
     <br><br><br><br>
-    <h1>Liste des Charges de la dérniere semaine</h1>
+    <h2>Liste des Charges du <?= date('d/m/Y', strtotime($dateFrom)).' au '.date('d/m/Y', strtotime($dateTo)) ?> </h2>
     <p>Imprimé le <?= date('d/m/Y') ?> | <?= date('h:i') ?> </p>
     <br><br>
     <table class="table table-striped table-bordered table-advance table-hover">

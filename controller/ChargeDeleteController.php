@@ -16,7 +16,8 @@
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
 	$idCharge = htmlentities($_POST['idCharge']);	
-		
+	$idSociete = htmlentities($_POST['idSociete']);
+    $type = htmlentities($_POST['type']);
 	$charge = "";
 	$chargeManager = "";
 	
@@ -34,7 +35,7 @@
 	}
     $chargeManager->delete($idCharge);
     $_SESSION['charge-delete-success']='<strong>Opération valide</strong> : La charge est supprimée avec succès !';
-    $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet;
+    $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet.'&idSociete='.$idSociete.'&type='.$type;
     header($redirectLink);
 	
     

@@ -14,6 +14,7 @@
     session_start();    
     //post input processing
     $idProjet = $_POST['idProjet'];
+    $idSociete = $_POST['idSociete'];
 	//$codeClient = $_POST['codeClient'];
     if( !empty($_POST['idProjet']) and !empty($_POST['nomClient'])){	
     	if( !empty($_POST['typeBien']) ){
@@ -34,6 +35,7 @@
 			$dateCreation = htmlentities($_POST['dateCreation']);
 			$idBien = htmlentities($_POST['bien']);
 			$avance = htmlentities($_POST['avance']);
+            $taille = htmlentities($_POST['taille']);
 			$modePaiement = htmlentities($_POST['modePaiement']);
 			$codeContrat = uniqid().date('YmdHis');
 			$status = htmlentities($_POST['status']);
@@ -44,7 +46,7 @@
 			$contratManager = new ContratManager($pdo);
 			$contrat = new Contrat(array('nomClient' => $nomClient, 'cin' => $cin, 'adresse' => $adresse,
 			'note' => $noteClient,'telephone' => $telephone, 'dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
-			'avance' => $avance, 'modePaiement' => $modePaiement, 'idProjet' => $idProjet, 
+			'avance' => $avance, 'taille' => $taille, 'modePaiement' => $modePaiement, 'idProjet' => $idProjet, 
 			'idBien' => $idBien, 'typeBien' => $typeBien, 'numeroCheque' => $numeroCheque));
 			$contratManager->add($contrat);
 			if($typeBien=="appartement"){
@@ -63,17 +65,17 @@
 				$terrainManager = new TerrainManager($pdo);
 				$terrainManager->updateStatus($status, $idBien);
 			}
-			header('Location:../contrats-list.php?idProjet='.$idProjet);
+			header('Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     	}
 		else{
 			$_SESSION['contrat-add-error'] = "<strong>Erreur Création Contrat : </strong>Vous devez choisir un 'Type de bien'.";	
-			header('Location:../contrats-add.php?idProjet='.$idProjet);
+			header('Location:../contrats-add.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
 			exit;
 		}
     }
     else{
         $_SESSION['contrat-add-error'] = "<strong>Erreur Création Contrat : </strong>Vous devez remplir au moins le champ 'Nom'.";
-		header('Location:../contrats-add.php?idProjet='.$idProjet);
+		header('Location:../contrats-add.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     }
 	
     

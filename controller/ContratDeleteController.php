@@ -16,6 +16,7 @@
     //post input processing
 	$idProjet = $_POST['idProjet'];
 	$idContrat = $_POST['idContrat'];   
+    $idSociete = $_POST['idSociete'];
 	$contratManager = new ContratManager($pdo);
 	$contrat = $contratManager->getContratById($idContrat);
 	if($contrat->typeBien()=="appartement"){
@@ -36,7 +37,7 @@
 	}
 	$contratManager->delete($contrat->id());
 	$_SESSION['contrat-delete-success'] = "<strong>Opération valide : </strong>Contrat supprimé avec succès.";
-	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet;
+	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	header($redirectLink);
     
     

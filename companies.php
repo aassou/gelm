@@ -85,15 +85,13 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-								<i class="icon-briefcase"></i>
+								<i class="icon-sitemap"></i>
 								<a>Gestion des sociétés</a>
-								<i class="icon-angle-right"></i>
 							</li>
-							<li><a>Liste des sociétés</a></li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
@@ -362,7 +360,7 @@
 								<!-- delete box end -->	
 								<div class="span9" style="overflow:hidden;">
 									<div class="portfolio-info">
-										<a href="company-projets.php?idSociete=<?= $societe->id() ?>" class="btn blue fixed-size">Liste des projets</a>
+										<a href="projects-by-company.php?idSociete=<?= $societe->id() ?>" class="btn blue fixed-size">Liste des projets</a>
 									</div>
 									<div class="portfolio-info">
 										<a href="company-pieces.php?idSociete=<?= $societe->id() ?>" class="btn black fixed-size">Liste des documents</a>
