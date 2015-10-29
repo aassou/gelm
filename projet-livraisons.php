@@ -29,6 +29,7 @@
 		$totalLivraison = 0;
 		$titreLivraison ="Liste de toutes les livraisons";
 		$hrefLivraisonBilanPrintController = "controller/LivraisonBilanPrintController.php";
+        $idSociete = $_GET['idSociete'];
 		if(isset($_GET['idProjet']) and 
     	($_GET['idProjet'] >=1 and $_GET['idProjet'] <= $projetManager->getLastId()) ){
     		$idProjet = $_GET['idProjet'];
@@ -143,20 +144,28 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des livraisons du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
+							Gestion des livraisons - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-briefcase"></i>
+                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+							<li>
 								<i class="icon-truck"></i>
 								<a>Gestion des livraisons</a>
-								<i class="icon-angle-right"></i>
 							</li>
-							<li><a>Liste des Livraisons</a></li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
@@ -223,7 +232,8 @@
 									</div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
+											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 											<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 										</div>
@@ -290,7 +300,8 @@
 		                           	</div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
+											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 											<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 										</div>
@@ -334,7 +345,8 @@
 									</div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />	
+											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />	
 											<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 											<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 										</div>
@@ -456,8 +468,10 @@
 									</thead>
 									<tbody>
 										<?php
+										$sommeLivraisons = 0;
 										if($livraisonNumber != 0){
 										foreach($livraisons as $livraison){
+										    $sommeLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id());
 											$btnColor = "";
 											if($livraison->status()==utf8_decode("Pay&eacute;")){
 												$colorRow = 'style="background-color:#d2ffca"';
@@ -481,7 +495,7 @@
 												    </a>
 												    <ul class="dropdown-menu">
 												        <li>
-												        	<a href="livraisons-details.php?codeLivraison=<?= $livraison->code() ?>" target="_blank">
+												        	<a href="livraisons-details.php?codeLivraison=<?= $livraison->code() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">
 												        		Détails Livraison
 												        	</a>
 												        	<a href="controller/LivraisonDetailPrintController.php?idLivraison=<?= $livraison->id() ?>" target="_blank">
@@ -538,6 +552,7 @@
 													<div class="control-group">
 														<div class="controls">
 															<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+															<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 															<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>">
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 															<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -565,6 +580,7 @@
 							                              	</div>
 							                           	</div>
 							                           	<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+							                           	<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
@@ -587,6 +603,7 @@
 														<input type="text" name="nom" />
 														<label class="right-label">Lien</label>
 														<input type="file" name="url" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>" />
 														<label class="right-label"></label>
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -620,6 +637,7 @@
 													</div>
 													<div class="control-group">
 														<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 														<div class="controls">	
 															<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -643,6 +661,7 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idLivraison" value="<?= $livraison->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -660,15 +679,15 @@
 									<thead>
 										<tr>
 											<th><strong>Total Livraisons</strong></th>
-											<td><strong><a><?= number_format($totalLivraison, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
+											<td><strong><a><?= number_format($sommeLivraisons, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
 										</tr>
 										<tr>
 											<th><strong>Total Réglements</strong></th>
-											<td><strong><a><?= number_format($totalReglement, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
+											<td><strong><a><?= number_format($reglementsFournisseurManager->sommeReglementFournisseurByIdProjet($idProjet), 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
 										</tr>
 										<tr>
 											<th><strong>Solde</strong></th>
-											<td><strong><a><?= number_format($totalLivraison-$totalReglement, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
+											<td><strong><a><?= number_format($sommeLivraisons-$reglementsFournisseurManager->sommeReglementFournisseurByIdProjet($idProjet), 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
 										</tr>		
 									</thead>
 								</table>	

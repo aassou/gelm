@@ -15,6 +15,8 @@
     
     //post input processing
 	$codeLivraison = $_POST['codeLivraison'];
+    $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
     if( !empty($_POST['prixUnitaire']) && !empty($_POST['quantite'])){
         $designation = htmlentities($_POST['designation']);
         $quantite = htmlentities($_POST['quantite']);
@@ -26,12 +28,12 @@
         $livraisonDetailManager = new LivraisonDetailManager($pdo);
         $livraisonDetailManager->update($livraison);
         $_SESSION['livraison-detail-update-success']='<strong>Opération valide</strong> : Les informations de la livraison sont modifiées avec succès.';
-		$redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison;
+		$redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison.'&idProjet='.$idProjet.'&idSociete='.$idSociete;
         header($redirectLink);
     }
     else{
         $_SESSION['livraison-detail-update-error'] = "<strong>Erreur Modification Livraison</strong> : Vous devez remplir au moins les champs 'Libelle', 'Prix unitaire' et 'Quantité'.";
-		$redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison;
+		$redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison.'&idProjet='.$idProjet.'&idSociete='.$idSociete;
         header($redirectLink);
     }
     

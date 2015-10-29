@@ -16,6 +16,7 @@
     
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
 	$url = "";
 	$idLivraison = htmlentities($_POST['idLivraison']);
     if(file_exists($_FILES['urlBL']['tmp_name']) || is_uploaded_file($_FILES['urlBL']['tmp_name'])) {
@@ -27,5 +28,5 @@
     else{
         $_SESSION['livraison-copie-update-error'] = "<strong>Erreur Modification Copie BL : </strong>Vous devez séléctionner un fichier.";
     }
-	header('Location:../projet-livraisons.php?idProjet='.$idProjet);
+	header('Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     

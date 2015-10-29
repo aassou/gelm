@@ -56,7 +56,8 @@
 	        $redirectLink = 'Location:../fournisseurs.php';
 			if(isset($_GET['source']) and $_GET['source']==1){
 				$idProjet = htmlentities($_POST['idProjet']);
-				$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet;
+                $idSociete = htmlentities($_POST['idSociete']);
+				$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 			}
 	        header($redirectLink);
 			exit;
@@ -65,6 +66,7 @@
 	$redirectLink = 'Location:../fournisseurs.php';
 	if(isset($_GET['source']) and $_GET['source']==1){
 		$idProjet = htmlentities($_POST['idProjet']);
-		$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet;
+		$idSociete = htmlentities($_POST['idSociete']);
+        $redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	}
 	header($redirectLink);

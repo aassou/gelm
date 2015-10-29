@@ -320,6 +320,7 @@
                                             <div class="control-group">
                                                 <div class="controls">  
                                                     <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+                                                    <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                     <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
                                                     <button type="submit" class="btn red" aria-hidden="true">Oui</button>
                                                 </div>
@@ -353,6 +354,7 @@
                                             <div class="control-group">
                                                 <div class="controls">  
                                                     <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+                                                    <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                     <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
                                                     <button type="submit" class="btn red" aria-hidden="true">Oui</button>
                                                 </div>
@@ -424,6 +426,7 @@
                                             <div class="control-group">
                                                 <div class="controls">  
                                                     <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+                                                    <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                     <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
                                                     <button type="submit" class="btn red" aria-hidden="true">Oui</button>
                                                 </div>
@@ -444,6 +447,7 @@
                                             <div class="control-group">
                                                 <label class="right-label"></label>
                                                 <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+                                                <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                 <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
                                                 <button type="submit" class="btn red" aria-hidden="true">Oui</button>
                                             </div>
@@ -453,7 +457,7 @@
                                 <!-- delete box end -->     
                                 <div class="span9" style="overflow:hidden;">
                                     <div class="portfolio-info">
-                                        <a href="projet-livraisons.php?idProjet=<?= $projet->id() ?>" class="btn green fixed-size">Gestion des livraisons</a>
+                                        <a href="projet-livraisons.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn green fixed-size">Gestion des livraisons</a>
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="biens-by-projects.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn purple fixed-size">Gestion Immobilière</a>

@@ -15,6 +15,7 @@
     session_start();
 	
 	$idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
 	if(file_exists($_FILES['urlPieceProjet']['tmp_name']) || is_uploaded_file($_FILES['urlPieceProjet']['tmp_name'])) {
 		$url = imageProcessing($_FILES['urlPieceProjet'], '/pieces/pieces_projet/');
 		echo $url;
@@ -29,7 +30,7 @@
 	else{
 		$_SESSION['pieces-add-error'] = "<strong>Erreur Ajout Documents : </strong>Vous devez ajouté un document.";
 	}
-	$redirect = "Location:../projets.php";
+	$redirect = "Location:../projects-by-company.php?idSociete=".$idSociete;
 	if(isset($_GET['source']) and $_GET['source']==2){
 		$redirect = "Location:../projet-details.php?idProjet=".$idProjet;
 	}

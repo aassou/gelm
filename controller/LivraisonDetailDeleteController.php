@@ -16,10 +16,12 @@
     //post input processing
 	$codeLivraison = $_POST['codeLivraison'];
 	$id = $_POST['idLivraisonDetail'];   
+    $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
     $livraisonDetailManager = new LivraisonDetailManager($pdo);
 	$livraisonDetailManager->delete($id);
 	$_SESSION['livraison-detail-delete-success'] = "<strong>Opération valide : </strong>Article supprimé avec succès.";
-	$redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison;
+	$redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison.'&idProjet='.$idProjet.'&idSociete='.$idSociete;
 	header($redirectLink);
     
     

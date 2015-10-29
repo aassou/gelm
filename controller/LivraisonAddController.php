@@ -16,6 +16,7 @@
     
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
 	$idFournisseur = htmlentities($_POST['idFournisseur']);
 	if( !empty($_POST['idProjet']) ){
 		if( !empty($_POST['dateLivraison']) ){
@@ -36,12 +37,12 @@
 	        $livraisonManager->add($livraison);
 	        $_SESSION['livraison-add-success']='<strong>Opération valide</strong> : La livraison est ajouté avec succès !';
 			$_SESSION['livraison-detail-fill']='<strong>Détails livraisons</strong> : Ajoutez la liste des articles à votre livraison !';
-	        $redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison;
+	        $redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison.'&idProjet='.$idProjet.'&idSociete='.$idSociete;
 	        header($redirectLink);
     	}
 	    else{
 	    	$_SESSION['livraison-add-error'] = "<strong>Erreur Ajout Livraison</strong> : Vous devez remplir au moins les champs 'Libelle', 'Prix unitaire' et 'Quantité'.";
-	        $redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet;
+	        $redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	        header($redirectLink);
 			exit;
     	}	

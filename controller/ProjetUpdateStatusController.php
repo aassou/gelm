@@ -16,9 +16,10 @@
     
     //post input processing
 	$idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
 	$status = htmlentities($_POST['status']);
     $projetManager = new ProjetManager($pdo);
     $projetManager->updateStatus($idProjet, $status);
     $_SESSION['projet-status-update-success']="<strong>Opération valide : </strong>Le status du projet est modifié avec succès.";
-	header('Location:../projets.php');
+	header('Location:../projects-by-company.php?idSociete='.$idSociete);
     

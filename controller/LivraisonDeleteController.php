@@ -14,12 +14,13 @@
     session_start();
     
     //post input processing
+    $idSociete = $_POST['idSociete'];
 	$idProjet = $_POST['idProjet'];
 	$idLivraison = $_POST['idLivraison'];   
     $livraisonManager = new LivraisonManager($pdo);
 	$livraisonManager->delete($idLivraison);
 	$_SESSION['livraison-delete-success'] = "<strong>Opération valide : </strong>Livraison supprimée avec succès.";
-	$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet;
+	$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	header($redirectLink);
     
     

@@ -15,11 +15,12 @@
     session_start();
     
     //post input processing
+    $idSociete = htmlentities($_POST['idSociete']);
     $idProjet = htmlentities($_POST['idProjet']);
 	$idLivraison = htmlentities($_POST['idLivraison']);
 	$status = htmlentities($_POST['status']);
     $livraisonManager = new LivraisonManager($pdo);
     $livraisonManager->updateStatus($idLivraison, $status);
     $_SESSION['livraison-status-update-success']="<strong>Opération valide : </strong>Le status de la livraison est modifié avec succès.";
-	header('Location:../projet-livraisons.php?idProjet='.$idProjet);
+	header('Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     
