@@ -14,10 +14,11 @@
     session_start();
     //post input processing   
 	$idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
 	$idPiece = htmlentities($_POST['idPiece']);
     $piecesManager = new PiecesProjetManager($pdo);
 	$piecesManager->delete($idPiece);
 	$_SESSION['pieces-delete-success'] = "<strong>Opération valide : </strong>Le document est supprimé avec succès.";
-	header('Location:../projet-details.php?idProjet='.$idProjet);
+	header('Location:../projet-details.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     
     

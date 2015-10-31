@@ -89,7 +89,7 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Gestion des projets de la société <strong><?= strtoupper($societeManager->getSocieteById($idSociete)->raisonSociale()) ?></strong>
+                            Gestion des projets - Société : <strong><?= strtoupper($societeManager->getSocieteById($idSociete)->raisonSociale()) ?></strong>
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -281,6 +281,9 @@
                                                 <li>
                                                     <a href="#addProjetDocs<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Ajouter un document
+                                                    </a>
+                                                    <a href="projet-details.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>">
+                                                        Liste des documents
                                                     </a>
                                                     <a href="#updateStatusProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Changer Status
@@ -490,7 +493,7 @@
                                         <!--a href="appartements.php?idProjet=<?= $projet->id() ?>" class="btn blue fixed-size">Appartements</a-->
                                     </div>
                                     <div class="portfolio-info">
-                                        <a href="projet-contrat-employe.php?idProjet=<?= $projet->id() ?>" class="btn fixed-size">Gestion des contrats</a>
+                                        <a href="projet-contrat-employe.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn fixed-size">Gestion des contrats</a>
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="contrats-list.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn red fixed-size">Gestion des Clients</a>

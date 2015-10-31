@@ -32,6 +32,6 @@
 	}
 	$redirect = "Location:../projects-by-company.php?idSociete=".$idSociete;
 	if(isset($_GET['source']) and $_GET['source']==2){
-		$redirect = "Location:../projet-details.php?idProjet=".$idProjet;
+		$redirect = "Location:../projet-details.php?idProjet=".$idProjet."&idSociete=".$idSociete;
 	}
 	header($redirect);

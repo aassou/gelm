@@ -16,6 +16,7 @@
     if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
         //les sources
         $idProjet = 0;
+        $idSociete = $_GET['idSociete'];
         $projetManager = new ProjetManager($pdo);
         $contratEmployeManager = new ContratEmployeManager($pdo);
         $contratDetaislManager = new ContratDetailsManager($pdo);
@@ -78,22 +79,27 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Détails Contrat <?= strtoupper($contratEmploye->employe()) ?>
+                            Détails Contrat - Employé : <strong><?= strtoupper($contratEmploye->employe()) ?></strong> - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
                         </h3>
                         <ul class="breadcrumb">
                             <li>
                                 <i class="icon-home"></i>
-                                <a>Accueil</a> 
+                                <a href="dashboard.php">Accueil</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
                                 <i class="icon-briefcase"></i>
-                                <a>Gestion des projets</a>
+                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
                                 <i class="icon-group"></i>
-                                <a>Gestion des Contrats Employés</a>
+                                <a href="projet-contrat-employe.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion des Contrats Employés</a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li><a>Détails des Contrats Employés</a></li>
@@ -104,17 +110,13 @@
                 <!-- END PAGE HEADER-->
                 <div class="row-fluid">
                     <div class="span12">
-                        <div class="row-fluid add-portfolio">
-                            <div class="pull-left">
-                                <a href="projet-contrat-employe.php?idProjet=<?= $idProjet ?>" class="btn icn-only green"><i class="m-icon-swapleft m-icon-white"></i> Retour vers Liste des Contrats</a>
-                            </div>
+                        <div><!--div class="row-fluid add-portfolio"-->
                             <div class="pull-right">
+                                <a href="#addPaiement" data-toggle="modal" class="btn icn-only green">Nouveau Paiement <i class="icon-plus-sign"></i></a>
                                 <a href="controller/ContratDetailsPrintController.php?idContratEmploye=<?= $contratEmploye->id() ?>&idProjet=<?= $projet->id() ?>" class="btn icn-only blue"><i class="icon-print"></i> Détails Contrat</a>
                             </div>
-                            <div class="pull-right">
-                                <a href="#addPaiement" data-toggle="modal" class="btn icn-only black">Nouveau Paiement <i class="icon-plus-sign"></i></a>
-                            </div>
                         </div>
+                        <br><br>
                         <!-- addContratEmploye box begin-->
                         <div id="addPaiement" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                             <div class="modal-header">
@@ -146,7 +148,8 @@
                                     </div>
                                     <div class="control-group">
                                         <div class="controls">
-                                            <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />  
+                                            <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />
+                                            <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                             <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
                                             <input type="hidden" name="action" value="add" />
                                             <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -168,7 +171,7 @@
                          ?>
                         <div class="portlet box purple">
                             <div class="portlet-title">
-                                <h4>Détails Contrat <strong><?= strtoupper($contratEmploye->employe()) ?></strong> - Projet : <strong><?= $projet->nom() ?></strong></h4>
+                                <h4>Détails Contrat <strong><?= strtoupper($contratEmploye->employe()) ?></strong></h4>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <a href="javascript:;" class="remove"></a>
@@ -221,7 +224,7 @@
                                         <div id="updateContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                <h3>Modifier Contrat de  <?= $contratEmploye->employe() ?></h3>
+                                                <h3>Modifier Détails Contrat de  <?= $contratEmploye->employe() ?></h3>
                                             </div>
                                             <div class="modal-body">
                                                 <form class="form-horizontal loginFrm" action="controller/ContratDetailsActionController.php" method="post">
@@ -249,6 +252,7 @@
                                                     <div class="control-group">
                                                         <input type="hidden" name="idContratDetails" value="<?= $contrat->id() ?>" />
                                                         <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />
+                                                        <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                         <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
                                                         <input type="hidden" name="action" value="update" />
                                                         <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -271,6 +275,7 @@
                                                         <label class="right-label"></label>
                                                         <input type="hidden" name="idContratDetails" value="<?= $contrat->id() ?>" />
                                                         <input type="hidden" name="idContratEmploye" value="<?= $contratEmploye->id() ?>" />
+                                                        <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                         <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
                                                         <input type="hidden" name="action" value="delete" />
                                                         <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>

@@ -18,6 +18,7 @@
     //post input processing
     $action = htmlentities($_POST['action']);
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
     //This var contains result message of CRUD action
     $actionMessage = "";
     $typeMessage = "";
@@ -86,5 +87,5 @@
     //Action Delete Processing End
     $_SESSION['contratEmploye-action-message'] = $actionMessage;
     $_SESSION['contratEmploye-type-message'] = $typeMessage;
-    header('Location:../projet-contrat-employe.php?idProjet='.$idProjet);
+    header('Location:../projet-contrat-employe.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
 

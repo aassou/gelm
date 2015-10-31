@@ -15,6 +15,7 @@
     if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
     	//les sources
     	$idProjet = 0;
+        $idSociete = $_GET['idSociete'];
     	$projetManager = new ProjetManager($pdo);
 		if(isset($_GET['idProjet']) and 
 		($_GET['idProjet'])>0 and $_GET['idProjet'] <= $projetManager->getLastId()){
@@ -73,17 +74,22 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Liste des documents
+							Liste des documents - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+							<li>
 								<i class="icon-briefcase"></i>
-								<a>Gestion des projets</a>
+								<a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
 							<li><a>Liste des documents</a></li>
@@ -102,11 +108,6 @@
 							$link = "projets.php?p=".$_GET['p'];	
 						}
 						?>
-						<div class="row-fluid add-portfolio">
-								<div class="pull-left">
-									<a href="<?= $link ?>" class="btn icn-only green"><i class="m-icon-swapleft m-icon-white"></i>&nbsp;Retour vers liste des projets</a>
-								</div>
-							</div>
 						<!-- BEGIN Terrain TABLE PORTLET-->
 						<?php if(isset($_SESSION['pieces-add-success'])){ ?>
                          	<div class="alert alert-success">
@@ -138,13 +139,12 @@
 							<div class="span12">
 								<div class="portlet">
 									<div class="portlet-title">
-										<h4>Liste des Documents du projet <strong><?= $projet->nom() ?></strong> </h4>
 										<div class="tools">
 											<a href="javascript:;" class="collapse"></a>
 											<a href="javascript:;" class="remove"></a>
 										</div>
 									</div>
-									<a href="#addProjetDocs<?= $projet->id() ?>" class="btn green-stripe" data-toggle="modal" data-id="<?= $projet->id(); ?>">
+									<a href="#addProjetDocs<?= $projet->id() ?>" class="btn green" data-toggle="modal" data-id="<?= $projet->id(); ?>">
 										<i class="icon-paper-clip"></i> Ajouter un document
 									</a>
 									<br><br>
@@ -172,6 +172,7 @@
 												<div class="control-group">
 													<div class="controls">	
 														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>
@@ -211,6 +212,7 @@
 														<label class="right-label"></label>
 														<input type="hidden" name="idPiece" value="<?= $pieces->id() ?>" />
 														<input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
 														<button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
 														<button type="submit" class="btn red" aria-hidden="true">Oui</button>
 													</div>

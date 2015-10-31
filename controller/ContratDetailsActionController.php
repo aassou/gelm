@@ -22,6 +22,7 @@
     $typeMessage = "";
     $idContratEmploye = htmlentities($_POST['idContratEmploye']);
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = htmlentities($_POST['idSociete']);
     //Component Class Manager
 
     $contratDetailsManager = new ContratDetailsManager($pdo);
@@ -86,5 +87,5 @@
     //Action Delete Processing End
     $_SESSION['contratDetails-action-message'] = $actionMessage;
     $_SESSION['contratDetails-type-message'] = $typeMessage;
-    header('Location:../contrat-employe-detail.php?idContratEmploye='.$idContratEmploye."&idProjet=".$idProjet);
+    header('Location:../contrat-employe-detail.php?idContratEmploye='.$idContratEmploye."&idProjet=".$idProjet.'&idSociete='.$idSociete);
 
