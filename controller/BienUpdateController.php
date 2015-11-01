@@ -24,6 +24,7 @@
 	        $numeroTitre = htmlentities($_POST['numeroTitre']);
 			$nom = htmlentities($_POST['nom']);
 			$superficie = htmlentities($_POST['superficie']);
+            $surplan = htmlentities($_POST['surplan']);
 			$prix = htmlentities($_POST['prix']);
 			if(isset($_POST['niveau'])){
 				$niveau = htmlentities($_POST['niveau']);	
@@ -50,7 +51,7 @@
 			if(htmlentities($_POST['typeImmobiliere'])=="appartement"){
 				$appartement = new Appartement(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'niveau' => $niveau, 'facade' => $facade, 'nombrePiece' => $nombrePiece,
-				'status' => $status, 'superficie' => $superficie, 'cave' => $cave, 
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan, 'cave' => $cave, 
 				'id' => $id));
 				$appartementManager = new AppartementManager($pdo);
 				$appartementManager->update($appartement);
@@ -58,7 +59,7 @@
 			else if(htmlentities($_POST['typeImmobiliere'])=="local"){
 				$local = new Locaux(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'mezzanine' => $mezzanine, 'facade' => $facade, 
-				'status' => $status, 'superficie' => $superficie,  
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan, 
 				'id' => $id));
 				$locauxManager = new LocauxManager($pdo);
 				$locauxManager->update($local);
@@ -66,7 +67,7 @@
 			else if(htmlentities($_POST['typeImmobiliere'])=="maison"){
 				$maison = new Maison(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'nombreEtage' => $nombreEtage, 'emplacement' => $emplacement, 
-				'status' => $status, 'superficie' => $superficie,  
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan,   
 				'id' => $id));
 				$maisonManager = new MaisonManager($pdo);
 				$maisonManager->update($maison);
@@ -74,7 +75,7 @@
 			else if(htmlentities($_POST['typeImmobiliere'])=="terrain"){
 				$terrain = new Terrain(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'emplacement' => $emplacement, 
-				'status' => $status, 'superficie' => $superficie,  
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan,   
 				'id' => $id));
 				$terrainManager = new TerrainManager($pdo);
 				$terrainManager->update($terrain);

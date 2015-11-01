@@ -59,7 +59,7 @@
     </div>
     <!-- END HEADER -->
     <!-- BEGIN CONTAINER -->
-    <div class="page-container row-fluid">
+    <div class="page-container row-fluid sidebar-closed">
         <!-- BEGIN SIDEBAR -->
         <?php include("include/sidebar.php"); ?>
         <!-- END SIDEBAR -->
@@ -77,16 +77,12 @@
                         <ul class="breadcrumb">
                             <li>
                                 <i class="icon-home"></i>
-                                <a>Accueil</a> 
+                                <a href="dashboard.php">Accueil</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
                                 <i class="icon-bar-chart"></i>
                                 <a>Gestion des caisses</a>
-                                <i class="icon-angle-right"></i>
-                            </li>
-                            <li>
-                                <a>Liste des caisses</a>
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->

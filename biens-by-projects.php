@@ -56,7 +56,7 @@
     </div>
     <!-- END HEADER -->
     <!-- BEGIN CONTAINER -->    
-    <div class="page-container row-fluid">
+    <div class="page-container row-fluid sidebar-closed">
         <!-- BEGIN SIDEBAR -->
         <?php include("include/sidebar.php"); ?>
         <!-- END SIDEBAR -->
@@ -69,7 +69,7 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Gestion Immobilière du Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong> 
+                            Gestion Immobilière - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong> 
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -85,6 +85,10 @@
                             <li>
                                 <i class="icon-briefcase"></i>
                                 <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>

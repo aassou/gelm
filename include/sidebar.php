@@ -60,6 +60,7 @@
 				or $currentPage=="projects-by-company.php"
 				or $currentPage=="biens-by-projects.php"
 				or $currentPage=="projets-charges-categories.php"
+				or $currentPage=="project-management.php"
 				){echo "active ";} ?>">
 					<a>
 					<i class="icon-briefcase"></i> 

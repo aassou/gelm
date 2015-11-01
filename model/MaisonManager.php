@@ -12,12 +12,13 @@ class MaisonManager{
 	//BAISC CRUD OPERATIONS
 	public function add(Maison $maison){
     	$query = $this->_db->prepare(' INSERT INTO t_maison (
-		numeroTitre,nom,superficie,prix,emplacement,status,nombreEtage,idProjet,created,createdBy)
-		VALUES (:numeroTitre,:nom,:superficie,:prix,:emplacement,:status,:nombreEtage,:idProjet,:created,:createdBy)')
+		numeroTitre,nom,superficie,surplan,prix,emplacement,status,nombreEtage,idProjet,created,createdBy)
+		VALUES (:numeroTitre,:nom,:superficie,:surplan,:prix,:emplacement,:status,:nombreEtage,:idProjet,:created,:createdBy)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':numeroTitre', $maison->numeroTitre());
 		$query->bindValue(':nom', $maison->nom());
 		$query->bindValue(':superficie', $maison->superficie());
+        $query->bindValue(':surplan', $maison->surplan());
 		$query->bindValue(':prix', $maison->prix());
 		$query->bindValue(':emplacement', $maison->emplacement());
 		$query->bindValue(':status', $maison->status());
@@ -31,13 +32,14 @@ class MaisonManager{
 
 	public function update(Maison $maison){
     	$query = $this->_db->prepare(' UPDATE t_maison SET 
-		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,prix=:prix,emplacement=:emplacement,nombreEtage=:nombreEtage
+		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,surplan=:surplan,prix=:prix,emplacement=:emplacement,nombreEtage=:nombreEtage
 		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $maison->id());
 		$query->bindValue(':numeroTitre', $maison->numeroTitre());
 		$query->bindValue(':nom', $maison->nom());
 		$query->bindValue(':superficie', $maison->superficie());
+        $query->bindValue(':surplan', $maison->surplan());
 		$query->bindValue(':prix', $maison->prix());
 		$query->bindValue(':emplacement', $maison->emplacement());
 		$query->bindValue(':nombreEtage', $maison->nombreEtage());

@@ -60,7 +60,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -73,17 +73,17 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Liste des documents
+							Liste des documents - Société : <strong><?= $societe->raisonSociale() ?></strong>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-								<i class="icon-briefcase"></i>
-								<a>Gestion des sociétés</a>
+								<i class="icon-sitemap"></i>
+								<a href="companies.php">Gestion des sociétés</a>
 								<i class="icon-angle-right"></i>
 							</li>
 							<li><a>Liste des documents</a></li>
@@ -96,13 +96,6 @@
 				<?php if($idSociete!=0){ ?>
 				<div class="row-fluid"> 
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
-							<div class="pull-left">
-								<a href="companies.php" class="btn green">
-									<i class="m-icon-swapleft m-icon-white"></i>&nbsp;Retours vers Liste des sociétés
-								</a>
-							</div>
-						</div>
 						<!-- BEGIN Terrain TABLE PORTLET-->
 						<?php if(isset($_SESSION['pieces-add-success'])){ ?>
                          	<div class="alert alert-success">
@@ -134,13 +127,12 @@
 							<div class="span12">
 								<div class="portlet">
 									<div class="portlet-title">
-										<h4>Liste des Documents de la société <strong><?= $societe->raisonSociale() ?></strong> </h4>
 										<div class="tools">
 											<a href="javascript:;" class="collapse"></a>
 											<a href="javascript:;" class="remove"></a>
 										</div>
 									</div>
-									<a href="#addSocieteDocs<?= $societe->id() ?>" class="btn green-stripe" data-toggle="modal" data-id="<?= $societe->id(); ?>">
+									<a href="#addSocieteDocs<?= $societe->id() ?>" class="btn green" data-toggle="modal" data-id="<?= $societe->id(); ?>">
 										<i class="icon-paper-clip"></i> Ajouter un document
 									</a>
 									<br><br>

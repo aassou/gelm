@@ -6,6 +6,7 @@ class Terrain{
 	private $_numeroTitre;
 	private $_nom;
 	private $_superficie;
+    private $_surplan;
 	private $_emplacement;
 	private $_prix;
 	private $_status;
@@ -44,6 +45,10 @@ class Terrain{
 	public function setSuperficie($superficie){
 		$this->_superficie = $superficie;
    	}
+    
+    public function setSurplan($surplan){
+        $this->_surplan = $surplan;
+    }
 
 	public function setEmplacement($emplacement){
 		$this->_emplacement = $emplacement;
@@ -84,6 +89,10 @@ class Terrain{
 	public function superficie(){
 		return $this->_superficie;
    	}
+
+    public function surplan(){
+        return $this->_surplan;
+    }
 
 	public function emplacement(){
 		return $this->_emplacement;

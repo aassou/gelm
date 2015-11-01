@@ -23,6 +23,7 @@
 	        $numeroTitre = htmlentities($_POST['numeroTitre']);
 			$nom = htmlentities($_POST['nom']);
 			$superficie = htmlentities($_POST['superficie']);
+            $surplan = htmlentities($_POST['surplan']);
 			$niveau = htmlentities($_POST['niveau']);
 			$facade = htmlentities($_POST['facade']);
 			$mezzanine = htmlentities($_POST['mezzanine']);
@@ -38,7 +39,7 @@
 			if(htmlentities($_POST['typeImmobiliere'])=="appartement"){
 				$appartement = new Appartement(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'niveau' => $niveau, 'facade' => $facade, 'nombrePiece' => $nombrePiece,
-				'status' => $status, 'superficie' => $superficie, 'cave' => $cave, 
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan, 'cave' => $cave, 
 				'idProjet' => $idProjet, 'created' => $created, 'createdBy' => $createdBy));
 				$appartementManager = new AppartementManager($pdo);
 				$appartementManager->add($appartement);
@@ -46,7 +47,7 @@
 			else if(htmlentities($_POST['typeImmobiliere'])=="local"){
 				$local = new Locaux(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'mezzanine' => $mezzanine, 'facade' => $facade, 
-				'status' => $status, 'superficie' => $superficie,  
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan,   
 				'idProjet' => $idProjet, 'created' => $created, 'createdBy' => $createdBy));
 				$locauxManager = new LocauxManager($pdo);
 				$locauxManager->add($local);
@@ -54,7 +55,7 @@
 			else if(htmlentities($_POST['typeImmobiliere'])=="maison"){
 				$maison = new Maison(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'nombreEtage' => $nombreEtage, 'emplacement' => $emplacement, 
-				'status' => $status, 'superficie' => $superficie,  
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan, 
 				'idProjet' => $idProjet, 'created' => $created, 'createdBy' => $createdBy));
 				$maisonManager = new MaisonManager($pdo);
 				$maisonManager->add($maison);
@@ -62,7 +63,7 @@
 			else if(htmlentities($_POST['typeImmobiliere'])=="terrain"){
 				$terrain = new Terrain(array('numeroTitre' => $numeroTitre, 'prix' => $prix,
 				'nom' => $nom, 'emplacement' => $emplacement, 
-				'status' => $status, 'superficie' => $superficie,  
+				'status' => $status, 'superficie' => $superficie, 'surplan' => $surplan,  
 				'idProjet' => $idProjet, 'created' => $created, 'createdBy' => $createdBy));
 				$terrainManager = new TerrainManager($pdo);
 				$terrainManager->add($terrain);

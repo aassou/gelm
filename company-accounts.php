@@ -62,7 +62,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -75,14 +75,19 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des comptes bancaires de la société <strong><?= $societeManager->getSocieteById($idSociete)->raisonSociale() ?></strong> 
+							Gestion des comptes bancaires - Société : <strong><?= $societeManager->getSocieteById($idSociete)->raisonSociale() ?></strong> 
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
+							<li>
+                                <i class="icon-sitemap"></i>
+                                <a href="companies.php">Gestion des sociétés</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
 							<li>
 								<i class="icon-money"></i>
 								<a>Gestion des comptes bancaires</a>
@@ -94,7 +99,7 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
+						<div class="row-fluid">
 							<div class="pull-right">
 								<a class="btn green" href="#addSocieteCompteBancaire" data-toggle="modal">
 									Nouveau Compte Bancaire <i class="icon-plus-sign m-icon-white"></i>

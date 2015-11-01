@@ -61,7 +61,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -92,6 +92,10 @@
 								<a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
+							<li>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
+                                <i class="icon-angle-right"></i>
+                            </li>
 							<li><a>Liste des documents</a></li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->

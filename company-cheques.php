@@ -78,7 +78,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -91,7 +91,7 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des chèques de la société <strong><?= $societeManager->getSocieteById($idSociete)->raisonSociale() ?></strong> 
+							Gestion des chèques - Société : <strong><?= $societeManager->getSocieteById($idSociete)->raisonSociale() ?></strong> 
 						</h3>
 						<ul class="breadcrumb">
 							<li>
@@ -115,7 +115,7 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
+						<div class="row-fluid">
 							<div class="pull-right">
 								<a href="#addCheque" data-toggle="modal" class="btn green">
 									Nouveau Chèque <i class="icon-plus-sign "></i>

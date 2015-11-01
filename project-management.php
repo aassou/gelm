@@ -21,7 +21,8 @@
         if(isset($_GET['idSociete']) and 
         ($_GET['idSociete'] >=1 and $_GET['idSociete'] <= $societeManager->getLastId()) ){
             $idSociete = $_GET['idSociete'];
-            $projets = $projetsManager->getProjetsByIdSociete($idSociete);
+            $idProjet = $_GET['idProjet'];
+            $projet = $projetsManager->getProjetById($idProjet);
             $projetNumber = ($projetsManager->getProjetsNumberByIdSociete($idSociete));
         }
         /*$projetPerPage = 5;
@@ -89,7 +90,7 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Gestion des projets - Société : <strong><?= strtoupper($societeManager->getSocieteById($idSociete)->raisonSociale()) ?></strong>
+                            Gestion du projet <?= $projet->nom() ?> - Société : <strong><?= strtoupper($societeManager->getSocieteById($idSociete)->raisonSociale()) ?></strong>
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -104,7 +105,11 @@
                             </li>
                             <li>
                                 <i class="icon-briefcase"></i>
-                                <a>Gestion des projets</a>
+                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a>Gestion du projet <strong><?= $projet->nom() ?></strong></a>
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -164,70 +169,6 @@
                          ?>
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
                         <div class="tab-pane" id="tab_1_4">
-                            <div class="row-fluid add-portfolio">
-                                <div class="pull-left">
-                                    <span><?= $projetNumber ?> Projets en Total</span>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#addProjet" data-toggle="modal" class="btn icn-only green">Ajouter un projet <i class="icon-plus-sign m-icon-white"></i></a>                                   
-                                </div>
-                            </div>
-                            <!--end add-portfolio-->
-                            <!-- addProjet box begin-->
-                            <div id="addProjet" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                    <h3>Nouveau Projet </h3>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="form-horizontal" action="controller/ProjetAddController.php" method="post">
-                                        <div class="control-group">
-                                            <label class="control-label">Nom</label>
-                                            <div class="controls">
-                                                <input type="text" name="nom" value="" />
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Numéro Titre</label>
-                                            <div class="controls">
-                                                <input type="text" name="numeroTitre" value="" />
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Emplacement</label>
-                                            <div class="controls">
-                                                <input type="text" name="emplacement" value="" />
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Superficie</label>
-                                            <div class="controls">
-                                                <input type="text" name="superficie" value="" />
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Description</label>
-                                            <div class="controls">
-                                                <input type="text" name="description" />
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Date de création</label>
-                                            <div class="controls date date-picker" data-date="" data-date-format="yyyy-mm-dd">
-                                                <input name="dateCreation" id="dateCreation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
-                                                <span class="add-on"><i class="icon-calendar"></i></span>
-                                             </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <div class="controls">
-                                                <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />  
-                                                <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
-                                                <button type="submit" class="btn red" aria-hidden="true">Oui</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
                             <!-- addSociete box end -->
                             <?php if(isset($_SESSION['pieces-add-success'])){ ?>
                                 <div class="alert alert-success">
@@ -245,16 +186,15 @@
                              <?php } 
                                 unset($_SESSION['pieces-add-error']);
                              ?>
-                            <br>
-                            <input class="m-wrap span4" id="filterProjet" type="text" placeholder="Nom du Projet..." />
-                            <input class="m-wrap span4" id="status" type="text" placeholder="Status (Terminé, En cours)" />
-                            <br>
+                            <div class="row-fluid">
+                            </div>
+                            <br><br>
                             <?php
-                            foreach($projets as $projet){
+                            //foreach($projets as $projet){
                             ?>
                             <!--div class="row-fluid portfolio-block projets" id="<?= $projet->id() ?>"-->
-                            <div style="margin-bottom: 30px" class="projets span3" id="<?= $projet->id() ?>">
-                                <div>
+                            <div style="background-color: #f7f7f7;border: 1px solid #27A9E3;  margin-bottom: 30px" class="row-fluid projets" id="<?= $projet->id() ?>">
+                                <div class="span3">
                                     <div class="">
                                         <div class="btn-group">
                                             <?php
@@ -270,33 +210,9 @@
                                                 $btnColor = "red";
                                             }
                                             ?>
-                                            <a style="width:250px" class="btn <?= $btnColor ?> big dropdown-toggle" href="<?= $link ?>" data-toggle="dropdown">
-                                                <i class="icon-angle-down"></i>
+                                            <a style="width:250px" class="btn <?= $btnColor ?> big">
                                                 <strong><?= ucfirst($projet->nom()) ?></strong> - <?= $projet->status() ?>
                                             </a>
-                                            
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a href="project-management.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>">
-                                                        Géstion du projet
-                                                    </a>
-                                                    <!--a href="projet-details.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>">
-                                                        Liste des documents
-                                                    </a-->
-                                                    <!--a href="#addProjetDocs<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
-                                                        Ajouter un document
-                                                    </a-->
-                                                    <a href="#updateStatusProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
-                                                        Changer Status
-                                                    </a>
-                                                    <a href="#updateProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
-                                                        Modifier
-                                                    </a>
-                                                    <a href="#deleteProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
-                                                        Supprimer
-                                                    </a>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -459,12 +375,12 @@
                                     </div>
                                 </div>
                                 <!-- delete box end -->     
-                                <!--div class="span9" style="overflow:hidden;"-->
-                                    <!--div class="portfolio-info">
+                                <div class="span9" style="overflow:hidden;">
+                                    <div class="portfolio-info">
                                         <a href="projet-livraisons.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn green fixed-size">Gestion des livraisons</a>
-                                    </div-->
-                                    <!--div class="portfolio-info"-->
-                                        <!--a href="biens-by-projects.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn purple fixed-size">Gestion Immobilière</a-->
+                                    </div>
+                                    <div class="portfolio-info">
+                                        <a href="biens-by-projects.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn purple fixed-size">Gestion Immobilière</a>
                                         <!--div class="btn-group">
                                             <a class="btn purple fixed-size dropdown-toggle" href="projet-biens.php?idProjet=<?= $projet->id() ?>" data-toggle="dropdown">
                                                 <i class="icon-angle-down"></i>
@@ -488,20 +404,23 @@
                                                 </li>
                                             </ul>
                                         </div-->
-                                    <!--/div-->
-                                    <!--div class="portfolio-info">
+                                    </div>
+                                    <div class="portfolio-info">
                                         <a href="projets-charges-categories.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn black fixed-size">Gestion des charges</a>
-                                        <a href="appartements.php?idProjet=<?= $projet->id() ?>" class="btn blue fixed-size">Appartements</a>
+                                        <!--a href="appartements.php?idProjet=<?= $projet->id() ?>" class="btn blue fixed-size">Appartements</a-->
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="projet-contrat-employe.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn fixed-size">Gestion des contrats</a>
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="contrats-list.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn red fixed-size">Gestion des Clients</a>
-                                    </div-->
-                                <!--/div-->
+                                    </div>
+                                    <div class="portfolio-info">
+                                        <a href="projet-details.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn yellow fixed-size">Gestion des documents</a>
+                                    </div>
+                                </div>
                             </div>
-                            <?php }//end foreach loop for projets elements ?>
+                            <?php //}//end foreach loop for projets elements ?>
                         </div>
                         <!-- END EXAMPLE TABLE PORTLET-->
                     </div>

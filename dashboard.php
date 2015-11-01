@@ -76,7 +76,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->	
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -91,16 +91,6 @@
 						<h3 class="page-title">
 							Tableau de bord
 						</h3>
-						<ul class="breadcrumb">
-							<li>
-								<i class="icon-dashboard"></i>
-								<a>Accueil</a> 
-								<i class="icon-angle-right"></i>
-							</li>
-							<li>
-								<a>Tableau de bord</a>
-							</li>
-						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
 				</div>
@@ -113,11 +103,11 @@
 							<a href="projets.php">
 							<div class="tile bg-green">
 								<div class="tile-body">
-									<i class="icon-briefcase"></i>
+									<i class="icon-sitemap"></i>
 								</div>
 								<div class="tile-object">
 									<div class="name">
-										Projets
+										Gestion Sociétés
 									</div>
 									<div class="number">
 										
@@ -157,6 +147,21 @@
 							</div>
 							</a>
 							<?php } ?>
+							<a href="employes.php">
+                            <div class="tile bg-yellow">
+                                <div class="corner"></div>
+                                <div class="tile-body">
+                                    <i class="icon-group"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Employés
+                                    </div>
+                                    <div class="number">
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
 							<a href="users.php">
 							<div class="tile bg-red">
 								<div class="corner"></div>
@@ -181,21 +186,7 @@
 				<h4><i class="icon-table"></i> Bilans et Statistiques Pour Cette Semaine</h4>
 				<hr class="line">
 				<div class="row-fluid">
-					<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
-						<div class="dashboard-stat yellow">
-							<div class="visual">
-								<i class="icon-signal"></i>
-							</div>
-							<div class="details">
-								<div class="number">
-									<!--?= $operationsNumberWeek ?-->	
-								</div>
-								<div class="desc">									
-									Paiements Clients
-								</div>
-							</div>					
-						</div>
-					</div>
+					
 					<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
 						<div class="dashboard-stat green">
 							<div class="visual">
@@ -207,7 +198,7 @@
 							</div>					
 						</div>
 					</div>
-					<div class="span3 responsive" data-tablet="span6 fix-offset" data-desktop="span3">
+					<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
 						<div class="dashboard-stat blue">
 							<div class="visual">
 								<i class="icon-group"></i>

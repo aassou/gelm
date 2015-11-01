@@ -61,7 +61,7 @@
     </div>
     <!-- END HEADER -->
     <!-- BEGIN CONTAINER -->
-    <div class="page-container row-fluid">
+    <div class="page-container row-fluid sidebar-closed">
         <!-- BEGIN SIDEBAR -->
         <?php include("include/sidebar.php"); ?>
         <!-- END SIDEBAR -->
@@ -74,17 +74,17 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Détails de la caisse <?= $caisse->nom() ?>
+                            Détails de la caisse : <strong><?= $caisse->nom() ?></strong>
                         </h3>
                         <ul class="breadcrumb">
                             <li>
                                 <i class="icon-home"></i>
-                                <a>Accueil</a> 
+                                <a href="dashboard.php">Accueil</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
                                 <i class="icon-bar-chart"></i>
-                                <a>Gestion de la caisse</a>
+                                <a href="caisses.php">Gestion de la caisse</a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>

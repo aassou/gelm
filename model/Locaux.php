@@ -6,6 +6,7 @@ class Locaux{
 	private $_numeroTitre;
 	private $_nom;
 	private $_superficie;
+    private $_surplan;
 	private $_facade;
 	private $_prix;
 	private $_mezzanine;
@@ -46,6 +47,10 @@ class Locaux{
 	public function setSuperficie($superficie){
 		$this->_superficie = $superficie;
    	}
+    
+    public function setSurplan($surplan){
+        $this->_surplan = $surplan;
+    }
 
 	public function setFacade($facade){
 		$this->_facade = $facade;
@@ -91,6 +96,10 @@ class Locaux{
 	public function superficie(){
 		return $this->_superficie;
    	}
+    
+    public function surplan(){
+        return $this->_surplan;
+    }
 
 	public function facade(){
 		return $this->_facade;

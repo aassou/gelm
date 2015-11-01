@@ -12,12 +12,13 @@ class TerrainManager{
 	//BAISC CRUD OPERATIONS
 	public function add(Terrain $terrain){
     	$query = $this->_db->prepare(' INSERT INTO t_terrain (
-		numeroTitre,nom,superficie,emplacement,prix, status, idProjet,created,createdBy)
-		VALUES (:numeroTitre,:nom,:superficie,:emplacement,:prix, :status,:idProjet,:created,:createdBy)')
+		numeroTitre,nom,superficie,surplan,emplacement,prix, status, idProjet,created,createdBy)
+		VALUES (:numeroTitre,:nom,:superficie,:surplan,:emplacement,:prix, :status,:idProjet,:created,:createdBy)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':numeroTitre', $terrain->numeroTitre());
 		$query->bindValue(':nom', $terrain->nom());
 		$query->bindValue(':superficie', $terrain->superficie());
+        $query->bindValue(':surplan', $terrain->surplan());
 		$query->bindValue(':emplacement', $terrain->emplacement());
 		$query->bindValue(':prix', $terrain->prix());
 		$query->bindValue(':status', $terrain->status());
@@ -30,13 +31,14 @@ class TerrainManager{
 
 	public function update(Terrain $terrain){
     	$query = $this->_db->prepare(' UPDATE t_terrain SET 
-		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,emplacement=:emplacement,prix=:prix
+		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,surplan=:surplan,emplacement=:emplacement,prix=:prix
 		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $terrain->id());
 		$query->bindValue(':numeroTitre', $terrain->numeroTitre());
 		$query->bindValue(':nom', $terrain->nom());
 		$query->bindValue(':superficie', $terrain->superficie());
+        $query->bindValue(':surplan', $terrain->surplan());
 		$query->bindValue(':emplacement', $terrain->emplacement());
 		$query->bindValue(':prix', $terrain->prix());
 		$query->execute();

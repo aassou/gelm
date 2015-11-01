@@ -12,12 +12,13 @@ class AppartementManager{
 	//BAISC CRUD OPERATIONS
 	public function add(Appartement $appartement){
     	$query = $this->_db->prepare(' INSERT INTO t_appartement (
-		numeroTitre,nom,superficie,prix,niveau,facade,nombrePiece,status,cave,idProjet,created,createdBy)
-		VALUES (:numeroTitre,:nom,:superficie,:prix,:niveau,:facade,:nombrePiece,:status,:cave,:idProjet,:created,:createdBy)')
+		numeroTitre,nom,superficie,surplan,prix,niveau,facade,nombrePiece,status,cave,idProjet,created,createdBy)
+		VALUES (:numeroTitre,:nom,:superficie,:surplan,:prix,:niveau,:facade,:nombrePiece,:status,:cave,:idProjet,:created,:createdBy)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':numeroTitre', $appartement->numeroTitre());
 		$query->bindValue(':nom', $appartement->nom());
 		$query->bindValue(':superficie', $appartement->superficie());
+        $query->bindValue(':surplan', $appartement->surplan());
 		$query->bindValue(':prix', $appartement->prix());
 		$query->bindValue(':niveau', $appartement->niveau());
 		$query->bindValue(':facade', $appartement->facade());
@@ -33,13 +34,14 @@ class AppartementManager{
 
 	public function update(Appartement $appartement){
     	$query = $this->_db->prepare(' UPDATE t_appartement SET 
-		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,prix=:prix,niveau=:niveau,facade=:facade,nombrePiece=:nombrePiece,cave=:cave
-		WHERE id=:id')
+		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,surplan=:surplan,prix=:prix,
+		niveau=:niveau,facade=:facade,nombrePiece=:nombrePiece,cave=:cave WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $appartement->id());
 		$query->bindValue(':numeroTitre', $appartement->numeroTitre());
 		$query->bindValue(':nom', $appartement->nom());
 		$query->bindValue(':superficie', $appartement->superficie());
+        $query->bindValue(':surplan', $appartement->surplan());
 		$query->bindValue(':prix', $appartement->prix());
 		$query->bindValue(':niveau', $appartement->niveau());
 		$query->bindValue(':facade', $appartement->facade());

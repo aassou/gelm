@@ -71,7 +71,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -89,7 +89,7 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
@@ -104,8 +104,8 @@
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="row-fluid add-portfolio">
-							<div class="pull-left">
+						<div class="row-fluid">
+							<div class="pull-right">
 								<!--a href="livraison-add.php" class="btn icn-only blue"-->
 								<a href="#addemploye" data-toggle="modal" class="btn blue">
 									Ajouter Nouveau Employé <i class="icon-plus-sign "></i>

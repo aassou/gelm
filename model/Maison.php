@@ -6,6 +6,7 @@ class Maison{
 	private $_numeroTitre;
 	private $_nom;
 	private $_superficie;
+    private $_surplan;
 	private $_prix;
 	private $_emplacement;
 	private $_status;
@@ -45,6 +46,10 @@ class Maison{
 	public function setSuperficie($superficie){
 		$this->_superficie = $superficie;
    	}
+    
+    public function setSurplan($surplan){
+        $this->_surplan = $surplan;
+    }
 
 	public function setPrix($prix){
 		$this->_prix = $prix;
@@ -89,6 +94,10 @@ class Maison{
 	public function superficie(){
 		return $this->_superficie;
    	}
+    
+    public function surplan(){
+        return $this->_surplan;
+    }
 
 	public function prix(){
 		return $this->_prix;

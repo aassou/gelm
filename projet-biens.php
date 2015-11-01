@@ -75,7 +75,7 @@
 	</div>
 	<!-- END HEADER -->
 	<!-- BEGIN CONTAINER -->
-	<div class="page-container row-fluid">
+	<div class="page-container row-fluid sidebar-closed">
 		<!-- BEGIN SIDEBAR -->
 		<?php include("include/sidebar.php"); ?>
 		<!-- END SIDEBAR -->
@@ -88,7 +88,7 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion Immobilière du Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
+							Gestion Immobilière - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
@@ -104,6 +104,10 @@
 							<li>
                                 <i class="icon-briefcase"></i>
                                 <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
                                 <i class="icon-angle-right"></i>
                             </li>
 							<li>
@@ -164,6 +168,12 @@
 											<input type="text" name="superficie" value="" />
 										</div>
 									</div>
+									<div class="control-group">
+                                        <label class="control-label">Superficie avec surplan</label>
+                                        <div class="controls">
+                                            <input type="text" name="surplan" value="" />
+                                        </div>
+                                    </div>
 									<div class="control-group" id="niveau">
 										<label class="control-label">Niveau</label>
 										<div class="controls">
@@ -317,6 +327,7 @@
 												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
+												<th class="hidden-phone">Surplan</th>
 												<th class="hidden-phone">Emplacement</th>
 												<th class="hidden-phone">Status</th>
 											</tr>
@@ -347,6 +358,7 @@
 												<td class="hidden-phone"><?= $terrain->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($terrain->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $terrain->superficie() ?></td>
+												<td class="hidden-phone"><?= $terrain->surplan() ?></td>
 												<td class="hidden-phone"><?= $terrain->emplacement() ?></td>
 												<td class="hidden-phone">
 													<?php 
@@ -430,6 +442,12 @@
 															</div>
 														</div>
 														<div class="control-group">
+                                                            <label class="control-label">Superficie avec surplan</label>
+                                                            <div class="controls">
+                                                                <input type="text" name="surplan" value="<?= $terrain->surplan() ?>" />
+                                                            </div>
+                                                        </div>
+														<div class="control-group">
 															<label class="control-label">Emplacement</label>
 															<div class="controls">
 																<input type="text" name="emplacement" value="<?= $terrain->emplacement() ?>" />
@@ -510,6 +528,7 @@
 											<th class="hidden-phone">Titre</th>
 											<th class="hidden-phone">Prix</th>
 											<th class="hidden-phone">Superficie</th>
+											<th class="hidden-phone">Surplan</th>
 											<th class="hidden-phone">Niveau</th>
 											<th class="hidden-phone">Façade</th>
 											<th class="hidden-phone">Nombre Pièces</th>
@@ -542,6 +561,7 @@
 											<td class="hidden-phone"><?= $appartement->numeroTitre() ?></td>
 											<td class="hidden-phone"><?= number_format($appartement->prix(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone"><?= $appartement->superficie() ?></td>
+											<td class="hidden-phone"><?= $appartement->surplan() ?></td>
 											<td class="hidden-phone"><?= $appartement->niveau() ?></td>
 											<td class="hidden-phone"><?= $appartement->facade() ?></td>
 											<td class="hidden-phone"><?= $appartement->nombrePiece() ?></td>
@@ -644,6 +664,12 @@
 														</div>
 													</div>
 													<div class="control-group">
+                                                        <label class="control-label">Superficie avec surplan</label>
+                                                        <div class="controls">
+                                                            <input type="text" name="surplan" value="<?= $appartement->surplan() ?>" />
+                                                        </div>
+                                                    </div>
+													<div class="control-group">
 														<label class="control-label">Façade</label>
 														<div class="controls">
 															<input type="text" name="facade" value="<?= $appartement->facade() ?>" />
@@ -741,6 +767,7 @@
 												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
+												<th class="hidden-phone">Surplan</th>
 												<th class="hidden-phone">Façade</th>
 												<th class="hidden-phone">Mezzanine</th>
 												<th class="hidden-phone">Status</th>
@@ -772,6 +799,7 @@
 												<td class="hidden-phone"><?= $local->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($local->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $local->superficie() ?></td>
+												<td class="hidden-phone"><?= $local->surplan() ?></td>
 												<td class="hidden-phone"><?= $local->facade() ?></td>
 												<td class="hidden-phone"><?= $local->mezzanine() ?></td>
 												<td class="hidden-phone">
@@ -855,6 +883,12 @@
 																<input type="text" name="superficie" value="<?= $local->superficie() ?>" />
 															</div>
 														</div>
+														<div class="control-group">
+                                                            <label class="control-label">Superficie avec surplan</label>
+                                                            <div class="controls">
+                                                                <input type="text" name="surplan" value="<?= $local->surplan() ?>" />
+                                                            </div>
+                                                        </div>
 														<div class="control-group">
 															<label class="control-label">Façade</label>
 															<div class="controls">
@@ -947,6 +981,7 @@
                                                 <th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
+												<th class="hidden-phone">Surplan</th>
 												<th class="hidden-phone">Etages</th>
 												<th class="hidden-phone">Emplacement</th>
 												<th class="hidden-phone">Status</th>
@@ -978,6 +1013,7 @@
 												<td class="hidden-phone"><?= $maison->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($maison->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $maison->superficie() ?></td>
+												<td class="hidden-phone"><?= $maison->surplan() ?></td>
 												<td class="hidden-phone"><?= $maison->nombreEtage() ?></td>
 												<td class="hidden-phone"><?= $maison->emplacement() ?></td>
 												<td class="hidden-phone">
@@ -1061,6 +1097,12 @@
 																<input type="text" name="superficie" value="<?= $maison->superficie() ?>" />
 															</div>
 														</div>
+														<div class="control-group">
+                                                            <label class="control-label">Superficie avec surplan</label>
+                                                            <div class="controls">
+                                                                <input type="text" name="surplan" value="<?= $maison->surplan() ?>" />
+                                                            </div>
+                                                        </div>
 														<div class="control-group">
 															<label class="control-label">Nombre Etages</label>
 															<div class="controls">

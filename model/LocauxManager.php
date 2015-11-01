@@ -12,12 +12,13 @@ class LocauxManager{
 	//BAISC CRUD OPERATIONS
 	public function add(Locaux $Locaux){
     	$query = $this->_db->prepare(' INSERT INTO t_locaux (
-		numeroTitre, nom,superficie,facade,prix,mezzanine,status,idProjet,createdBy,created)
-		VALUES (:numeroTitre,:nom,:superficie,:facade,:prix,:mezzanine,:status,:idProjet,:createdBy,:created)')
+		numeroTitre, nom,superficie,surplan,facade,prix,mezzanine,status,idProjet,createdBy,created)
+		VALUES (:numeroTitre,:nom,:superficie,:surplan,:facade,:prix,:mezzanine,:status,:idProjet,:createdBy,:created)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':numeroTitre', $Locaux->numeroTitre());
 		$query->bindValue(':nom', $Locaux->nom());
 		$query->bindValue(':superficie', $Locaux->superficie());
+        $query->bindValue(':surplan', $Locaux->surplan());
 		$query->bindValue(':facade', $Locaux->facade());
 		$query->bindValue(':prix', $Locaux->prix());
 		$query->bindValue(':mezzanine', $Locaux->mezzanine());
@@ -31,13 +32,14 @@ class LocauxManager{
 
 	public function update(Locaux $Locaux){
     	$query = $this->_db->prepare(' UPDATE t_locaux SET 
-		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,facade=:facade,prix=:prix,mezzanine=:mezzanine
+		numeroTitre=:numeroTitre,nom=:nom,superficie=:superficie,surplan=:surplan,facade=:facade,prix=:prix,mezzanine=:mezzanine
 		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $Locaux->id());
 		$query->bindValue(':numeroTitre', $Locaux->numeroTitre());
 		$query->bindValue(':nom', $Locaux->nom());
 		$query->bindValue(':superficie', $Locaux->superficie());
+        $query->bindValue(':surplan', $Locaux->surplan());
 		$query->bindValue(':facade', $Locaux->facade());
 		$query->bindValue(':prix', $Locaux->prix());
 		$query->bindValue(':mezzanine', $Locaux->mezzanine());
