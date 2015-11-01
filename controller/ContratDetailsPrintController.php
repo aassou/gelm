@@ -55,7 +55,7 @@ ob_start();
     <img src="../assets/img/logo_company.png" style="width: 110px" />
     <br><br><br><br>
     <h1>Détails Contrat <?= strtoupper($contratEmploye->employe()) ?></h1>
-    <h3>Projet <?= strtoupper($projet->nom()) ?></h3>
+    <h3>Projet <?= ucfirst($projet->nom()) ?></h3>
     <p>Imprimé le <?= date('d/m/Y') ?> | <?= date('h:i') ?> </p>
     <br><br>
     <table>
