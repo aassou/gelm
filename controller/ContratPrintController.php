@@ -33,24 +33,25 @@
 		$typeBien = "";
         if( $contrat->typeBien()=="appartement" ){
         	$biens = $appartementManager->getAppartementById($contrat->idBien());
-			$typeBien = "appartement";
+			$typeBien = "Appartement";
         }
 		else if( $contrat->typeBien()=="localCommercial" ){
 			$biens = $locauxManager->getLocauxById($contrat->idBien());
-			$typeBien = "localCommercial";
+			$typeBien = "Local Commercial";
 		}
 		else if( $contrat->typeBien()=="maison" ){
 			$biens = $maisonManager->getMaisonById($contrat->idBien());
-			$typeBien = "maison";
+			$typeBien = "Maison";
 		}
 		else if( $contrat->typeBien()=="terrain" ){
 			$biens = $terrainManager->getTerrainById($contrat->idBien());
-			$typeBien = "terrain";
+			$typeBien = "Terrain";
 		}
 //property data
 
 $programme  = $projet->nom();
 $superficie = $biens->superficie();
+$surplan = $biens->surplan();
 $prixHt = number_format($contrat->prixVente(), 2, ',', ' ');
 //customer data
 $clientNom = $contrat->nomClient();
@@ -108,6 +109,12 @@ ob_start();
             <td><strong>Superficie Approximative</strong></td>
             <td> : <?= $superficie ?> m² <sub>(communiqué par l'architecte selon le plan de construction)</sub></td>
         </tr>
+        <?php if ( !empty($surplan) ){ ?>
+        <tr>
+            <td><strong>Superficie Avec surplan</strong></td>
+            <td> : <?= $surplan.' m²' ?></td>
+        </tr>
+        <?php } ?>
         <tr>
             <td><strong>Prix H.T </strong></td>
             <td> : <?= $prixHt ?>&nbsp;DH</td>

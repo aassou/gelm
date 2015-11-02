@@ -100,7 +100,7 @@
 						<h4><i class="icon-hand-right"></i> Raccourcis</h4>
 						<hr class="line">
 						<div class="tiles">
-							<a href="projets.php">
+							<a href="companies.php">
 							<div class="tile bg-green">
 								<div class="tile-body">
 									<i class="icon-sitemap"></i>
