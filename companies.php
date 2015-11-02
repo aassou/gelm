@@ -232,9 +232,11 @@
 													<a href="#updateSociete<?= $societe->id() ?>" data-toggle="modal" data-id="<?= $societe->id(); ?>">
 														Modifier
 													</a>
+													<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
 													<a href="#deleteSociete<?= $societe->id() ?>" data-toggle="modal" data-id="<?= $societe->id(); ?>">
 														Supprimer
 													</a>
+													<?php } ?>
 										        </li>
 										    </ul>
 										</div>

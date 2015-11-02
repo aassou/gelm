@@ -181,9 +181,11 @@
 													</div>
 												</a>
 											</div>
+											<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
 											<a class="btn mini red" href="#deletePiece<?= $pieces->id() ?>" data-toggle="modal" data-id="<?= $pieces->id() ?>">
 												Supprimer
 											</a>
+											<?php } ?>
 											<br><br>	
 										</div>
 										<!-- delete box begin-->

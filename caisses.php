@@ -160,9 +160,11 @@
                                                 <a href="#updateCaisse<?= $caisse->id() ?>" data-toggle="modal" data-id="<?= $caisse->id(); ?>">
                                                     Modifier
                                                 </a>
+                                                <?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
                                                 <a href="#deleteCaisse<?= $caisse->id() ?>" data-toggle="modal" data-id="<?= $caisse->id(); ?>">
                                                     Supprimer
                                                 </a>
+                                                <?php } ?>
                                             </li>
                                         </ul>
                                     </div>&nbsp;&nbsp;

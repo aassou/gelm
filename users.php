@@ -210,6 +210,7 @@
 													$classStatus = 'btn mini red';
 													$message = "Désactiver";	
 												}	
+                                                if($user->profil()!="su"){
 										?>	
 										<tr class="">
 											<td><?= $user->login()?></td>
@@ -232,6 +233,7 @@
 												</a>
 											</td>
 										</tr>
+										<?php } ?>
 										<!-- edit box begin-->
 										<div id="update<?php echo $user->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 											<div class="modal-header">

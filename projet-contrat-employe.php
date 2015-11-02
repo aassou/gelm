@@ -260,9 +260,11 @@
                                                             <a href="#updateContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
                                                                 Modifier
                                                             </a>
+                                                            <?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
                                                             <a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
                                                                 Supprimer
                                                             </a>
+                                                            <?php } ?>
                                                         </li>
                                                     </ul>
                                                 </div>

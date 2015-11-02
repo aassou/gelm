@@ -292,9 +292,11 @@
                                                     <a href="#updateProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Modifier
                                                     </a>
+                                                    <?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
                                                     <a href="#deleteProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Supprimer
                                                     </a>
+                                                    <?php } ?>
                                                 </li>
                                             </ul>
                                         </div>

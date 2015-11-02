@@ -325,9 +325,11 @@
 												        	<a href="#updateCheque<?= $cheque->id();?>" data-toggle="modal" data-id="<?= $cheque->id(); ?>">
 																Modifier
 															</a>
+															<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
 															<a href="#deleteCheque<?= $cheque->id() ?>" data-toggle="modal" data-id="<?= $cheque->id() ?>">
 																Supprimer
 															</a>
+															<?php } ?>
 												        </li>
 												    </ul>
 												</div>

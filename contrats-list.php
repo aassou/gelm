@@ -290,9 +290,11 @@
 												        	</a>
 												        	<?php if($contrat->status()=="actif"){
 														?>
+														<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
 														<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 															Désister
 														</a>
+														<?php } ?>
 														<?php 
 														}
 														else{
@@ -306,9 +308,11 @@
 														<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Modifier
 												        	</a>
+												        	<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
 												        	<a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Supprimer
 												        	</a>
+												        	<?php } ?>
 												        </li>
 												    </ul>
 												</div>

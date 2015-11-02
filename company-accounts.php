@@ -181,9 +181,11 @@
 												        	<a href="#updateCompte<?= $compte->id();?>" data-toggle="modal" data-id="<?= $compte->id(); ?>">
 																Modifier
 															</a>
+															<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
 															<a href="#deleteCompte<?= $compte->id() ?>" data-toggle="modal" data-id="<?= $compte->id() ?>">
 																Supprimer
 															</a>
+															<?php } ?>
 												        </li>
 												    </ul>
 												</div>
@@ -207,7 +209,7 @@
 													<div class="control-group">
 														<label class="control-label">Date Création</label>
 														<div class="controls date date-picker" data-date="" data-date-format="yyyy-mm-dd">
-						                                    <input name="dateCheque" id="dateCreation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= $compte->dateCreation() ?>" />
+						                                    <input name="dateCreation" id="dateCreation" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= $compte->dateCreation() ?>" />
 						                                    <span class="add-on"><i class="icon-calendar"></i></span>
 						                                 </div>
 													</div>
