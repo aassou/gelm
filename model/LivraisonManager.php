@@ -141,7 +141,8 @@ class LivraisonManager{
     
     public function getLivraisonsByIdProjet($idProjet){
         $livraisons = array();
-        $query = $this->_db->prepare('SELECT * FROM t_livraison WHERE idProjet=:idProjet ORDER BY dateLivraison');
+        $query = $this->_db->prepare('SELECT * FROM t_livraison WHERE idProjet=:idProjet 
+        ORDER BY status ASC,  dateLivraison DESC');
         $query->bindValue(':idProjet', $idProjet);
         $query->execute();
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
@@ -346,6 +347,20 @@ class LivraisonManager{
         }
         return $ids;
 	}
+    
+    public function getLivraisonNonPayesIdsByIdFournisseurByIdProjet($idFournisseur, $idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(' SELECT id FROM t_livraison 
+        WHERE idFournisseur=:idFournisseur AND idProjet=:idProjet AND status LIKE :status');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':status', "Non Pay&eacute;");
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+    }
 	
 	public function getLivraisonIdsByIdFournisseurIdProjet($idFournisseur, $idProjet){
 		$ids = array();

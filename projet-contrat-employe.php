@@ -189,9 +189,21 @@
                                          </div>
                                     </div>
                                     <div class="control-group">
+                                        <label class="control-label">Prix/Unité</label>
+                                        <div class="controls">
+                                            <input type="text" name="prixUnitaire" id="prixUnitaire" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Nombre Unités</label>
+                                        <div class="controls">
+                                            <input type="text" name="nombreUnites" id="nombreUnites" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <label class="control-label">Total</label>
                                         <div class="controls">
-                                            <input type="text" name="total" value="" />
+                                            <input type="text" name="total" id="total" value="" />
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -234,11 +246,13 @@
                                 <table class="table table-striped table-bordered table-advance table-hover">
                                     <thead>
                                         <tr>
-                                            <th style="width:20%">Employé</th>
-                                            <th style="width:20%">Date Contrat</th>
-                                            <th style="width:20%">Total Paiements</th>
-                                            <th style="width:20%">Total à Payer</th>
-                                            <th style="width:20%">Reste</th>
+                                            <th style="width:15%">Employé</th>
+                                            <th style="width:10%">Date Contrat</th>
+                                            <th style="width:15%">Prix/Unité</th>
+                                            <th style="width:15%">Nombre Unités</th>
+                                            <th style="width:15%">Total Paiements</th>
+                                            <th style="width:15%">Total à Payer</th>
+                                            <th style="width:15%">Reste</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -270,6 +284,8 @@
                                                 </div>
                                             </td>
                                             <td class="hidden-phone"><?= date('d/m/Y', strtotime($contrat->dateContrat()) ) ?></td>
+                                            <td><?= number_format($contrat->prixUnitaire(), 2, ',', ' ') ?></td>
+                                            <td><?= $contrat->nombreUnites() ?></td>
                                             <td><?= number_format($contratDetaislManager->getContratDetailsTotalByIdContratEmploye($contrat->id()), 2, ',', ' ') ?></td>
                                             <td><?= number_format($contrat->total(), 2, ',', ' ') ?></td>
                                             <td><?= number_format($contrat->total()-$contratDetaislManager->getContratDetailsTotalByIdContratEmploye($contrat->id()), 2, ',', ' ') ?></td>
@@ -304,9 +320,21 @@
                                                          </div>
                                                     </div>
                                                     <div class="control-group">
+                                                        <label class="control-label">Prix/Unité</label>
+                                                        <div class="controls">
+                                                            <input type="text" name="prixUnitaire" id="prixUnitaireUpdate" value="<?= $contrat->prixUnitaire() ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Nombre Unités</label>
+                                                        <div class="controls">
+                                                            <input type="text" name="nombreUnites" id="nombreUnitesUpdate" value="<?= $contrat->nombreUnites() ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
                                                         <label class="control-label">Total à payer</label>
                                                         <div class="controls">
-                                                            <input type="text" name="total" value="<?= $contrat->total() ?>" />
+                                                            <input type="text" name="total" id="totalUpdate" value="<?= $contrat->total() ?>" />
                                                         </div>
                                                     </div>
                                                     <div class="control-group">
@@ -417,6 +445,18 @@
                    $(this).show();
                }
             });
+        });
+        $('#nombreUnites, #prixUnitaire').change(function(){
+            var nombreUnites = $('#nombreUnites').val();
+            var prixUnitaire = $('#prixUnitaire').val();
+            var total = nombreUnites * prixUnitaire;
+            $('#total').val(total); 
+        });
+        $('#nombreUnitesUpdate, #prixUnitaireUpdate').change(function(){
+            var nombreUnites = $('#nombreUnitesUpdate').val();
+            var prixUnitaire = $('#prixUnitaireUpdate').val();
+            var total = nombreUnites * prixUnitaire;
+            $('#totalUpdate').val(total); 
         });
     </script>
 </body>

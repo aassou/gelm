@@ -4,6 +4,7 @@ class Fournisseur{
     //attributes
     private $_id;
     private $_nom;
+    private $_societe;
     private $_adresse;
     private $_email;
     private $_telephone1;
@@ -36,6 +37,10 @@ class Fournisseur{
     
     public function setNom($nom){
         $this->_nom = $nom;
+    }
+    
+    public function setSociete($societe){
+        $this->_societe = $societe;
     }
     
     public function setAdresse($adresse){
@@ -78,6 +83,10 @@ class Fournisseur{
     
     public function nom(){
         return $this->_nom;
+    }
+    
+    public function societe(){
+        return $this->_societe;
     }
     
     public function adresse(){

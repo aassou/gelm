@@ -12,10 +12,12 @@ class ContratEmployeManager{
 	//BAISC CRUD OPERATIONS
 	public function add(ContratEmploye $contratEmploye){
     	$query = $this->_db->prepare(' INSERT INTO t_contratEmploye (
-		dateContrat, total, employe, idProjet, created, createdBy)
-		VALUES (:dateContrat, :total, :employe, :idProjet, :created, :createdBy)')
+		dateContrat, prixUnitaire, nombreUnites, total, employe, idProjet, created, createdBy)
+		VALUES (:dateContrat, :prixUnitaire, :nombreUnites, :total, :employe, :idProjet, :created, :createdBy)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':dateContrat', $contratEmploye->dateContrat());
+        $query->bindValue(':prixUnitaire', $contratEmploye->prixUnitaire());
+        $query->bindValue(':nombreUnites', $contratEmploye->nombreUnites());
 		$query->bindValue(':total', $contratEmploye->total());
 		$query->bindValue(':employe', $contratEmploye->employe());
 		$query->bindValue(':idProjet', $contratEmploye->idProjet());
@@ -27,11 +29,13 @@ class ContratEmployeManager{
 
 	public function update(ContratEmploye $contratEmploye){
     	$query = $this->_db->prepare(' UPDATE t_contratEmploye SET 
-		dateContrat=:dateContrat, total=:total, employe=:employe, idProjet=:idProjet
-		WHERE id=:id')
+		dateContrat=:dateContrat, nombreUnites=:nombreUnites, prixUnitaire=:prixUnitaire, 
+		total=:total, employe=:employe, idProjet=:idProjet WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $contratEmploye->id());
 		$query->bindValue(':dateContrat', $contratEmploye->dateContrat());
+        $query->bindValue(':prixUnitaire', $contratEmploye->prixUnitaire());
+        $query->bindValue(':nombreUnites', $contratEmploye->nombreUnites());
 		$query->bindValue(':total', $contratEmploye->total());
 		$query->bindValue(':employe', $contratEmploye->employe());
 		$query->bindValue(':idProjet', $contratEmploye->idProjet());
@@ -49,8 +53,7 @@ class ContratEmployeManager{
 	}
 
 	public function getContratEmployeById($id){
-    	$query = $this->_db->prepare(' SELECT * FROM t_contratEmploye
-		WHERE id=:id')
+    	$query = $this->_db->prepare(' SELECT * FROM t_contratemploye WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $id);
 		$query->execute();		

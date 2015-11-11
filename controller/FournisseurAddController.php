@@ -36,6 +36,7 @@
 				exit;	
 			}
 			else{
+			    $societe = htmlentities($_POST['societe']);
 				$adresse = htmlentities($_POST['adresse']);
 		        $telephone1 = htmlentities($_POST['telephone1']);
 		        $nature = htmlentities($_POST['nature']);
@@ -44,8 +45,10 @@
 		        $created = date("Y-m-d");
 				$codeFournisseur = uniqid().date('YmdHis');
 		        //create a new Fournisseur object
-		        $fournisseur = new Fournisseur(array('nom' => $nom, 'adresse' => $adresse,'telephone1' => $telephone1, 
-		        'nature' =>$nature, 'email' => $email, 'fax' => $fax, 'dateCreation' => $created, 'code' => $codeFournisseur));
+		        $fournisseur = 
+		        new Fournisseur(array('nom' => $nom, 'societe' => $societe, 'adresse' => $adresse, 
+		        'telephone1' => $telephone1, 'nature' =>$nature, 'email' => $email, 'fax' => $fax,
+		        'dateCreation' => $created, 'code' => $codeFournisseur));
 		        $fournisseurManager = new FournisseurManager($pdo);
 		        $fournisseurManager->add($fournisseur);
 				$_SESSION['fournisseur-add-success'] = "<strong>Opération valide : </strong>Le fournisseur '".$nom."' est ajouté avec succès";	

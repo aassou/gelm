@@ -127,6 +127,12 @@
 										</div>
 									</div>
 									<div class="control-group">
+                                        <label class="control-label">Nom Société</label>
+                                        <div class="controls">
+                                            <input type="text" name="societe" value="" />
+                                        </div>
+                                    </div>
+									<div class="control-group">
 										<label class="control-label">Adresse</label>
 										<div class="controls">
 											<input type="text" name="adresse" value="" />
@@ -217,8 +223,9 @@
 								<table class="table table-striped table-bordered table-advance table-hover" id="sample_editable_1">
 									<thead>
 										<tr>
-											<th style="width:20%">Nom</th>
-											<th style="width:30%" class="hidden-phone">Nature des Matériaux</th>
+											<th style="width:15%">Nom</th>
+											<th style="width:15%">Société</th>
+											<th style="width:20%" class="hidden-phone">Nature des Matériaux</th>
 											<th style="width:20%" class="hidden-phone">Adresse</th>
 											<th style="width:10%" class="hidden-phone">Date</th>
 											<th style="width:5%" class="hidden-phone">Tél1</th>
@@ -253,6 +260,7 @@
 												    </ul>
 												</div>
 											</td>
+											<td class="hidden-phone"><?= $fournisseur->societe() ?></td>
 											<td class="hidden-phone"><?= $fournisseur->nature() ?></td>
 											<td class="hidden-phone"><?= $fournisseur->adresse()?></td>
 											<td class="hidden-phone"><?= date('d/m/Y', strtotime($fournisseur->dateCreation())) ?></td>
@@ -275,6 +283,12 @@
 															<input type="text" name="nom" value="<?= $fournisseur->nom() ?>" />
 														</div>
 													</div>
+													<div class="control-group">
+                                                        <label class="control-label">Nom Société</label>
+                                                        <div class="controls">
+                                                            <input type="text" name="societe" value="<?= $fournisseur->societe() ?>" />
+                                                        </div>
+                                                    </div>
 													<div class="control-group">
 														<label class="control-label">Adresse</label>
 														<div class="controls">

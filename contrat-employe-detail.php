@@ -186,16 +186,22 @@
                                 <table class="table table-striped table-bordered table-advance table-hover">
                                     <thead>
                                         <tr>
-                                            <th style="width:20%">Date Opération</th>
-                                            <th style="width:20%">Numéro Chèque</th>
-                                            <th style="width:20%">Montant</th>
-                                            <th style="width:20%"></th>
-                                            <th style="width:20%"></th>
+                                            <th style="width:15%">Date Opération</th>
+                                            <th style="width:15%">Numéro Chèque</th>
+                                            <th style="width:15%">Prix/Unité</th>
+                                            <th style="width:15%">Nombre Unités</th>
+                                            <th style="width:15%">Montant</th>
+                                            <th style="width:15%"></th>
+                                            <th style="width:10%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         foreach($contratDetails as $contrat){
+                                            $prixUnitaire = 
+                                            $contratEmployeManager->getContratEmployeById($contrat->idContratEmploye())->prixUnitaire();
+                                            $nombreUnites = 
+                                            $contratEmployeManager->getContratEmployeById($contrat->idContratEmploye())->nombreUnites();
                                         ?>      
                                         <tr class="clients">
                                             <td>
@@ -220,6 +226,8 @@
                                                 </div>
                                             </td>
                                             <td><?= $contrat->numeroCheque() ?></td>
+                                            <td><?= number_format($prixUnitaire, 2, ',', ' ') ?></td>
+                                            <td><?= $nombreUnites ?></td>
                                             <td><?= number_format($contrat->montant(), 2, ',', ' ') ?></td>
                                             <td></td>
                                             <td></td>
@@ -295,17 +303,21 @@
                                     </tbody>
                                 </table>
                                 <table class="table">
-                                    <thead>
+                                    <thead style="background-color: #DDD">
                                         <tr>
-                                            <th style="width:20%"></th>
-                                            <th style="width:20%"></th>
-                                            <th style="width:20%">Total Payé</th>
-                                            <th style="width:20%">Total à Payer</th>
-                                            <th style="width:20%">Reste</th>
+                                            <th style="width:15%"></th>
+                                            <th style="width:15%"></th>
+                                            <th style="width:15%"></th>
+                                            <th style="width:15%"></th>
+                                            <th style="width:15%">Total Payé</th>
+                                            <th style="width:15%">Total à Payer</th>
+                                            <th style="width:10%">Reste</th>
                                         </tr>
                                     </thead>
                                     <tbody>     
                                         <tr>
+                                            <td></td>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td><?= number_format($totalPaye, 2, ',', ' ') ?></td>

@@ -35,14 +35,15 @@
 				.strtoupper($fournisseurManager->getFournisseurById($idFournisseur)->nom())
 				."<br>Projet: ".$projetManager->getProjetById($idProjet)->nom();
 				//get the sum of livraisons details using livraisons ids (idFournisseur)
-				$livraisonsIds = $livraisonManager->getLivraisonNonPayesIdsByIdFournisseur($idFournisseur);
+				$livraisonsIds = 
+				$livraisonManager->getLivraisonNonPayesIdsByIdFournisseurByIdProjet($idFournisseur, $idProjet);
 				$sommeDetailsLivraisons = 0;
 				foreach($livraisonsIds as $idl){
 					$sommeDetailsLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($idl);
 				}	
 				$totalReglement = $reglementsFournisseurManager->sommeReglementFournisseursByIdFournisseur($idFournisseur);
 				$totalLivraison = 
-				$livraisonManager->getTotalLivraisonsIdFournisseur($idFournisseur)+
+				$livraisonManager->getSommeLivraisonsByIdProjetAndIdFournisseur($idProjet, $idFournisseur)+
 				$sommeDetailsLivraisons;
 				//$hrefLivraisonBilanPrintController = "controller/LivraisonBilanPrintController.php?idFournisseur=".$fournisseur;
 			//}

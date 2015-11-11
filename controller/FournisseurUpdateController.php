@@ -16,15 +16,17 @@
     //post input processing
     if( !empty($_POST['nom'])){
         $id = $_POST['idFournisseur'];
-        $nom = htmlentities($_POST['nom']);    
+        $nom = htmlentities($_POST['nom']);
+        $societe = htmlentities($_POST['societe']);        
         $adresse = htmlentities($_POST['adresse']);
         $telephone1 = htmlentities($_POST['telephone1']);
         $nature = htmlentities($_POST['nature']);
         $email = htmlentities($_POST['email']);
         $fax = htmlentities($_POST['fax']);
         //update a Founisseur object
-        $fournisseur = new Fournisseur(array('id' => $id, 'nom' => $nom, 'adresse' => $adresse,'telephone1' => $telephone1, 
-        'nature' => $nature, 'email' => $email, 'fax' => $fax));
+        $fournisseur = 
+        new Fournisseur(array('id' => $id, 'nom' => $nom, 'societe' => $societe, 'adresse' => $adresse, 
+        'telephone1' => $telephone1, 'nature' => $nature, 'email' => $email, 'fax' => $fax));
         $fournisseurManager = new FournisseurManager($pdo);
         $fournisseurManager->update($fournisseur);
         $_SESSION['fournisseur-update-success']='<strong>Opération valide</strong> : Les données du fournisseur '.$nom.' sont modifiées avec succès.';

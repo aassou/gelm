@@ -684,14 +684,6 @@
 										<tr>
 											<th><strong>Total Livraisons</strong></th>
 											<td><strong><a><?= number_format($sommeLivraisons, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
-										</tr>
-										<tr>
-											<th><strong>Total Réglements</strong></th>
-											<td><strong><a><?= number_format($reglementsFournisseurManager->sommeReglementFournisseurByIdProjet($idProjet), 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
-										</tr>
-										<tr>
-											<th><strong>Solde</strong></th>
-											<td><strong><a><?= number_format($sommeLivraisons-$reglementsFournisseurManager->sommeReglementFournisseurByIdProjet($idProjet), 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
 										</tr>		
 									</thead>
 								</table>	

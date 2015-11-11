@@ -4,6 +4,8 @@ class ContratEmploye{
 	//attributes
 	private $_id;
 	private $_dateContrat;
+    private $_prixUnitaire;
+    private $_nombreUnites;
 	private $_total;
 	private $_employe;
 	private $_idProjet;
@@ -34,6 +36,14 @@ class ContratEmploye{
 		$this->_dateContrat = $dateContrat;
    	}
 
+    public function setPrixUnitaire($prixUnitaire){
+        $this->_prixUnitaire = $prixUnitaire;
+    }
+    
+    public function setNombreUnites($nombreUnites){
+        $this->_nombreUnites = $nombreUnites;
+    }
+    
 	public function setTotal($total){
 		$this->_total = $total;
    	}
@@ -61,6 +71,14 @@ class ContratEmploye{
 	public function dateContrat(){
 		return $this->_dateContrat;
    	}
+
+    public function prixUnitaire(){
+        return $this->_prixUnitaire;
+    }
+    
+    public function nombreUnites(){
+        return $this->_nombreUnites;
+    }
 
 	public function total(){
 		return $this->_total;

@@ -10,11 +10,12 @@ class FournisseurManager{
     
     //CRUD operations
     public function add(Fournisseur $fournisseur){
-        $query = $this->_db->prepare('INSERT INTO t_fournisseur (nom, adresse, email, telephone1, 
+        $query = $this->_db->prepare('INSERT INTO t_fournisseur (nom, societe,adresse, email, telephone1, 
          fax, dateCreation, code, nature)
-        VALUES (:nom, :adresse, :email, :telephone1, :fax, :dateCreation, :code, :nature)') 
+        VALUES (:nom, :societe, :adresse, :email, :telephone1, :fax, :dateCreation, :code, :nature)') 
         or die(print_r($this->_db->errorInfo()));
         $query->bindValue(':nom', $fournisseur->nom());
+        $query->bindValue(':societe', $fournisseur->societe());
         $query->bindValue(':adresse', $fournisseur->adresse());
         $query->bindValue(':email', $fournisseur->email());
         $query->bindValue(':telephone1', $fournisseur->telephone1());
@@ -27,10 +28,11 @@ class FournisseurManager{
     }
     
     public function update(Fournisseur $fournisseur){
-        $query = $this->_db->prepare('UPDATE t_fournisseur SET nom=:nom, adresse=:adresse,
-        email=:email, telephone1=:telephone1, nature=:nature, fax=:fax 
+        $query = $this->_db->prepare('UPDATE t_fournisseur SET nom=:nom, societe=:societe,
+        adresse=:adresse, email=:email, telephone1=:telephone1, nature=:nature, fax=:fax 
         WHERE id=:id') or die(print_r($this->_db->errorInfo()));
         $query->bindValue(':nom', $fournisseur->nom());
+        $query->bindValue(':societe', $fournisseur->societe());
         $query->bindValue(':adresse', $fournisseur->adresse());
         $query->bindValue(':email', $fournisseur->email());
         $query->bindValue(':telephone1', $fournisseur->telephone1());

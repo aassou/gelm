@@ -28,6 +28,8 @@
     	if($action == "add"){
         if( !empty($_POST['employe']) ){
 			$dateContrat = htmlentities($_POST['dateContrat']);
+            $nombreUnites = htmlentities($_POST['nombreUnites']);
+            $prixUnitaire = htmlentities($_POST['prixUnitaire']);
 			$total = htmlentities($_POST['total']);
 			$employe = htmlentities($_POST['employe']);
 			$idProjet = htmlentities($_POST['idProjet']);
@@ -36,6 +38,8 @@
             //create object
             $contratEmploye = new ContratEmploye(array(
 				'dateContrat' => $dateContrat,
+				'nombreUnites' => $nombreUnites,
+				'prixUnitaire' => $prixUnitaire,
 				'total' => $total,
 				'employe' => $employe,
 				'idProjet' => $idProjet,
@@ -58,11 +62,15 @@
         $idContratEmploye = htmlentities($_POST['idContratEmploye']);
         if(!empty($_POST['employe'])){
             $dateContrat = htmlentities($_POST['dateContrat']);
+            $nombreUnites = htmlentities($_POST['nombreUnites']);
+            $prixUnitaire = htmlentities($_POST['prixUnitaire']);
             $total = htmlentities($_POST['total']);
             $employe = htmlentities($_POST['employe']);
             $contratEmploye = new ContratEmploye(array(
 				'id' => $idContratEmploye,
 				'dateContrat' => $dateContrat,
+				'nombreUnites' => $nombreUnites,
+                'prixUnitaire' => $prixUnitaire,
 				'total' => $total,
 				'employe' => $employe,
 				'idProjet' => $idProjet,

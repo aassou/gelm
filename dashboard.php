@@ -18,14 +18,14 @@
 		$mailsManager = new MailManager($pdo);
 		//$notesClientsManager = new NotesClientManager($pdo);
 		$projetManager = new ProjetManager($pdo);
-		/*$contratManager = new ContratManager($pdo);
+		$contratManager = new ContratManager($pdo);
 		$clientManager = new ClientManager($pdo);
 		$livraisonsManager = new LivraisonManager($pdo);
-		$fournisseursManager = new FournisseurManager($pdo);*/
+		$fournisseursManager = new FournisseurManager($pdo);
 		$caisseEntreesManager = new CaisseEntreesManager($pdo);
 		$caisseSortiesManager = new CaisseSortiesManager($pdo);
 		$contratManager = new ContratManager($pdo);		
-		//$operationsManager = new OperationManager($pdo);
+	    $operationsManager = new OperationManager($pdo);
 		//classes and vars
 		//users number
 		$projetNumber = ($projetManager->getProjetsNumber());
@@ -34,10 +34,10 @@
 		$mailsNumberToday = $mailsManager->getMailsNumberToday();
 		$mailsToday = $mailsManager->getMailsToday();
 		$contrats = $contratManager->getContratByNote();
-		//$clientWeek = $clientManager->getClientsWeek();
+		$clientWeek = $clientManager->getClientsWeek();
 		//$clientNumberWeek = $clientManager->getClientsNumberWeek();
 		//$livraisonsNumber = $livraisonsManager->getLivraisonNumber();
-		//$livraisonsWeek = $livraisonsManager->getLivraisonsWeek();
+		$livraisonsWeek = $livraisonsManager->getLivraisonsWeek();
 		//$livraisonsNumberWeek = $livraisonsManager->getLivraisonsNumberWeek();
 		//$operationsNumberWeek = $operationsManager->getOperationNumberWeek();
 ?>
@@ -250,23 +250,23 @@
 										<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
 											<ul class="feeds">
 												<?php
-												//foreach($livraisonsWeek as $livraison){
+												foreach($livraisonsWeek as $livraison){
 												?>
 												<li>
 													<div class="col1">
 														<div class="cont">
 															<div class="cont-col1">
 																<div class="desc">	
-																	<strong>Fournisseur</strong> : <?php //echo $fournisseursManager->getFournisseurById($livraison->idFournisseur())->nom() ?><br>
-																	<strong>Projet</strong> : <?php //echo $projetName = $projetManager->getProjetById($livraison->idProjet())->nom(); ?><br>
-																	<a href="livraison.php?codeLivraison=<?php //echo $livraison->code() ?>" target="_blank">
-																		<strong>Livraison</strong> : <?php //echo $livraison->id() ?>
+																	<strong>Fournisseur</strong> : <?php echo $fournisseursManager->getFournisseurById($livraison->idFournisseur())->nom() ?><br>
+																	<strong>Projet</strong> : <?php echo $projetName = $projetManager->getProjetById($livraison->idProjet())->nom(); ?><br>
+																	<a href="livraison.php?codeLivraison=<?php echo $livraison->code() ?>" target="_blank">
+																		<strong>Livraison</strong> : <?php echo $livraison->id() ?>
 																	</a><br>
 																	<strong>Détails</strong> : <br>
-																	&nbsp;&nbsp;<a>Désignation</a> : <?php //echo $livraison->designation(); ?><br>  
-																	&nbsp;&nbsp;<a>Quantité</a> : <?php //echo $livraison->quantite(); ?><br>
-																	&nbsp;&nbsp;<a>Prix unitaire</a> : <?php //echo $livraison->prixUnitaire(); ?><br>
-																	&nbsp;&nbsp;<a>Total</a> : <?php //echo $livraison->prixUnitaire()*$livraison->quantite(); ?><br>
+																	&nbsp;&nbsp;<a>Désignation</a> : <?php echo $livraison->designation(); ?><br>  
+																	&nbsp;&nbsp;<a>Quantité</a> : <?php echo $livraison->quantite(); ?><br>
+																	&nbsp;&nbsp;<a>Prix unitaire</a> : <?php echo $livraison->prixUnitaire(); ?><br>
+																	&nbsp;&nbsp;<a>Total</a> : <?php echo $livraison->prixUnitaire()*$livraison->quantite(); ?><br>
 																	<br>
 																</div>
 															</div>
@@ -274,13 +274,13 @@
 													</div>
 													<div class="col2">
 														<div class="date">
-															<?php //echo $livraison->dateLivraison() ?>
+															<?php echo $livraison->dateLivraison() ?>
 														</div>
 													</div>
 												</li>
 												<hr>
 												<?php 
-												//}
+												}
 												?>
 											</ul>
 										</div>
@@ -289,25 +289,25 @@
 										<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
 											<ul class="feeds">
 												<?php
-												//foreach($clientWeek as $client){
-													//$contrats = $contratManager->getContratsByIdClient($client->id());
+												foreach($clientWeek as $client){
+													$contrats = $contratManager->getContratsByIdClient($client->id());
 												?>
 												<li>
 													<div class="col1">
 														<div class="cont">
 															<div class="cont-col1">
 																<div class="desc">	
-																	<strong>Client</strong> : <?php //echo $client->nom() ?><br>
+																	<strong>Client</strong> : <?php echo $client->nom() ?><br>
 																	<?php
-																	//foreach($contrats as $contrat){
+																	foreach($contrats as $contrat){
 																	?>
-																	<a href="contrat.php?codeContrat=<?php //echo $contrat->code() ?>" target="_blank">
-																		<strong>Contrat</strong> : <?php //echo $contrat->id() ?>
+																	<a href="contrat.php?codeContrat=<?php echo $contrat->code() ?>" target="_blank">
+																		<strong>Contrat</strong> : <?php echo $contrat->id() ?>
 																	</a><br>
-																	<strong>Projet</strong> : <?php //echo $projetName = $projetManager->getProjetById($contrat->idProjet())->nom(); ?>
+																	<strong>Projet</strong> : <?php echo $projetName = $projetManager->getProjetById($contrat->idProjet())->nom(); ?>
 																	<br>
 																	<?php
-																	//}
+																	}
 																	?>
 																</div>
 															</div>
@@ -315,13 +315,13 @@
 													</div>
 													<div class="col2">
 														<div class="date">
-															<?php //echo $client->created() ?>
+															<?php echo $client->created() ?>
 														</div>
 													</div>
 												</li>
 												<hr>
 												<?php 
-												//}
+											     }
 												?>
 											</ul>
 										</div>
