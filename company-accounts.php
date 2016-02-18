@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ){
     	//classManagers
     	$societeManager = new SocieteManager($pdo);
     	if(isset($_GET['idSociete']) and 
@@ -99,6 +99,12 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
+					    <?php
+                        if ( 
+                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                            $_SESSION['userMerlaTrav']->profil() == "manager"
+                            ) { 
+                        ?> 
 						<div class="row-fluid">
 							<div class="pull-right">
 								<a class="btn green" href="#addSocieteCompteBancaire" data-toggle="modal">
@@ -106,6 +112,9 @@
 								</a>	
 							</div>
 						</div>
+						<?php
+                        } 
+                        ?> 
 						<!-- addSocieteCompte box begin-->
 						<div id="addSocieteCompteBancaire" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -177,15 +186,26 @@
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
-												        <li>																
+												        <li>						
+												            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?> 										
 												        	<a href="#updateCompte<?= $compte->id();?>" data-toggle="modal" data-id="<?= $compte->id(); ?>">
 																Modifier
 															</a>
-															<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
+															<?php 
+                                                            }
+															if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) { 
+															    ?>
 															<a href="#deleteCompte<?= $compte->id() ?>" data-toggle="modal" data-id="<?= $compte->id() ?>">
 																Supprimer
 															</a>
-															<?php } ?>
+															<?php 
+                                                            } 
+                                                            ?>
 												        </li>
 												    </ul>
 												</div>
@@ -303,9 +323,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

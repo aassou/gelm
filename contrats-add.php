@@ -15,6 +15,7 @@
     session_start();
     if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
     	$idProjet = 0;
+        $idSociete = 0;
     	$projetManager = new ProjetManager($pdo);
 		$clientManager = new ClientManager($pdo);
 		if((isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId())){
@@ -169,7 +170,7 @@
                                     </div>
                                     <legend>Informations Contrat :</legend>
                                     <div class="row-fluid">
-                                       <div class="span4">
+                                       <div class="span3">
                                           <div class="control-group">
                                              <label class="control-label" for="dateCreation">Date de création</label>
                                              <div class="controls">
@@ -180,7 +181,18 @@
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="span4">
+									   <div class="span3">
+                                          <div class="control-group">
+                                             <label class="control-label" for="dateRetour">Date de Fin</label>
+                                             <div class="controls">
+                                                <div class="input-append date date-picker" data-date="" data-date-format="yyyy-mm-dd">
+				                                    <input name="dateRetour" id="dateRetour" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+				                                    <span class="add-on"><i class="icon-calendar"></i></span>
+				                                 </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="span3">
                                           <div class="control-group">
                                              <label class="control-label">Type du bien</label>
                                              <div class="controls">
@@ -203,7 +215,7 @@
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="span4 hidenBlock">
+                                       <div class="span3 hidenBlock">
                                           <div class="control-group">
                                              <div class="controls">
                                              	<label class="control-label" for="" id="nomBienLabel"></label>
@@ -286,7 +298,7 @@
                                     <div class="form-actions">
                                     	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>">
                                     	<input type="hidden" id="idSociete" name="idSociete" value="<?= $idSociete ?>">
-                                    	<a href="contrats-list.php?idProjet=<?= $idProjet ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
+                                    	<a href="contrats-list.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
                                        <button type="submit" class="btn blue">Terminer <i class="icon-ok m-icon-white"></i></button>
                                     </div>
                                  </form>

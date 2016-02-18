@@ -67,7 +67,7 @@ class ChargesTerrainManager{
 	public function getChargesTerrains(){
 		$chargesTerrains = array();
 		$query = $this->_db->query('SELECT * FROM t_chargesterrain
-		ORDER BY id DESC');
+		ORDER BY dateOperation DESC');
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
 			$chargesTerrains[] = new ChargesTerrain($data);
 		}

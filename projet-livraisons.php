@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ){
     	//classManagers
     	$projetManager = new ProjetManager($pdo);
 		$fournisseurManager = new FournisseurManager($pdo);
@@ -56,14 +56,20 @@
 					$titreLivraison ="Liste des livraisons du fournisseur <strong>".$fournisseurManager->getFournisseurById($fournisseur)->nom()."</strong>";
 					//get the sum of livraisons details using livraisons ids (idFournisseur)
 					$livraisonsIds = $livraisonManager->getLivraisonIdsByIdFournisseur($fournisseur);
+					$livraisonsIdsNonPaye = $livraisonManager->getLivraisonIdsByIdFournisseurNonPaye($fournisseur);
 					$sommeDetailsLivraisons = 0;
+					$sommeDetailsLivraisonsNonPaye = 0;
 					foreach($livraisonsIds as $idl){
 						$sommeDetailsLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($idl);
 					}	
+					foreach($livraisonsIdsNonPaye as $idl){
+						$sommeDetailsLivraisonsNonPaye += $livraisonDetailManager->getTotalLivraisonByIdLivraison($idl);
+					}
 					$totalReglement = $reglementsFournisseurManager->sommeReglementFournisseursByIdFournisseur($fournisseur);
 					$totalLivraison = 
 					$livraisonManager->getTotalLivraisonsIdFournisseur($fournisseur)+
 					$sommeDetailsLivraisons;
+					$totalLivraisonNonPaye = $sommeDetailsLivraisonsNonPaye;
 					$hrefLivraisonBilanPrintController = "controller/LivraisonBilanPrintController.php?idProjet=".$idProjet;
 				}
 			}
@@ -177,6 +183,12 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
+					    <?php
+                        if ( 
+                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                            $_SESSION['userMerlaTrav']->profil() == "manager"
+                            ) { 
+                        ?>
 						<div class="row-fluid add-portfolio">
 							<div class="pull-left">
 								<!--a href="livraison-add.php" class="btn icn-only blue"-->
@@ -190,6 +202,9 @@
 								</a>
 							</div>
 						</div>
+						<?php
+                        }
+                        ?>
 						<!-- addFournisseur box begin-->
 						<div id="addFournisseur" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -348,6 +363,12 @@
 										</div>
 									</div>
 									<div class="control-group">
+                                        <label class="control-label">Tout imprimer</label>
+                                        <div class="controls">
+                                            <input type="checkbox" name="printAll" />
+                                        </div>
+                                    </div>
+									<div class="control-group">
 										<div class="controls">
 											<input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
 											<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />	
@@ -463,9 +484,9 @@
 										<tr>
 											<th>Fournisseur</th>
 											<th class="hidden-phone">Date Livraison</th>
-											<th class="hidden-phone">Libelle</th>
-											<th class="hidden-phone">Nombre d'articles</th>
-											<th class="hidden-phone">Total</th>
+											<th>Libelle</th>
+											<th class="hidden-phone">Nbr.Articles</th>
+											<th>Total</th>
 											<th class="hidden-phone">Status</th>
 											<th class="hidden-phone">Copie BL</th>
 										</tr>
@@ -473,9 +494,13 @@
 									<tbody>
 										<?php
 										$sommeLivraisons = 0;
+										$sommeLivraisonsNonPaye = 0;
 										if($livraisonNumber != 0){
 										foreach($livraisons as $livraison){
 										    $sommeLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id());
+											if ( $livraison->status() == utf8_decode("Non Pay&eacute;")) {
+												$sommeLivraisonsNonPaye += $livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id());
+											}
 											$btnColor = "";
 											if($livraison->status()==utf8_decode("Pay&eacute;")){
 												$colorRow = 'style="background-color:#d2ffca"';
@@ -493,7 +518,7 @@
 										<tr class="livraisons">
 											<td>
 												<div class="btn-group">
-												    <a style="width: 100px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
+												    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
 												    	<?= $fournisseurManager->getFournisseurById($livraison->idFournisseur())->nom() ?> 
 												        <i class="icon-angle-down"></i>
 												    </a>
@@ -504,13 +529,26 @@
 												        	</a>
 												        	<a href="controller/LivraisonDetailPrintController.php?idLivraison=<?= $livraison->id() ?>" target="_blank">
 												        		Imprimer Détails Livraison
-												        	</a>											
+												        	</a>				
+												        	<?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>							
 												        	<a href="#updateLivraison<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
 																Modifier
 															</a>
+															<?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?>
 															<a href="#deleteLivraison<?= $livraison->id() ?>" data-toggle="modal" data-id="<?= $livraison->id() ?>">
 																Supprimer
 															</a>
+															<?php
+                                                            } 
+                                                            ?>
 												        </li>
 												    </ul>
 												</div>
@@ -520,17 +558,42 @@
 											<td class="hidden-phone"><?= $livraisonDetailManager->getNombreArticleLivraisonByIdLivraison($livraison->id()) ?></td>
 											<td class="hidden-phone"><?= number_format($livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id()), 2, ',', ' ') ?></td>
 											<td class="hidden-phone">
+											    <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>      
 												<a class="btn mini <?= $btnColor ?> " href="#updateStatus<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
 													<?= $livraison->status() ?>
 												</a>	
+												<?php
+                                                }
+                                                else {
+                                                ?>
+                                                <a class="btn mini <?= $btnColor ?> ">
+                                                    <?= $livraison->status() ?>
+                                                </a>
+                                                <?php    
+                                                } 
+                                                ?>      
 											</td>
 											<td>
 												<a class="fancybox-button btn mini" data-rel="fancybox-button" title="<?= $livraison->libelle() ?>" href="<?= $livraison->url() ?>">
 													<i class="icon-zoom-in"></i>	
 												</a>
+												<?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?> 
 												<a class="btn mini blue" href="#updateCopieBL<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
 													<i class=" icon-refresh"></i>	
 												</a>
+												 <?php
+                                                } 
+                                                ?> 
 											</td>
 										</tr>
 										<!-- updateStatus box begin-->
@@ -685,6 +748,10 @@
 											<th><strong>Total Livraisons</strong></th>
 											<td><strong><a><?= number_format($sommeLivraisons, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
 										</tr>		
+										<tr>
+											<th><strong>Total Livraisons Non Payé</strong></th>
+											<td><strong><a><?= number_format($sommeLivraisonsNonPaye, 2, ',', ' ') ?></a>&nbsp;DH</strong></td>
+										</tr>		
 									</thead>
 								</table>	
 							</div>
@@ -777,9 +844,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

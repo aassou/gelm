@@ -27,7 +27,7 @@ $adresse = $contrat->adresse();
 $cin = $contrat->cin();
 $telephone = $contrat->telephone();
 $dateContrat = date('d-m-Y', strtotime($contrat->dateCreation()));
-
+$email = "";
 ob_start();
 ?>
 <style type="text/css">
@@ -124,11 +124,7 @@ ob_start();
 		</tr>
 		<tr>
 			<td class="head3">Téléphone 1</td>
-			<td class="body3">: <?= $telephone1 ?></td>
-		</tr>
-		<tr>
-			<td class="head3">Téléphone 2</td>
-			<td class="body3">: <?= $telephone2 ?></td>
+			<td class="body3">: <?= $telephone ?></td>
 		</tr>
 		<tr>
 			<td class="head3">Email</td>

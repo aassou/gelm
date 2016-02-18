@@ -187,6 +187,17 @@
                                              </div>
                                           </div>
                                        </div>
+									   <div class="span3">
+                                          <div class="control-group">
+                                             <label class="control-label" for="dateRetour">Date de Fin</label>
+                                             <div class="controls">
+                                                <div class="input-append date date-picker" data-date="" data-date-format="yyyy-mm-dd">
+				                                    <input name="dateRetour" id="dateRetour" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= $contrat->dateRetour() ?>" />
+				                                    <span class="add-on"><i class="icon-calendar"></i></span>
+				                                 </div>
+                                             </div>
+                                          </div>
+                                       </div>
                                        <?php
                                        $localSelected = "";
 									   $maisonSelected = "";

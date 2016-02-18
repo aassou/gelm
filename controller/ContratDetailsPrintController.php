@@ -54,7 +54,7 @@ ob_start();
 <page backtop="15mm" backbottom="20mm" backleft="10mm" backright="10mm">
     <img src="../assets/img/logo_company.png" style="width: 110px" />
     <br><br><br><br>
-    <h1>Détails Contrat <?= strtoupper($contratEmploye->employe()) ?></h1>
+    <h1>Détails Contrat <?= $contratEmploye->employe() ?></h1>
     <h3>Projet <?= ucfirst($projet->nom()) ?></h3>
     <p>Imprimé le <?= date('d/m/Y') ?> | <?= date('h:i') ?> </p>
     <br><br>

@@ -101,6 +101,33 @@ class ChequeManager{
 		$query->closeCursor();
 		return $cheques;
 	}
+
+    public function getChequesWeek(){
+        $cheques = array();
+        $query = $this->_db->query(
+        'SELECT * FROM t_cheque
+        WHERE dateCheque BETWEEN SUBDATE(CURDATE(), 7) AND CURDATE() 
+        ORDER BY id DESC');
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $cheques[] = new Cheque($data);
+        }
+        $query->closeCursor();
+        return $cheques;
+    }
+
+    public function getChequesMonth(){
+        $cheques = array();
+        $query = $this->_db->query(
+        'SELECT * FROM t_cheque
+        WHERE dateCheque BETWEEN SUBDATE(CURDATE(), 31) AND CURDATE() 
+        ORDER BY id DESC');
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $cheques[] = new Cheque($data);
+        }
+        $query->closeCursor();
+        return $cheques;
+    }
+
 	public function getChequesByLimits($begin, $end){
 		$cheques = array();
 		$query = $this->_db->query('SELECT * FROM t_cheque

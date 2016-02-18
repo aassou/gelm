@@ -74,6 +74,39 @@ class MaisonManager{
 		$query->closeCursor();
 		return $nombre;
 	}
+	
+	public function getNumberBienDisbonibleByIdProjet($idProjet){
+    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombre FROM t_maison WHERE idProjet=:idProjet AND status="Disponible" ')
+		or die (print_r($this->_db->errorInfo()));
+		$query->bindValue(':idProjet', $idProjet);
+		$query->execute();		
+		$data = $query->fetch(PDO::FETCH_ASSOC);
+		$nombre = $data['nombre']; 
+		$query->closeCursor();
+		return $nombre;
+	}
+	
+	public function getNumberBienVenduByIdProjet($idProjet){
+    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombre FROM t_maison WHERE idProjet=:idProjet AND status="Vendu" ')
+		or die (print_r($this->_db->errorInfo()));
+		$query->bindValue(':idProjet', $idProjet);
+		$query->execute();		
+		$data = $query->fetch(PDO::FETCH_ASSOC);
+		$nombre = $data['nombre']; 
+		$query->closeCursor();
+		return $nombre;
+	}
+	
+	public function getNumberBienPromesseVenteByIdProjet($idProjet){
+    	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombre FROM t_maison WHERE idProjet=:idProjet AND status="Promesse de Vente" ')
+		or die (print_r($this->_db->errorInfo()));
+		$query->bindValue(':idProjet', $idProjet);
+		$query->execute();		
+		$data = $query->fetch(PDO::FETCH_ASSOC);
+		$nombre = $data['nombre']; 
+		$query->closeCursor();
+		return $nombre;
+	}
 
 	public function getMaisonById($id){
     	$query = $this->_db->prepare(' SELECT * FROM t_maison

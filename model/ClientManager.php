@@ -163,6 +163,17 @@ class ClientManager{
         $query->closeCursor();
         return $clients;
     }
+	
+	public function getClientsMonth(){
+        $clients = array();
+        $query = $this->_db->query('SELECT * FROM t_client WHERE created BETWEEN SUBDATE(CURDATE(),31) AND CURDATE()');
+        //get result
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $clients[] = new Client($data);
+        }
+        $query->closeCursor();
+        return $clients;
+    }
     
 	public function getClientByCode($code){
         $query = $this->_db->prepare('SELECT * FROM t_client WHERE code=:code');

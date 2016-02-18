@@ -16,6 +16,7 @@
     $idProjet = $_POST['idProjet'];
     $idSociete = $_POST['idSociete'];
 	$idContrat  = $_POST['idContrat'];
+    $status = $_POST['status'];
 	//create classes managers
 	$contratManager = new ContratManager($pdo);
 	$locauxManager = new LocauxManager($pdo);
@@ -41,8 +42,8 @@
 		}
 	}
 	else if( $contrat->typeBien()=="localCommercial" ){
-		if( $locauxManager->getLocauxById($contrat->idBien())->status()=="Diponible" ){
-			$locauxManager->updateStatus("Vendu", $contrat->idBien());
+		if( $locauxManager->getLocauxById($contrat->idBien())->status() == "Disponible" ){
+			$locauxManager->updateStatus($status, $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
 			header($redirectLink);
@@ -55,7 +56,7 @@
 		}
 	}
 	else if( $contrat->typeBien()=="maison" ){
-		if( $maisonManager->getMaisonById($contrat->idBien())->status()=="Diponible" ){
+		if( $maisonManager->getMaisonById($contrat->idBien())->status()=="Disponible" ){
 			$maisonManager->updateStatus("Vendu", $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
@@ -69,7 +70,7 @@
 		}
 	}
 	else if( $contrat->typeBien()=="terrain" ){
-		if( $terrainManager->getTerrainById($contrat->idBien())->status()=="Diponible" ){
+		if( $terrainManager->getTerrainById($contrat->idBien())->status()=="Disponible" ){
 			$terrainManager->updateStatus("Vendu", $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";

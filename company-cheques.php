@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ) {
     	//classManagers
     	$societeManager = new SocieteManager($pdo);
     	if(isset($_GET['idSociete']) and 
@@ -115,6 +115,12 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
+					    <?php
+                        if ( 
+                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                            $_SESSION['userMerlaTrav']->profil() == "manager"
+                            ) { 
+                        ?>  
 						<div class="row-fluid">
 							<div class="pull-right">
 								<a href="#addCheque" data-toggle="modal" class="btn green">
@@ -122,7 +128,9 @@
 								</a>
 							</div>
 						</div>
-						
+						<?php
+                        } 
+                        ?>  
 						<!-- addCheque box begin-->
 						<div id="addCheque" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -321,15 +329,25 @@
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
-												        <li>																
+												        <li>				
+												            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>  												
 												        	<a href="#updateCheque<?= $cheque->id();?>" data-toggle="modal" data-id="<?= $cheque->id(); ?>">
 																Modifier
 															</a>
-															<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
+															<?php 
+                                                            }
+															if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) { ?>
 															<a href="#deleteCheque<?= $cheque->id() ?>" data-toggle="modal" data-id="<?= $cheque->id() ?>">
 																Supprimer
 															</a>
-															<?php } ?>
+															<?php 
+                                                            } 
+                                                            ?>
 												        </li>
 												    </ul>
 												</div>
@@ -341,17 +359,42 @@
 											<td class="hidden"><?= date('Y', strtotime($cheque->dateCheque())) ?></td>
 											<td class="hidden-phone"><?= number_format($cheque->montant(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone">
+											    <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>  
 												<a class="btn mini <?= $btnColor ?> " href="#updateStatut<?= $cheque->id();?>" data-toggle="modal" data-id="<?= $cheque->id(); ?>">
 													<?= $cheque->statut() ?>
-												</a>	
+												</a>
+												<?php
+                                                }
+                                                else {
+                                                ?>    
+                                                <a class="btn mini <?= $btnColor ?> ">
+                                                    <?= $cheque->statut() ?>
+                                                </a>    
+                                                <?php    
+                                                } 
+                                                ?>  	
 											</td>
 											<td>
 												<a class="fancybox-button btn mini" data-rel="fancybox-button" title="<?= $cheque->numero() ?>" href="<?= $cheque->url() ?>">
 													<i class="icon-zoom-in"></i>	
 												</a>
+												<?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?> 
 												<a class="btn mini blue" href="#updateCopieCheque<?= $cheque->id();?>" data-toggle="modal" data-id="<?= $cheque->id(); ?>">
 													<i class=" icon-refresh"></i>	
 												</a>
+												<?php
+                                                } 
+                                                ?> 
 											</td>
 										</tr>
 										<!-- updateCheque box begin-->
@@ -625,9 +668,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

@@ -4,6 +4,7 @@ class Contrat{
     //attributes
 	private $_id;
 	private $_dateCreation;
+	private $_dateRetour;
 	private $_prixVente;
 	private $_avance;
     private $_taille;
@@ -42,6 +43,10 @@ class Contrat{
     
     public function setDateCreation($dateCreation){
         $this->_dateCreation = $dateCreation;
+    }
+	
+	public function setDateRetour($dateRetour){
+        $this->_dateRetour = $dateRetour;
     }
     
     public function setPrixVente($prixVente){
@@ -108,6 +113,10 @@ class Contrat{
     
     public function dateCreation(){
         return $this->_dateCreation;
+    }
+	
+	public function dateRetour(){
+        return $this->_dateRetour;
     }
     
     public function prixVente(){

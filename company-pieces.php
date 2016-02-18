@@ -12,7 +12,7 @@
     include('config.php');  
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ) {
     	//les sources
     	$idSociete = 0;
     	$societeManager = new SocieteManager($pdo);
@@ -132,9 +132,18 @@
 											<a href="javascript:;" class="remove"></a>
 										</div>
 									</div>
+									<?php
+                                    if ( 
+                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                        ) { 
+                                    ?> 
 									<a href="#addSocieteDocs<?= $societe->id() ?>" class="btn green" data-toggle="modal" data-id="<?= $societe->id(); ?>">
 										<i class="icon-paper-clip"></i> Ajouter un document
 									</a>
+									<?php
+                                    } 
+                                    ?> 
 									<br><br>
 									<!-- addSocieteDocs box begin-->
 									<div id="addSocieteDocs<?= $societe->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -181,7 +190,7 @@
 													</div>
 												</a>
 											</div>
-											<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
+											<?php if($_SESSION['userMerlaTrav']->profil()=="admin"){ ?>
 											<a class="btn mini red" href="#deletePiece<?= $pieces->id() ?>" data-toggle="modal" data-id="<?= $pieces->id() ?>">
 												Supprimer
 											</a>
@@ -271,9 +280,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

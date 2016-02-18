@@ -26,6 +26,7 @@
 		$caisseSortiesManager = new CaisseSortiesManager($pdo);
 		$contratManager = new ContratManager($pdo);		
 	    $operationsManager = new OperationManager($pdo);
+        $chequeManager = new ChequeManager($pdo);
 		//classes and vars
 		//users number
 		$projetNumber = ($projetManager->getProjetsNumber());
@@ -34,7 +35,9 @@
 		$mailsNumberToday = $mailsManager->getMailsNumberToday();
 		$mailsToday = $mailsManager->getMailsToday();
 		$contrats = $contratManager->getContratByNote();
-		$clientWeek = $clientManager->getClientsWeek();
+		$contratsMonth = $contratManager->getContratMonth();
+        $chequesWeek = $chequeManager->getChequesWeek();
+        $chequesMonth = $chequeManager->getChequesMonth();
 		//$clientNumberWeek = $clientManager->getClientsNumberWeek();
 		//$livraisonsNumber = $livraisonsManager->getLivraisonNumber();
 		$livraisonsWeek = $livraisonsManager->getLivraisonsWeek();
@@ -241,9 +244,9 @@
 							<div class="tabbable tabbable-custom">
 								<ul class="nav nav-tabs">
 									<li class="active"><a href="#tab_1_1" data-toggle="tab">Les livraisons de la semaine</a></li>
-									<li><a href="#tab_1_2" data-toggle="tab">Les clients de la semaine</a></li>
+									<li><a href="#tab_1_2" data-toggle="tab">Les clients du Mois</a></li>
 									<li><a href="#tab_1_3" data-toggle="tab">Notes des clients</a></li>
-									<li><a href="#tab_1_4" data-toggle="tab">Les messages d'aujourd'hui</a></li>
+									<li><a href="#tab_1_4" data-toggle="tab">Les chèques de la Semaine</a></li>
 								</ul>
 								<div class="tab-content">
 									<div class="tab-pane active" id="tab_1_1">
@@ -251,6 +254,7 @@
 											<ul class="feeds">
 												<?php
 												foreach($livraisonsWeek as $livraison){
+													$idSociete = $projetManager->getProjetById($livraison->idProjet())->idSociete();
 												?>
 												<li>
 													<div class="col1">
@@ -259,14 +263,9 @@
 																<div class="desc">	
 																	<strong>Fournisseur</strong> : <?php echo $fournisseursManager->getFournisseurById($livraison->idFournisseur())->nom() ?><br>
 																	<strong>Projet</strong> : <?php echo $projetName = $projetManager->getProjetById($livraison->idProjet())->nom(); ?><br>
-																	<a href="livraison.php?codeLivraison=<?php echo $livraison->code() ?>" target="_blank">
-																		<strong>Livraison</strong> : <?php echo $livraison->id() ?>
-																	</a><br>
-																	<strong>Détails</strong> : <br>
-																	&nbsp;&nbsp;<a>Désignation</a> : <?php echo $livraison->designation(); ?><br>  
-																	&nbsp;&nbsp;<a>Quantité</a> : <?php echo $livraison->quantite(); ?><br>
-																	&nbsp;&nbsp;<a>Prix unitaire</a> : <?php echo $livraison->prixUnitaire(); ?><br>
-																	&nbsp;&nbsp;<a>Total</a> : <?php echo $livraison->prixUnitaire()*$livraison->quantite(); ?><br>
+																	<a href="livraisons-details.php?codeLivraison=<?php echo $livraison->code() ?>&idProjet=<?= $livraison->idProjet()?>&idSociete=<?= $idSociete ?>" target="_blank">
+																		<strong>Livraison</strong> : <?php echo $livraison->libelle() ?>
+																	</a>
 																	<br>
 																</div>
 															</div>
@@ -289,33 +288,26 @@
 										<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
 											<ul class="feeds">
 												<?php
-												foreach($clientWeek as $client){
-													$contrats = $contratManager->getContratsByIdClient($client->id());
+												foreach($contratsMonth as $contrat){
 												?>
 												<li>
 													<div class="col1">
 														<div class="cont">
 															<div class="cont-col1">
 																<div class="desc">	
-																	<strong>Client</strong> : <?php echo $client->nom() ?><br>
-																	<?php
-																	foreach($contrats as $contrat){
-																	?>
-																	<a href="contrat.php?codeContrat=<?php echo $contrat->code() ?>" target="_blank">
+																	<strong>Client</strong> : <?php echo $contrat->nomClient() ?><br>
+																	<a href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>" target="_blank">
 																		<strong>Contrat</strong> : <?php echo $contrat->id() ?>
 																	</a><br>
 																	<strong>Projet</strong> : <?php echo $projetName = $projetManager->getProjetById($contrat->idProjet())->nom(); ?>
 																	<br>
-																	<?php
-																	}
-																	?>
 																</div>
 															</div>
 														</div>
 													</div>
 													<div class="col2">
 														<div class="date">
-															<?php echo $client->created() ?>
+															<?php echo $contrat->dateCreation() ?>
 														</div>
 													</div>
 												</li>
@@ -410,18 +402,21 @@
 									<div class="tab-pane" id="tab_1_4">
 										<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
 											<?php
-											foreach($mailsToday as $mail){
+											foreach($chequesWeek as $cheque){
 											?>
 											<div class="row-fluid">
 												<div class="span6 user-info">
-													<img alt="" src="assets/img/avatar.png" />
 													<div class="details">
 														<div>
-															<a href="#"><?= $mail->sender() ?></a> 
+															
 														</div>
 														<div>
-															<strong>Message : </strong><?= $mail->content() ?><br>
-															<strong>Envoyé Aujourd'hui à : </strong><?= date('h:i', strtotime($mail->created())) ?>
+														    <strong>N°&nbsp;Chèque : </strong><a><?= $cheque->numero() ?></a><br> 
+														    <strong>Compte Bancaire : </strong><a><?= $cheque->compteBancaire() ?></a><br>
+															<strong>Date : </strong><a><?= date('d/m/Y', strtotime($cheque->dateCheque())) ?></a><br>
+															<strong>Désignation : </strong><a><?= $cheque->designationSociete() ?> / <?= $cheque->designationPersonne() ?></a><br>
+															<strong>Montant : </strong><a><?= number_format($cheque->montant(), '2', ',', ' ') ?>&nbsp;DH</a><br>
+															<strong>Status : </strong><a><?= $cheque->statut() ?></a><br>
 														</div>
 													</div>
 												</div>

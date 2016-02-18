@@ -335,6 +335,18 @@ class LivraisonManager{
         return $ids;
 	}
 	
+	public function getLivraisonIdsByIdFournisseurNonPaye($idFournisseur){
+		$ids = array();
+		$query = $this->_db->prepare(' SELECT id FROM t_livraison 
+		WHERE idFournisseur=:idFournisseur AND status="Non Pay&eacute;"');
+		$query->bindValue(':idFournisseur', $idFournisseur);
+		$query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+	}
+	
 	public function getLivraisonNonPayesIdsByIdFournisseur($idFournisseur){
 		$ids = array();
 		$query = $this->_db->prepare(' SELECT id FROM t_livraison 

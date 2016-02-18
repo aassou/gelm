@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ) {
     	//les sources
     	$fournisseursManager = new FournisseurManager($pdo);
 		$fournisseurNumber = $fournisseursManager->getFournisseurNumbers();
@@ -104,6 +104,12 @@
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row-fluid">
 					<div class="span12">
+					    <?php
+                        if ( 
+                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                            $_SESSION['userMerlaTrav']->profil() == "manager"
+                            ) { 
+                        ?> 
 						<div class="row-fluid">
 							<div class="pull-right">
 								<!--a href="livraison-add.php" class="btn icn-only blue"-->
@@ -112,6 +118,9 @@
 								</a>
 							</div>
 						</div>
+						<?php
+                        } 
+                        ?> 
 						<!-- addFournisseur box begin-->
 						<div id="addFournisseur" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -250,12 +259,25 @@
 												        	<!--a href="">
 												        		Réglement
 												        	</a-->
+												        	<?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?> 
 												        	<a href="#update<?= $fournisseur->id();?>" data-toggle="modal" data-id="<?= $fournisseur->id(); ?>">
 																Modifier
 															</a>
+															<?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?> 
 															<a href="#delete<?= $fournisseur->id();?>" data-toggle="modal" data-id="<?= $fournisseur->id(); ?>">
 																Supprimer
 															</a>
+															<?php
+                                                            } 
+                                                            ?> 
 												        </li>
 												    </ul>
 												</div>
@@ -422,9 +444,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

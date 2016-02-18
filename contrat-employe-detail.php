@@ -13,7 +13,7 @@
     include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ) {
         //les sources
         $idProjet = 0;
         $idSociete = $_GET['idSociete'];
@@ -116,7 +116,16 @@
                     <div class="span12">
                         <div><!--div class="row-fluid add-portfolio"-->
                             <div class="pull-right">
+                                <?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?>
                                 <a href="#addPaiement" data-toggle="modal" class="btn icn-only green">Nouveau Paiement <i class="icon-plus-sign"></i></a>
+                                <?php
+                                } 
+                                ?>
                                 <a href="controller/ContratDetailsPrintController.php?idContratEmploye=<?= $contratEmploye->id() ?>&idProjet=<?= $projet->id() ?>" class="btn icn-only blue"><i class="icon-print"></i> Détails Contrat</a>
                             </div>
                         </div>
@@ -215,12 +224,25 @@
                                                             <a target="_blank" href="controller/PaiementEmployePrintController.php?idContrat=<?= $contrat->id() ?>">
                                                                 Imprimer Contrat
                                                             </a>
+                                                            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>
                                                             <a href="#updateContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
                                                                 Modifier
                                                             </a>
+                                                            <?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?>
                                                             <a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
                                                                 Supprimer
                                                             </a>
+                                                            <?php
+                                                            }
+                                                            ?>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -401,9 +423,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-    header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

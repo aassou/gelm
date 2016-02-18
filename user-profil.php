@@ -12,7 +12,7 @@
     include('config.php');  
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ) {
     	//les sources
     	$usersManager = new UserManager($pdo);
 		$users = $usersManager->getUsers(); 
@@ -72,12 +72,7 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a>Accueil</a> 
-								<i class="icon-angle-right"></i>
-							</li>
-							<li>
-								<i class="icon-briefcase"></i>
-								<a>Gestion des utilisateurs</a>
+								<a href="dashboard.php">Accueil</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li><a>Mon Compte</a></li>
@@ -229,9 +224,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

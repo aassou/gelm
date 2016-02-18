@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ){
     	//classManagers
     	$projetManager = new ProjetManager($pdo);
 		$fournisseurManager = new FournisseurManager($pdo);
@@ -238,9 +238,18 @@
 								</div>
 							<!-- END Livraison Form -->
 							<!-- BEGIN Ajouter Article Link -->
+							 <?php
+                            if ( 
+                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                ) { 
+                            ?> 
 							<a class="btn green" href="#addArticle" data-toggle="modal" data-id="">
 								Ajouter un article <i class="icon-plus "></i>
 							</a>
+							 <?php
+                            } 
+                            ?> 
 							<!-- END Ajouter Article Link -->
 							<!-- BEGIN addArticle Box -->
 							<div id="addArticle" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -293,8 +302,17 @@
 								<th>Quantité</th>
 								<th>Prix.Uni</th>
 								<th>Total</th>
+								<?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?> 
 								<th>Modifier</th>
 								<th>Supprimer</th>
+								<?php
+                                } 
+                                ?> 
 							</tr>
 							<?php
 							foreach($livraisonDetail as $detail){
@@ -312,6 +330,12 @@
 								<td>
 									<?= number_format($detail->prixUnitaire() * $detail->quantite(), '2', ',', ' ') ?>&nbsp;DH
 								</td>
+								<?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?> 
 								<td class="hidden-phone">
 									<a class="btn mini green" href="#updateLivraisonDetail<?= $detail->id();?>" data-toggle="modal" data-id="<? $detail->id(); ?>">
 										<i class="icon-refresh "></i>
@@ -322,6 +346,9 @@
 										<i class="icon-remove "></i>
 									</a>
 								</td>
+								<?php
+                                } 
+                                ?> 
 							</tr>
 							<!-- BEGIN  updateLivraisonDetail BOX -->
 							<div id="updateLivraisonDetail<?= $detail->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -462,9 +489,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

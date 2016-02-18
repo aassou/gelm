@@ -13,14 +13,16 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ){
     	//classManagers
     	$projetManager = new ProjetManager($pdo);
 		$appartementManager = new AppartementManager($pdo);
 		$locauxManager = new LocauxManager($pdo);
 		$maisonManager = new MaisonManager($pdo);
 		$terrainManager = new TerrainManager($pdo);
+		$contratManager = new ContratManager($pdo);
 		//
+		$type = "";
 		if(isset($_GET['idProjet']) and 
     	($_GET['idProjet'] >=1 and $_GET['idProjet'] <= $projetManager->getLastId()) ){
     		$idProjet = $_GET['idProjet'];
@@ -34,6 +36,19 @@
 			$locauxNumber = $locauxManager->getNumberBienByIdProjet($idProjet);
 			$maisonNumber = $maisonManager->getNumberBienByIdProjet($idProjet);
 			$terrainNumber = $terrainManager->getNumberBienByIdProjet($idProjet);
+			//GET biens number
+			//appartements
+			$appartementDisponibleNumber = $appartementManager->getNumberBienDisbonibleByIdProjet($idProjet);
+			$appartementVenduNumber = $appartementManager->getNumberBienVenduByIdProjet($idProjet);
+			$appartementPromesseVenteNumber = $appartementManager->getNumberBienPromesseVenteByIdProjet($idProjet);
+			//maisons
+			$maisonDisponibleNumber = $maisonManager->getNumberBienDisbonibleByIdProjet($idProjet);
+			$maisonVenduNumber = $maisonManager->getNumberBienVenduByIdProjet($idProjet);
+			$maisonPromesseVenteNumber = $maisonManager->getNumberBienPromesseVenteByIdProjet($idProjet);
+			//locaux
+			$locauxDisponibleNumber = $locauxManager->getNumberBienDisbonibleByIdProjet($idProjet);
+			$locauxVenduNumber = $locauxManager->getNumberBienVenduByIdProjet($idProjet);
+			$locauxPromesseVenteNumber = $locauxManager->getNumberBienPromesseVenteByIdProjet($idProjet);
             //Get Bien Type
             $type = $_GET['type'];
 		}		
@@ -300,8 +315,20 @@
 						 ?>
 						<div class="row-fluid">
 						    <div class="pull-right">
+						        <?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?> 
                                 <a href="#addCharge" data-toggle="modal" class="btn green">
                                     Nouveau Bien Immobilière <i class="icon-plus-sign "></i>
+                                </a>
+                                <?php
+                                } 
+                                ?>
+                                <a href="controller/BienBilanPrintController.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>&type=<?= $type ?>" data-toggle="modal" class="btn blue">
+                                    <i class="icon-print"></i> Imprimer Liste
                                 </a>
                             </div>
 						    <div class="input-box autocomplet_container">
@@ -319,7 +346,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
@@ -344,13 +371,26 @@
 													        <i class="icon-angle-down"></i>
 													    </a>
 													    <ul class="dropdown-menu">
-													        <li>																
+													        <li>			
+													            <?php
+                                                                if ( 
+                                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                    ) { 
+                                                                ?>													
 													        	<a href="#updateTerrain<?= $terrain->id();?>" data-toggle="modal" data-id="<?= $terrain->id(); ?>">
 																	Modifier
 																</a>
+																<?php
+                                                                }
+                                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                                ?>
 																<a href="#deleteTerrain<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>">
 																	Supprimer
 																</a>
+																<?php
+                                                                }
+                                                                ?>
 													        </li>
 													    </ul>
 													</div>
@@ -360,23 +400,23 @@
 												<td class="hidden-phone"><?= $terrain->superficie() ?></td>
 												<td class="hidden-phone"><?= $terrain->surplan() ?></td>
 												<td class="hidden-phone"><?= $terrain->emplacement() ?></td>
-												<td class="hidden-phone">
+												<td class="hidden-phone"><a class="btn mini green"><?= $terrain->status() ?></a>
 													<?php 
-													if($terrain->status()=="Disponible"){ 
+													//if($terrain->status()=="Disponible"){ 
 													?>
-														<a href="#updateTerrainStatus<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>" class="btn mini green"><?= $terrain->status() ?></a>
+														<!--a href="#updateTerrainStatus<?php //$terrain->id() ?>" data-toggle="modal" data-id="<?php //$terrain->id() ?>" class="btn mini green"><?php //$terrain->status() ?></a-->
 													<?php 
-													}
-													else if($terrain->status()=="Vendu"){
+													//}
+													//else if($terrain->status()=="Vendu"){
 													?>
-														<a href="#updateTerrainStatus<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>" class="btn mini red"><?= $terrain->status() ?></a>
+														<!--a href="#updateTerrainStatus<?php //$terrain->id() ?>" data-toggle="modal" data-id="<?php //$terrain->id() ?>" class="btn mini red"><?php //$terrain->status() ?></a-->
 													<?php 
-													}
-													else{
+													//}
+													//else{
 													?>
-														<a href="#updateTerrainStatus<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>" class="btn mini purple"><?= $terrain->status() ?></a>
+														<!--a href="#updateTerrainStatus<?php //$terrain->id() ?>" data-toggle="modal" data-id="<?php //$terrain->id() ?>" class="btn mini purple"><?php //$terrain->status() ?></a-->
 													<?php 
-													}
+													//}
 													?>
 												</td>
 											</tr>
@@ -502,7 +542,7 @@
 											?>
 										</tbody>
 									</table>
-								</div><!-- END DIV SCROLLER -->	
+								<!--/div>< END DIV SCROLLER -->	
 							</div>
 						</div>
 						<?php } ?>
@@ -513,22 +553,28 @@
 						<?php if($type == "appartements"){ ?>
 						<div class="portlet box red biens">
 							<div class="portlet-title">
-								<h4>Les Appartements</h4>
+								<h4>Les Appartements : 
+									Nb Appt <?= $appartementNumber ?>
+									, Disponible <?= $appartementDisponibleNumber ?>
+									, Promesse de vente <?= $appartementPromesseVenteNumber ?>
+									, Vendu <?= $appartementVenduNumber ?></h4>
 								<div class="tools">
 									<a href="javascript:;" class="collapse"></a>
 									<a href="javascript:;" class="remove"></a>
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 									<thead>
 										<tr>
 											<th class="hidden-phone">Code</th>
+											<th class="hidden-phone"></th>
 											<th class="hidden-phone">Titre</th>
 											<th class="hidden-phone">Prix</th>
 											<th class="hidden-phone">Superficie</th>
 											<th class="hidden-phone">Surplan</th>
+											<th class="hidden-phone">DateFin</th>
 											<th class="hidden-phone">Niveau</th>
 											<th class="hidden-phone">Façade</th>
 											<th class="hidden-phone">Nombre Pièces</th>
@@ -538,52 +584,91 @@
 									<tbody>
 										<?php
 										foreach($appartements as $appartement){
+											$client = "";
+											$status = "";
+											$dateRetour = "";
+											if($appartement->status()=="Disponible"){ 
+												$status ='<a href="#updateAppartementStatus'.$appartement->id().'" data-toggle="modal" data-id="'.$appartement->id().'" class="btn mini green">'.$appartement->status().'</a>';
+											}
+											else if($appartement->status()=="Vendu"){
+												$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($appartement->id(), 'appartement');
+												if ( $contratNumber > 0 ) {
+													$contrat = $contratManager->getContratByIdBienByTypeBien($appartement->id(), 'appartement');
+													$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+													$dateRetour = $contrat->dateRetour();
+												}
+												$status = '<a href="#updateAppartementStatus'.$appartement->id().'" data-toggle="modal" data-id="'.$appartement->id().'" class="btn mini red">'.$appartement->status().'</a>';
+											}
+											else{
+												$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($appartement->id(), 'appartement');
+												if ( $contratNumber > 0 ) {
+													$contrat = $contratManager->getContratByIdBienByTypeBien($appartement->id(), 'appartement');
+													$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+													$dateRetour = $contrat->dateRetour();
+												}
+												$status = '<a href="#updateAppartementStatus'.$appartement->id().'" data-toggle="modal" data-id="'.$appartement->id().'" class="btn mini blue">'.$appartement->status().'</a>';
+											}
 										?>		
 										<tr class="biens">
 											<td>
 												<div class="btn-group">
-												    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
+												    <a style="width: 100px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
 												    	<?= $appartement->nom() ?> 
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
-												        <li>																
+												        <li>										
+												            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>      						
 												        	<a href="#updateAppartement<?= $appartement->id();?>" data-toggle="modal" data-id="<?= $appartement->id(); ?>">
 																Modifier
 															</a>
+															<?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?>
 															<a href="#deleteAppartement<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>">
 																Supprimer
 															</a>
+															<?php
+                                                            }
+                                                            ?>
 												        </li>
 												    </ul>
 												</div>
 											</td>
+											<td class="hidden-phone"><?= $client ?></td>
 											<td class="hidden-phone"><?= $appartement->numeroTitre() ?></td>
 											<td class="hidden-phone"><?= number_format($appartement->prix(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone"><?= $appartement->superficie() ?></td>
 											<td class="hidden-phone"><?= $appartement->surplan() ?></td>
+											<td class="hidden-phone"><?= $dateRetour ?></td>
 											<td class="hidden-phone"><?= $appartement->niveau() ?></td>
 											<td class="hidden-phone"><?= $appartement->facade() ?></td>
 											<td class="hidden-phone"><?= $appartement->nombrePiece() ?></td>
 											<td class="hidden-phone">
-												<?php 
-													if($appartement->status()=="Disponible"){ 
-													?>
-														<a href="#updateAppartementStatus<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>" class="btn mini green"><?= $appartement->status() ?></a>
-													<?php 
-													}
-													else if($appartement->status()=="Vendu"){
-													?>
-														<a href="#updateAppartementStatus<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>" class="btn mini red"><?= $appartement->status() ?></a>
-													<?php 
-													}
-													else{
-													?>
-														<a href="#updateAppartementStatus<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>" class="btn mini blue"><?= $appartement->status() ?></a>
-													<?php 
-													}
-													?>
-											</td>
+											    <?php 
+											    if ( $appartement->status() =="Disponible" ) {
+											    ?>
+											    <a class="btn mini green"><?= $appartement->status() ?></a>
+											    <?php     
+											    }
+                                                else if ( $appartement->status() =="Vendu" ){
+											    ?>
+											    <a class="btn mini red"><?= $appartement->status() ?></a>
+											    <?php     
+                                                }
+                                                else {
+                                                ?>
+                                                <a class="btn mini blue"><?= $appartement->status() ?></a>
+                                                <?php     
+                                                }
+                                                ?>
+										    </td>
 										</tr>
 										<!-- updateAppartementStatus box begin-->
 											<div id="updateAppartementStatus<?= $appartement->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -741,7 +826,7 @@
 										?>
 									</tbody>
 								</table>
-								</div><!-- END DIV SCROLLER -->
+								<!--/div>< END DIV SCROLLER -->
 							</div>
 						</div>
 						<?php } ?>
@@ -752,22 +837,27 @@
 						<?php if($type == "locaux"){ ?>
 						<div class="portlet box blue biens">
 							<div class="portlet-title">
-								<h4>Les Locaux Commerciaux</h4>
+								<h4>Les Locaux Commerciaux : Nb Locaux <?= $locauxNumber ?>
+									, Disponible <?= $locauxDisponibleNumber ?>
+									, Promesse de vente <?= $locauxPromesseVenteNumber ?>
+									, Vendu <?= $locauxVenduNumber ?></h4>
 								<div class="tools">
 									<a href="javascript:;" class="collapse"></a>
 									<a href="javascript:;" class="remove"></a>
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
 												<th class="hidden-phone">Code</th>
+												<th class="hidden-phone"></th>
 												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
 												<th class="hidden-phone">Surplan</th>
+												<th class="hidden-phone">DateFin</th>
 												<th class="hidden-phone">Façade</th>
 												<th class="hidden-phone">Mezzanine</th>
 												<th class="hidden-phone">Status</th>
@@ -776,51 +866,90 @@
 										<tbody>
 											<?php
 											foreach($locaux as $local){
+												$client = "";
+												$status = "";
+												$dateRetour = "";
+												if($local->status()=="Disponible"){ 
+													$status ='<a href="#updateLocalStatus'.$local->id().'" data-toggle="modal" data-id="'.$local->id().'" class="btn mini green">'.$local->status().'</a>';
+												}
+												else if($local->status()=="Vendu"){
+													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($local->id(), 'localCommercial');
+													if ( $contratNumber > 0 ) {
+														$contrat = $contratManager->getContratByIdBienByTypeBien($local->id(), 'localCommercial');
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$dateRetour = $contrat->dateRetour();
+													}
+													$status = '<a href="#updateLocalStatus'.$local->id().'" data-toggle="modal" data-id="'.$local->id().'" class="btn mini red">'.$local->status().'</a>';
+												}
+												else{
+													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($local->id(), 'localCommercial');
+													if ( $contratNumber > 0 ) {
+														$contrat = $contratManager->getContratByIdBienByTypeBien($local->id(), 'localCommercial');
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$dateRetour = $contrat->dateRetour();
+													}
+													$status = '<a href="#updateLocalStatus'.$local->id().'" data-toggle="modal" data-id="'.$local->id().'" class="btn mini blue">'.$local->status().'</a>';
+												}
 											?>		
 											<tr class="biens">
 												<td>
 													<div class="btn-group">
-													    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
+													    <a style="width: 100px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
 													    	<?= $local->nom() ?> 
 													        <i class="icon-angle-down"></i>
 													    </a>
 													    <ul class="dropdown-menu">
-													        <li>																
+													        <li>						
+													            <?php
+                                                                if ( 
+                                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                    ) { 
+                                                                ?>   										
 													        	<a href="#updateLocal<?= $local->id();?>" data-toggle="modal" data-id="<?= $local->id(); ?>">
 																	Modifier
 																</a>
+																<?php
+                                                                }
+                                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                                ?>   
 																<a href="#deleteLocal<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>">
 																	Supprimer
 																</a>
+																<?php
+                                                                }
+                                                                ?>   
 													        </li>
 													    </ul>
 													</div>
 												</td>
+												<td class="hidden-phone"><?= $client ?></td>
 												<td class="hidden-phone"><?= $local->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($local->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $local->superficie() ?></td>
 												<td class="hidden-phone"><?= $local->surplan() ?></td>
+												<td class="hidden-phone"><?= $dateRetour ?></td>
 												<td class="hidden-phone"><?= $local->facade() ?></td>
 												<td class="hidden-phone"><?= $local->mezzanine() ?></td>
 												<td class="hidden-phone">
-													<?php 
-													if($local->status()=="Disponible"){ 
-													?>
-														<a href="#updateLocalStatus<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>" class="btn mini green"><?= $local->status() ?></a>
-													<?php 
-													}
-													else if($local->status()=="Vendu"){
-													?>
-														<a href="#updateLocalStatus<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>" class="btn mini red"><?= $local->status() ?></a>
-													<?php 
-													}
-													else{
-													?>
-														<a href="#updateLocalStatus<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>" class="btn mini blue"><?= $local->status() ?></a>
-													<?php 
-													}
-													?>
-												</td>
+                                                <?php 
+                                                if ( $local->status() =="Disponible" ) {
+                                                ?>
+                                                <a class="btn mini green"><?= $local->status() ?></a>
+                                                <?php     
+                                                }
+                                                else if ( $local->status() =="Vendu" ){
+                                                ?>
+                                                <a class="btn mini red"><?= $local->status() ?></a>
+                                                <?php     
+                                                }
+                                                else {
+                                                ?>
+                                                <a class="btn mini blue"><?= $local->status() ?></a>
+                                                <?php     
+                                                }
+                                                ?>
+                                                </td>
 											</tr>
 											<!-- updateLocalStatus box begin-->
 											<div id="updateLocalStatus<?= $local->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -955,7 +1084,7 @@
 											?>
 										</tbody>
 									</table>
-								</div><!-- END DIV SCROLLER -->
+								<!--/div>< END DIV SCROLLER -->
 							</div>
 						</div>
 						<?php } ?>
@@ -966,22 +1095,27 @@
 						<?php if($type == "maisons"){ ?>
 						<div class="portlet box green biens">
 							<div class="portlet-title">
-								<h4>Les Maisons</h4>
+								<h4>Les Maisons : Nb Maisons <?= $maisonNumber ?>
+									, Disponible <?= $maisonDisponibleNumber ?>
+									, Promesse de vente <?= $maisonPromesseVenteNumber ?>
+									, Vendu <?= $maisonVenduNumber ?></h4>
 								<div class="tools">
 									<a href="javascript:;" class="collapse"></a>
 									<a href="javascript:;" class="remove"></a>
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
                                                 <th class="hidden-phone">Code</th>
+												<th class="hidden-phone"></th>
                                                 <th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
 												<th class="hidden-phone">Superficie</th>
 												<th class="hidden-phone">Surplan</th>
+												<th class="hidden-phone">DateFin</th>
 												<th class="hidden-phone">Etages</th>
 												<th class="hidden-phone">Emplacement</th>
 												<th class="hidden-phone">Status</th>
@@ -990,6 +1124,30 @@
 										<tbody>
 											<?php
 											foreach($maisons as $maison){
+												$client = "";
+												$status = "";
+												$dateRetour = "";
+												if($maison->status()=="Disponible"){ 
+													$status ='<a href="#updateMaisonStatus'.$maison->id().'" data-toggle="modal" data-id="'.$maison->id().'" class="btn mini green">'.$maison->status().'</a>';
+												}
+												else if($maison->status()=="Vendu"){
+													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($maison->id(), 'maison');
+													if ( $contratNumber > 0 ) {
+														$contrat = $contratManager->getContratByIdBienByTypeBien($maison->id(), 'maison');
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$dateRetour = $contrat->dateRetour();
+													}
+													$status = '<a href="#updateMaisonStatus'.$maison->id().'" data-toggle="modal" data-id="'.$maison->id().'" class="btn mini red">'.$maison->status().'</a>';
+												}
+												else{
+													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($maison->id(), 'maison');
+													if ( $contratNumber > 0 ) {
+														$contrat = $contratManager->getContratByIdBienByTypeBien($maison->id(), 'maison');
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$dateRetour = $contrat->dateRetour();
+													}
+													$status = '<a href="#updateMaisonStatus'.$maison->id().'" data-toggle="modal" data-id="'.$maison->id().'" class="btn mini blue">'.$maison->status().'</a>';
+												}
 											?>		
 											<tr class="biens">
 												<td>
@@ -999,41 +1157,56 @@
 													        <i class="icon-angle-down"></i>
 													    </a>
 													    <ul class="dropdown-menu">
-													        <li>																
+													        <li>				
+													            <?php
+                                                                if ( 
+                                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                    ) { 
+                                                                ?>   												
 													        	<a href="#updateMaison<?= $maison->id();?>" data-toggle="modal" data-id="<?= $maison->id(); ?>">
 																	Modifier
 																</a>
+																<?php
+                                                                }
+                                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                                ?>   
 																<a href="#deleteMaison<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>">
 																	Supprimer
 																</a>
+																<?php
+                                                                }
+                                                                ?>   
 													        </li>
 													    </ul>
 													</div>
 												</td>
+												<td class="hidden-phone"><?= $client ?></td>
 												<td class="hidden-phone"><?= $maison->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($maison->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $maison->superficie() ?></td>
 												<td class="hidden-phone"><?= $maison->surplan() ?></td>
+												<td class="hidden-phone"><?= $dateRetour ?></td>
 												<td class="hidden-phone"><?= $maison->nombreEtage() ?></td>
 												<td class="hidden-phone"><?= $maison->emplacement() ?></td>
 												<td class="hidden-phone">
-													<?php 
-													if($maison->status()=="Disponible"){ 
-													?>
-														<a href="#updateMaisonStatus<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>" class="btn mini green"><?= $maison->status() ?></a>
-													<?php 
-													}
-													else if($maison->status()=="Vendu"){
-													?>
-														<a href="#updateMaisonStatus<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>" class="btn mini red"><?= $maison->status() ?></a>
-													<?php 
-													}
-													else{
-													?>
-														<a href="#updateMaisonStatus<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>" class="btn mini blue"><?= $maison->status() ?></a>
-													<?php 
-													}
-													?>
+												<?php 
+                                                if ( $maison->status() =="Disponible" ) {
+                                                ?>
+                                                <a class="btn mini green"><?= $maison->status() ?></a>
+                                                <?php     
+                                                }
+                                                else if ( $maison->status() =="Vendu" ){
+                                                ?>
+                                                <a class="btn mini red"><?= $maison->status() ?></a>
+                                                <?php     
+                                                }
+                                                else {
+                                                ?>
+                                                <a class="btn mini blue"><?= $maison->status() ?></a>
+                                                <?php     
+                                                }
+                                                ?>
 												</td>
 											</tr>
 											<!-- updateMaisonStatus box begin-->
@@ -1172,7 +1345,7 @@
 											?>
 										</tbody>
 									</table>
-								</div><!-- END DIV SCROLLER -->
+								<!--/div>< END DIV SCROLLER -->
 							</div>
 						</div>
 						<?php } ?>

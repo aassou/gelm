@@ -13,7 +13,7 @@
     include ('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ) {
         //les sources
         $projetsManager = new ProjetManager($pdo);
         $societeManager = new SocieteManager($pdo);
@@ -168,9 +168,18 @@
                                 <div class="pull-left">
                                     <span><?= $projetNumber ?> Projets en Total</span>
                                 </div>
+                                <?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?>
                                 <div class="pull-right">
                                     <a href="#addProjet" data-toggle="modal" class="btn icn-only green">Ajouter un projet <i class="icon-plus-sign m-icon-white"></i></a>                                   
                                 </div>
+                                <?php
+                                } 
+                                ?>
                             </div>
                             <!--end add-portfolio-->
                             <!-- addProjet box begin-->
@@ -286,17 +295,28 @@
                                                     <!--a href="#addProjetDocs<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Ajouter un document
                                                     </a-->
+                                                    <?php
+                                                    if ( 
+                                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                        ) { 
+                                                    ?>
                                                     <a href="#updateStatusProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Changer Status
                                                     </a>
+                                                    <?php
+                                                    }
+                                                    if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                    ?>
                                                     <a href="#updateProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Modifier
                                                     </a>
-                                                    <?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
                                                     <a href="#deleteProjet<?= $projet->id() ?>" data-toggle="modal" data-id="<?= $projet->id(); ?>">
                                                         Supprimer
                                                     </a>
-                                                    <?php } ?>
+                                                    <?php 
+                                                    } 
+                                                    ?>
                                                 </li>
                                             </ul>
                                         </div>
@@ -573,9 +593,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-    header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

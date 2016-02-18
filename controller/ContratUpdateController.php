@@ -26,6 +26,7 @@
 		$telephone = htmlentities($_POST['telephone']);
 		$adresse = htmlentities($_POST['adresse']);
 		$dateCreation = htmlentities($_POST['dateCreation']);
+		$dateRetour = htmlentities($_POST['dateRetour']);
 		$avance = htmlentities($_POST['avance']);
         $taille = htmlentities($_POST['taille']);
 		$prixNegocie = htmlentities($_POST['prixNegocie']);
@@ -69,6 +70,7 @@
 			'adresse' => $adresse,
 			'telephone' => $telephone,
 			'dateCreation' => $dateCreation,
+			'dateRetour' => $dateRetour,
 			'prixVente' => $prixNegocie, 
 			'avance' => $avance,
 			'taille' => $taille,

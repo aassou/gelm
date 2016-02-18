@@ -67,7 +67,7 @@ class ChargesFinitionManager{
 	public function getChargesFinitions(){
 		$chargesFinitions = array();
 		$query = $this->_db->query('SELECT * FROM t_chargesfinition
-		ORDER BY id DESC');
+		ORDER BY dateOperation DESC');
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
 			$chargesFinitions[] = new ChargesFinition($data);
 		}

@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ){
     	//classManagers
     	$projetManager = new ProjetManager($pdo);
 		$chargesTerrainManager = new ChargesTerrainManager($pdo);
@@ -193,9 +193,18 @@
 								<a target="_blank" href="#printCharges" class="btn black" data-toggle="modal">
 									<i class="icon-print"></i>&nbsp;Les Charges
 								</a>
+								<?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?>   
 								<a href="#addCharge" data-toggle="modal" class="btn green pull-right">
                                     Nouvelle Charge <i class="icon-plus-sign "></i>
                                 </a>
+                                <?php
+                                } 
+                                ?>   
 						    </div>
 						</div>
 						<!-- printCharge box begin-->
@@ -299,7 +308,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 									<thead>
 										<tr>
@@ -322,13 +331,26 @@
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
-												        <li>																
+												        <li>				
+												            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>   												
 												        	<a href="#updateChargeTerrain<?= $terrain->id();?>" data-toggle="modal" data-id="<?= $terrain->id(); ?>">
 																Modifier
 															</a>
+															<?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?>   
 															<a href="#deleteChargeTerrain<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>">
 																Supprimer
 															</a>
+															<?php
+                                                            } 
+                                                            ?>   
 												        </li>
 												    </ul>
 												</div>
@@ -427,7 +449,7 @@
 										</tr>
 									</tbody>
 								</table>
-								</div><!-- END DIV SCROLLER -->	
+								<!--/div>< END DIV SCROLLER -->	
 							</div>
 						</div>
 						<?php } ?>
@@ -445,7 +467,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 									<thead>
 										<tr>
@@ -468,13 +490,26 @@
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
-												        <li>																
+												        <li>					
+												            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>   											
 												        	<a href="#updateChargeConstruction<?= $construction->id();?>" data-toggle="modal" data-id="<?= $construction->id(); ?>">
 																Modifier
 															</a>
+															<?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?>   
 															<a href="#deleteChargeConstruction<?= $construction->id() ?>" data-toggle="modal" data-id="<?= $construction->id() ?>">
 																Supprimer
 															</a>
+															<?php
+                                                            }
+                                                            ?>   
 												        </li>
 												    </ul>
 												</div>
@@ -580,7 +615,7 @@
 										</tr>
 									</tbody>
 								</table>
-								</div><!-- END DIV SCROLLER -->
+								<!--/div>< END DIV SCROLLER -->
 							</div>
 						</div>
 						<?php } ?>
@@ -598,7 +633,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
+								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
 								<table class="table table-striped table-bordered table-advance table-hover">
 									<thead>
 										<tr>
@@ -621,13 +656,26 @@
 												        <i class="icon-angle-down"></i>
 												    </a>
 												    <ul class="dropdown-menu">
-												        <li>																
+												        <li>				
+												            <?php
+                                                            if ( 
+                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                                ) { 
+                                                            ?>   												
 												        	<a href="#updateChargeFinition<?= $finition->id();?>" data-toggle="modal" data-id="<?= $finition->id(); ?>">
 																Modifier
 															</a>
+															<?php
+                                                            }
+                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                            ?>   
 															<a href="#deleteChargeFinition<?= $finition->id() ?>" data-toggle="modal" data-id="<?= $finition->id() ?>">
 																Supprimer
 															</a>
+															<?php
+                                                            } 
+                                                            ?>   
 												        </li>
 												    </ul>
 												</div>
@@ -733,7 +781,7 @@
 										</tr>
 									</tbody>
 								</table>
-								</div><!-- END DIV SCROLLER -->
+								<!--/div>< END DIV SCROLLER -->
 							</div>
 						</div>
 						<?php } ?>

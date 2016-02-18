@@ -33,6 +33,7 @@
 			$noteClient = htmlentities($_POST['note']);
 			$typeBien = htmlentities($_POST['typeBien']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
+			$dateRetour = htmlentities($_POST['dateRetour']);
 			$idBien = htmlentities($_POST['bien']);
 			$avance = htmlentities($_POST['avance']);
             $taille = htmlentities($_POST['taille']);
@@ -45,9 +46,9 @@
 			}
 			$contratManager = new ContratManager($pdo);
 			$contrat = new Contrat(array('nomClient' => $nomClient, 'cin' => $cin, 'adresse' => $adresse,
-			'note' => $noteClient,'telephone' => $telephone, 'dateCreation' => $dateCreation, 'prixVente' => $prixNegocie, 
-			'avance' => $avance, 'taille' => $taille, 'modePaiement' => $modePaiement, 'idProjet' => $idProjet, 
-			'idBien' => $idBien, 'typeBien' => $typeBien, 'numeroCheque' => $numeroCheque));
+			'note' => $noteClient,'telephone' => $telephone, 'dateCreation' => $dateCreation, 'dateRetour' => $dateRetour, 
+			'prixVente' => $prixNegocie, 'avance' => $avance, 'taille' => $taille, 'modePaiement' => $modePaiement, 
+			'idProjet' => $idProjet, 'idBien' => $idBien, 'typeBien' => $typeBien, 'numeroCheque' => $numeroCheque));
 			$contratManager->add($contrat);
 			if($typeBien=="appartement"){
 				$appartementManager = new AppartementManager($pdo);

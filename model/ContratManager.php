@@ -132,6 +132,15 @@ class ContratManager{
         $query->closeCursor();
 	}
 	
+    public function hide($idContrat){
+        $query = $this->_db->prepare('UPDATE t_contrat SET status=:status WHERE id=:id') 
+        or die(print_r($this->_db->errorInfo()));
+        $query->bindValue(':id', $idContrat);
+        $query->bindValue(':status', 'hidden');
+        $query->execute();
+        $query->closeCursor();
+    }
+    
 	public function delete($idContrat){
 		$query = $this->_db->prepare('DELETE FROM t_contrat WHERE id=:idContrat')
 		or die(print_r($this->_db->errorInfo()));;
@@ -174,6 +183,26 @@ class ContratManager{
         return $data['contratNumbers'];
     }
     
+	public function getContratNumberByIdBienByTypeBien($idBien, $typeBien){
+		$query = $this->_db->prepare('SELECT COUNT(*) AS contratNumbers FROM t_contrat WHERE idBien=:idBien AND typeBien=:typeBien');
+		$query->bindValue(':idBien', $idBien);
+		$query->bindValue(':typeBien', $typeBien);
+		$query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $data['contratNumbers'];
+	}
+	
+	public function getContratByIdBienByTypeBien($idBien, $typeBien){
+		$query = $this->_db->prepare('SELECT * FROM t_contrat WHERE idBien=:idBien AND typeBien=:typeBien');
+		$query->bindValue(':idBien', $idBien);
+		$query->bindValue(':typeBien', $typeBien);
+		$query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return new Contrat($data);
+	}
+	
     public function getContratNumberToday(){
         $query = $this->_db->query('SELECT COUNT(*) AS contratNumbersToday FROM t_contrat WHERE dateCreation=CURDATE()');
         $data = $query->fetch(PDO::FETCH_ASSOC);
@@ -240,9 +269,21 @@ class ContratManager{
         return new Contrat($data);
     }
 
-    public function getContratsByIdProjet($idProjet, $begin, $end){
+    public function getContratsHiddenByIdProjet($idProjet, $begin, $end){
         $contrats = array();    
-        $query = $this->_db->prepare("SELECT * FROM t_contrat WHERE idProjet=:idProjet ORDER BY status, dateCreation LIMIT ".$begin.", ".$end);
+        $query = $this->_db->prepare("SELECT * FROM t_contrat WHERE idProjet=:idProjet AND status<>'hidden' ORDER BY status, dateCreation LIMIT ".$begin.", ".$end);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
+    }
+    
+    public function getContratsByIdProjetOnly($idProjet){
+        $contrats = array();    
+        $query = $this->_db->prepare("SELECT * FROM t_contrat WHERE idProjet=:idProjet ORDER BY status, dateCreation");
         $query->bindValue(':idProjet', $idProjet);
         $query->execute();
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
@@ -289,6 +330,17 @@ class ContratManager{
     public function getContratWeek(){
         $contrats = array();
         $query = $this->_db->query('SELECT c.prixVente, cl.nom FROM t_contrat c, t_client cl WHERE cl.id=c.idClient AND dateCreation BETWEEN SUBDATE(CURDATE(),7) AND CURDATE()');
+        //get result
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
+    }
+    
+    public function getContratMonth(){
+        $contrats = array();
+        $query = $this->_db->query('SELECT * FROM t_contrat WHERE dateCreation BETWEEN SUBDATE(CURDATE(),31) AND CURDATE()');
         //get result
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
             $contrats[] = new Contrat($data);

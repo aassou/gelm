@@ -30,22 +30,27 @@
 			$idFournisseur = htmlentities($_POST['idFournisseur']);
 			$livraisonNumber = $livraisonManager->getLivraisonsNumberByIdFournisseur($idFournisseur);
 			//if($livraisonNumber != 0){
-				$livraisons = $livraisonManager->getLivraisonsNonPayesByIdFournisseurByProjet($idFournisseur, $idProjet);
-				$titreLivraison ="Liste des Livraisons du Fournisseur "
-				.strtoupper($fournisseurManager->getFournisseurById($idFournisseur)->nom())
-				."<br>Projet: ".$projetManager->getProjetById($idProjet)->nom();
-				//get the sum of livraisons details using livraisons ids (idFournisseur)
-				$livraisonsIds = 
-				$livraisonManager->getLivraisonNonPayesIdsByIdFournisseurByIdProjet($idFournisseur, $idProjet);
-				$sommeDetailsLivraisons = 0;
-				foreach($livraisonsIds as $idl){
-					$sommeDetailsLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($idl);
-				}	
-				$totalReglement = $reglementsFournisseurManager->sommeReglementFournisseursByIdFournisseur($idFournisseur);
-				$totalLivraison = 
-				$livraisonManager->getSommeLivraisonsByIdProjetAndIdFournisseur($idProjet, $idFournisseur)+
-				$sommeDetailsLivraisons;
-				//$hrefLivraisonBilanPrintController = "controller/LivraisonBilanPrintController.php?idFournisseur=".$fournisseur;
+			$livraisons = $livraisonManager->getLivraisonsNonPayesByIdFournisseurByProjet($idFournisseur, $idProjet);
+            
+			$titreLivraison ="Liste des Livraisons du Fournisseur "
+			.strtoupper($fournisseurManager->getFournisseurById($idFournisseur)->nom())
+			."<br>Projet: ".$projetManager->getProjetById($idProjet)->nom();
+			//get the sum of livraisons details using livraisons ids (idFournisseur)
+			$livraisonsIds = 
+			$livraisonManager->getLivraisonNonPayesIdsByIdFournisseurByIdProjet($idFournisseur, $idProjet);
+			if ( isset($_POST['printAll']) and !empty($_POST['printAll']) ) {
+                $livraisons = $livraisonManager->getLivraisonsByIdFournisseurByProjet($idFournisseur, $idProjet);
+                $livraisonsIds = $livraisonManager->getLivraisonIdsByIdFournisseurIdProjet($idFournisseur, $idProjet);    
+            }
+			$sommeDetailsLivraisons = 0;
+			foreach($livraisonsIds as $idl){
+				$sommeDetailsLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($idl);
+			}	
+			$totalReglement = $reglementsFournisseurManager->sommeReglementFournisseursByIdFournisseur($idFournisseur);
+			$totalLivraison = 
+			$livraisonManager->getSommeLivraisonsByIdProjetAndIdFournisseur($idProjet, $idFournisseur)+
+			$sommeDetailsLivraisons;
+			//$hrefLivraisonBilanPrintController = "controller/LivraisonBilanPrintController.php?idFournisseur=".$fournisseur;
 			//}
 
 ob_start();
@@ -77,21 +82,29 @@ ob_start();
     <p>Imprimé le <?= date('d/m/Y') ?> | <?= date('h:i') ?> </p>
     <table>
 		<tr>
-			<th style="width: 20%">Date Livraison</th>
-			<th style="width: 20%">Libelle</th>
-			<th style="width: 20%">Nombre.Articles</th>
-			<th style="width: 20%">Status</th>
-			<th style="width: 20%">Total</th>
+			<th style="width: 15%">Date</th>
+			<th style="width: 15%">Libelle</th>
+			<th style="width: 45%">Designation</th>
+			<th style="width: 10%">Status</th>
+			<th style="width: 15%">Total</th>
 		</tr>
 		<?php
 		foreach($livraisons as $livraison){
+		    $detailsLivraison = $livraisonDetailManager->getLivraisonsDetailByIdLivraison($livraison->id());
 		?>		
 		<tr>
-			<td><?= date('d/m/Y', strtotime($livraison->dateLivraison())) ?></td>
-			<td><?= $livraison->libelle() ?></td>
-			<td><?= $livraisonDetailManager->getNombreArticleLivraisonByIdLivraison($livraison->id()) ?></td>
-			<td><?= $livraison->status() ?></td>
-			<td><?= number_format($livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id()), 2, ',', ' ') ?>&nbsp;DH</td>
+			<td style="width: 15%"><?= date('d/m/Y', strtotime($livraison->dateLivraison())) ?></td>
+			<td style="width: 15%"><?= $livraison->libelle() ?></td>
+			<td style="width: 45%">
+			    <?php
+			    //$livraisonDetailManager->getNombreArticleLivraisonByIdLivraison($livraison->id())
+			    foreach ($detailsLivraison as $detail) {
+			         echo $detail->designation()." - ";   
+			    } 
+			    ?>
+			</td>
+			<td style="width: 10%"><?= $livraison->status() ?></td>
+			<td style="width: 15%"><?= number_format($livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id()), 2, ',', ' ') ?>&nbsp;DH</td>
 		</tr>	
 		<?php
 		}//end of loop

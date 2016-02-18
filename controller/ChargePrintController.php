@@ -67,7 +67,7 @@ ob_start();
     <h2>Liste des Charges du <?= date('d/m/Y', strtotime($dateFrom)).' au '.date('d/m/Y', strtotime($dateTo)) ?> </h2>
     <p>Imprimé le <?= date('d/m/Y') ?> | <?= date('h:i') ?> </p>
     <br><br>
-    <table class="table table-striped table-bordered table-advance table-hover">
+    <table>
 		<tr>
 			<?php
 		    if(isset($_POST['terrain'])){
@@ -115,21 +115,21 @@ ob_start();
     <h3>Les Charges du Terrain</h3>
     <table>
 		<tr>
-			<th style="width:20%">Date Opération</th>
-			<th style="width:20%">Désignation</th>
+			<th style="width:15%">Date</th>
+			<th style="width:30%">Désignation</th>
 			<th style="width:20%">Bénéficiaire</th>
-			<th style="width:20%">Numéro Chèque</th>
+			<th style="width:15%">Numéro Chèque</th>
 			<th style="width:20%">Montant</th>
 		</tr>
 		<?php
 		foreach($chargesTerrainLastWeek as $terrain){
 		?>		
 		<tr>
-			<td><?= date('d/m/Y', strtotime($terrain->dateOperation())) ?></td>
-			<td><?= $terrain->designation() ?></td>
-			<td><?= $terrain->beneficiaire() ?></td>
-			<td><?= $terrain->numeroCheque() ?></td>
-			<td><?= number_format($terrain->montant(), 2, ' ', ',') ?>&nbsp;DH</td>
+			<td style="width:15%"><?= date('d/m/Y', strtotime($terrain->dateOperation())) ?></td>
+			<td style="width:30%"><?= $terrain->designation() ?></td>
+			<td style="width:20%"><?= $terrain->beneficiaire() ?></td>
+			<td style="width:15%"><?= $terrain->numeroCheque() ?></td>
+			<td style="width:20%"><?= number_format($terrain->montant(), 2, ' ', ',') ?>&nbsp;DH</td>
 		</tr>	
 		<?php
 		}//end of loop
@@ -155,11 +155,11 @@ ob_start();
 		foreach($chargesConstructionLastWeek as $construction){
 		?>		
 		<tr>
-			<td><?= date('d/m/Y', strtotime($construction->dateOperation())) ?></td>
-			<td><?= $construction->designation() ?></td>
-			<td><?= $construction->beneficiaire() ?></td>
-			<td><?= $construction->numeroCheque() ?></td>
-			<td><?= number_format($construction->montant(), 2, ' ', ',') ?>&nbsp;DH</td>
+			<td style="width:20%"><?= date('d/m/Y', strtotime($construction->dateOperation())) ?></td>
+			<td style="width:20%"><?= $construction->designation() ?></td>
+			<td style="width:20%"><?= $construction->beneficiaire() ?></td>
+			<td style="width:20%"><?= $construction->numeroCheque() ?></td>
+			<td style="width:20%"><?= number_format($construction->montant(), 2, ' ', ',') ?>&nbsp;DH</td>
 		</tr>	
 		<?php
 		}//end of loop
@@ -185,11 +185,11 @@ ob_start();
 		foreach($chargesFinitionLastWeek as $finition){
 		?>		
 		<tr>
-			<td><?= date('d/m/Y', strtotime($finition->dateOperation())) ?></td>
-			<td><?= $finition->designation() ?></td>
-			<td><?= $finition->beneficiaire() ?></td>
-			<td><?= $finition->numeroCheque() ?></td>
-			<td><?= number_format($finition->montant(), 2, ' ', ',') ?>&nbsp;DH</td>
+			<td style="width:20%"><?= date('d/m/Y', strtotime($finition->dateOperation())) ?></td>
+			<td style="width:20%"><?= $finition->designation() ?></td>
+			<td style="width:20%"><?= $finition->beneficiaire() ?></td>
+			<td style="width:20%"><?= $finition->numeroCheque() ?></td>
+			<td style="width:20%"><?= number_format($finition->montant(), 2, ' ', ',') ?>&nbsp;DH</td>
 		</tr>	
 		<?php
 		}//end of loop

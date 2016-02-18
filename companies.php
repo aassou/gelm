@@ -13,7 +13,7 @@
 	include ('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if( isset($_SESSION['userMerlaTrav']) ){
     	//les sources
     	$societesManager = new SocieteManager($pdo);
 		$societePerPage = 5;
@@ -162,9 +162,15 @@
 								<div class="pull-left">
 									<span><?= $societeNumber ?> Sociétés en Total</span>
 								</div>
+								<?php
+								if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+								?>
 								<div class="pull-right">
 									<a href="#addSociete" data-toggle="modal" class="btn icn-only green">Ajouter une société <i class="icon-plus-sign m-icon-white"></i></a> 									
 								</div>
+								<?php
+                                } 
+                                ?>
 							</div>
 							<?php if(isset($_SESSION['compte-add-success'])){ ?>
 	                         	<div class="alert alert-success">
@@ -221,6 +227,9 @@
 										    	Société <strong><?= ucfirst($societe->raisonSociale()) ?></strong> 
 										        <i class="icon-angle-down"></i>
 										    </a>
+										    <?php
+                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                            ?>
 										    <ul class="dropdown-menu">
 										        <li>
 										        	<a href="#addSocieteCompteBancaire<?= $societe->id() ?>" data-toggle="modal" data-id="<?= $societe->id(); ?>">
@@ -239,6 +248,9 @@
 													<?php } ?>
 										        </li>
 										    </ul>
+										    <?php
+                                            }
+                                            ?>
 										</div>
 									</div>
 									<br><br>
@@ -426,9 +438,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

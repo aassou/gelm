@@ -13,7 +13,7 @@
 	include('lib/pagination.php');
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if ( isset($_SESSION['userMerlaTrav']) ){
     	//les sources
     	$idProjet = 0;
     	$projetManager = new ProjetManager($pdo);
@@ -47,7 +47,8 @@
 			        }
 			        $begin = ($p - 1) * $contratPerPage;
 			        $pagination = paginate('contrats-list.php?idProjet='.$idProjet, '&p=', $pageNumber, $p);
-					$contrats = $contratManager->getContratsByIdProjet($idProjet, $begin, $contratPerPage);	
+					//$contrats = $contratManager->getContratsByIdProjet($idProjet, $begin, $contratPerPage);
+                    $contrats = $contratManager->getContratsHiddenByIdProjet($idProjet, $begin, $contratPerPage);
 				}		
 			//}	
 ?>
@@ -217,7 +218,20 @@
 								<input class="m-wrap" name="nomClient" id="nomClient" type="text" placeholder="Chercher un client..." />
 								<input class="m-wrap span2" name="annee" id="annee" type="text" placeholder="Année..." />
 								<input name="idClient" id="idClient" type="hidden" />
+								<a style="margin-left: 10px;" class="btn green pull-right" href="controller/ClientsSituationsPrintController.php?idProjet=<?= $idProjet ?>">
+                                    <i class="icon-print"></i>
+                                     Version Imprimable
+                                </a>
+                                <?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?>
                                 <a href="contrats-add.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" class="btn icn-only blue pull-right">Nouveau Contrat Client <i class="icon-plus-sign"></i></a>
+						        <?php
+                                } 
+                                ?>
 						    </div>
 						</div>
 						<div class="portlet box grey">
@@ -234,6 +248,7 @@
 									<thead>
 										<tr>
 											<th style="width:10%">Client</th>
+											<th style="width:10%">Date</th>
 											<th style="width:10%" class="hidden-phone">Type</th>
 											<th style="width:5%">Bien</th>
 											<th style="width:10%" class="hidden-phone">Prix</th>
@@ -288,44 +303,61 @@
 												        	<a target="_blank" href="controller/ClientFichePrintController.php?idContrat=<?= $contrat->id() ?>">
 												        		Imprimer Fiche Client
 												        	</a>
-												        	<?php if($contrat->status()=="actif"){
-														?>
-														<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
-														<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-															Désister
-														</a>
-														<?php } ?>
-														<?php 
-														}
-														else{
-														?>	
-														<a style="color:green" href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-															Activer
-														</a>	
-														<?php	
-														}
-														?>
-														<a href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+												        <?php 
+                                                        if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) {
+    												        if ( $contrat->status()=="actif" ) {
+    											        ?>
+        														<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+        															Désister
+        														</a>
+    														<?php 
+                                                            }
+    														else{
+    														?>	
+        														<a style="color:green" href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+        															Activer
+        														</a>	
+    														<?php	
+    														}
+														    ?>
+														    <a style="color:blue" href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Modifier
 												        	</a>
-												        	<?php if($_SESSION['userMerlaTrav']->profil()=="su"){ ?>
-												        	<a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+												        	<a style="color:red" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 												        		Supprimer
 												        	</a>
-												        	<?php } ?>
+											        	<?php  
+                                                        }
+                                                        ?>
 												        </li>
 												    </ul>
 												</div>
 											</td>
+											<td><?= date('d/m/Y', strtotime($contrat->dateCreation())) ?></td>
 											<td class="hidden-phone"><?= $typeBien ?></td>
 											<td><?= $bien->nom() ?></td>
 											<td class="hidden-phone"><?= number_format($contrat->prixVente(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone"><?= number_format($contrat->taille(), 2, ',', ' ') ?></td>
-											<td class="hidden"><?= date('Y', strtotime($contrat->dateCreation())) ?></td>
 											<td class="hidden-phone">
+											    <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>
 												<a href="#updatePaiementContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
 													<?= number_format($contrat->avance(), 2, ',', ' ') ?></td>
 												</a>
+												<?php
+                                                }
+                                                else {
+                                                ?>
+                                                <a>
+                                                    <?= number_format($contrat->avance(), 2, ',', ' ') ?></td>
+                                                </a>
+                                                <?php    
+                                                }     
+                                                ?>
 											<td class="hidden-phone"><?= number_format($contrat->prixVente()-$contrat->avance(), 2, ',', ' ') ?></td>
 											</td>
 											<td class="hidden-phone"><?= $contrat->note() ?></td>
@@ -401,6 +433,15 @@
 											<div class="modal-body">
 												<form class="form-horizontal loginFrm" action="controller/ContratActivationController.php" method="post">
 													<p>Êtes-vous sûr de vouloir activer le contrat <strong>N°<?= $contrat->id() ?></strong> ?</p>
+													<div class="control-group">
+                                                        <label class="control-label">Status</label>
+                                                        <div class="controls">
+                                                            <select name="status">
+                                                                <option value="Vendu" id="Vendu">Vendu</option>
+                                                                <option value="Promesse de Vente" id="Promesse de Vente">Promesse de Vente</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
 													<div class="control-group">
 														<label class="right-label"></label>
 														<input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
@@ -530,9 +571,6 @@
 <!-- END BODY -->
 </html>
 <?php
-}
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
-	header('Location:dashboard.php');
 }
 else{
     header('Location:index.php');    

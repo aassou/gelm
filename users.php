@@ -12,7 +12,7 @@
     include('config.php');  
     //classes loading end
     session_start();
-    if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()=="admin"){
+    if( isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil() == "admin" ){
     	//les sources
     	$usersManager = new UserManager($pdo);
 		$users = $usersManager->getUsers(); 
@@ -162,8 +162,9 @@
                                              <label class="control-label" for="profil">Profil</label>
                                              <div class="controls">
                                              	<select name="profil" class="m-wrap">
-                                             		<option value="user">Utilisateur</option>
-                                             		<option value="admin">Administrateur</option>
+                                             		<option value="user">user</option>
+                                             		<option value="manager">manager</option>
+                                             		<option value="admin">admin</option>
                                              	</select>   
                                              </div>
                                           </div>
@@ -250,17 +251,26 @@
 			                                             		<?php 
 			                                             		$adminSelected = "";
 																$userSelected = "";
-			                                             		if($user->profil()=="admin"){
+                                                                $managerSelected = "";
+			                                             		if($user->profil() == "admin"){
 			                                             			$adminSelected = "selected";
-																	$userSelected = "";	
+																	$userSelected = "";
+                                                                    $managerSelected = "";	
 			                                             		}
-			                                             		if($user->profil()=="user"){
+                                                                else if($user->profil() == "user"){
 			                                             			$adminSelected = "";
 																	$userSelected = "selected";
+                                                                    $managerSelected = "";
 			                                             		}
+                                                                else if($user->profil() == "manager"){
+                                                                    $adminSelected = "";
+                                                                    $userSelected = "";
+                                                                    $managerSelected = "selected";
+                                                                }
 			                                             		?>
-			                                             		<option <?= $userSelected ?> value="user">Simple utilisateur</option>
-			                                             		<option <?= $adminSelected ?> value="admin">Administrateur</option>
+			                                             		<option <?= $userSelected ?> value="user">user</option>
+			                                             		<option <?= $managerSelected ?> value="manager">manager</option>
+			                                             		<option <?= $adminSelected ?> value="admin">admin</option>
 			                                             	</select>   
 			                                             </div>
 														<input type="hidden" name="idUser" value="<?= $user->id() ?>" />
@@ -341,7 +351,7 @@
 </html>
 <?php
 }
-else if(isset($_SESSION['userMerlaTrav']) and $_SESSION->profil()!="admin"){
+else if(isset($_SESSION['userMerlaTrav']) and $_SESSION['userMerlaTrav']->profil()!="admin"){
 	header('Location:dashboard.php');
 }
 else{

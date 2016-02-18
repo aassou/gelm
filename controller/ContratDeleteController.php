@@ -35,7 +35,8 @@
 		$maisonManager = new MaisonManager($pdo);
 		$maisonManager->updateStatus("Disponible", $contrat->idBien());
 	}
-	$contratManager->delete($contrat->id());
+    $contratManager->hide($contrat->id());
+	//$contratManager->delete($contrat->id());
 	$_SESSION['contrat-delete-success'] = "<strong>Opération valide : </strong>Contrat supprimé avec succès.";
 	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	header($redirectLink);
