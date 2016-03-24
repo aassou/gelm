@@ -329,21 +329,19 @@
 							</div>
 						</div>
 						<!-- addLivraison box end -->
-						<div class="row-fluid">
+						<!--div class="row-fluid">
 							<form action="" method="post">
 							    <div class="input-box autocomplet_container">
 							    	<input class="m-wrap" name="recherche" id="nomFournisseur" type="text" onkeyup="autocompletFournisseur()" placeholder="Chercher un fournisseur...">
 										<ul id="fournisseurList"></ul>
 									</input>
-									<!--input class="m-wrap" name="fournisseur" id="fournisseur" type="text" placeholder="Fournisseur..." /-->
 									<input class="m-wrap" name="libelle" id="libelle" type="text" placeholder="Libelle..." />
 									<input class="m-wrap" name="status" id="status" type="text" placeholder="Status..." />
 									<input name="idFournisseur" id="idFournisseur" type="hidden" />
-									<!--button type="submit" class="btn red"><i class="icon-search"></i></button-->
 									<a href="#printLivraisonList" data-toggle="modal" class="btn black"><i class="icon-print"></i>&nbsp;Liste des Livraisons</a>
 							    </div>
 							</form>
-						</div>
+						</div-->
 						<!-- printLivraisonList box begin-->
 						<div id="printLivraisonList" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -478,8 +476,16 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
+                                <div class="clearfix">
+                                    <div class="btn-group pull-right">
+                                        <a class="btn blue" data-toggle="modal" href="#printLivraisonList">
+                                            <i class="icon-print"></i>
+                                             Liste des livraisons
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
+                                <table class="table table-striped table-bordered table-hover" id="sample_1">
 									<thead>
 										<tr>
 											<th>Fournisseur</th>
@@ -755,7 +761,7 @@
 									</thead>
 								</table>	
 							</div>
-							</div><!-- END SCROLL DIV -->
+							<!--/div--><!-- END SCROLL DIV -->
 						</div>
 						<!-- END Terrain TABLE PORTLET-->
 					</div>
@@ -800,7 +806,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
 		$('#modePaiement').on('change',function(){

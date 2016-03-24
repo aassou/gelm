@@ -36,7 +36,7 @@
 			else{*/
 				$contratNumber = $contratManager->getContratsNumberByIdProjet($idProjet);
 				if($contratNumber != 0){
-					$contratPerPage = 1000;
+					$contratPerPage = 10000000000;
 			        $pageNumber = ceil($contratNumber/$contratPerPage);
 			        $p = 1;
 			        if(isset($_GET['p']) and ($_GET['p']>0 and $_GET['p']<=$pageNumber)){
@@ -213,27 +213,6 @@
 						 <?php } 
 							unset($_SESSION['contrat-update-success']);
 						 ?>
-						 <div class="row-fluid">
-						    <div class="input-box autocomplet_container">
-								<input class="m-wrap" name="nomClient" id="nomClient" type="text" placeholder="Chercher un client..." />
-								<input class="m-wrap span2" name="annee" id="annee" type="text" placeholder="Année..." />
-								<input name="idClient" id="idClient" type="hidden" />
-								<a style="margin-left: 10px;" class="btn green pull-right" href="controller/ClientsSituationsPrintController.php?idProjet=<?= $idProjet ?>">
-                                    <i class="icon-print"></i>
-                                     Version Imprimable
-                                </a>
-                                <?php
-                                if ( 
-                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                    $_SESSION['userMerlaTrav']->profil() == "manager"
-                                    ) { 
-                                ?>
-                                <a href="contrats-add.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" class="btn icn-only blue pull-right">Nouveau Contrat Client <i class="icon-plus-sign"></i></a>
-						        <?php
-                                } 
-                                ?>
-						    </div>
-						</div>
 						<div class="portlet box grey">
 							<div class="portlet-title">
 								<h4>Liste des Contrats Clients</h4>
@@ -243,8 +222,21 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
+                                <div class="clearfix">
+                                    <div class="btn-group pull-right">
+                                        <a class="btn blue " href="controller/ClientsSituationsPrintController.php?idProjet=<?= $idProjet ?>">
+                                            <i class="icon-print"></i>
+                                             Version Imprimable
+                                        </a>
+                                    </div>
+                                    <div class="btn-group pull-left">
+                                        <a class="btn green" href="contrats-add.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">
+                                            Nouveau Contrat Client <i class="icon-plus-sign"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
+                                <table class="table table-striped table-bordered table-hover" id="sample_1">
 									<thead>
 										<tr>
 											<th style="width:10%">Client</th>
@@ -486,7 +478,6 @@
 									}
 									?>
 								</table>
-								</div><!-- END SCROLL DIV -->
 							</div>
 						</div>
 						<!-- END Terrain TABLE PORTLET-->
@@ -543,29 +534,9 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
-		$('.clients').show();
-		$('#nomClient').keyup(function(){
-		    $('.clients').hide();
-		   var txt = $('#nomClient').val();
-		   $('.clients').each(function(){
-		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-		           $(this).show();
-		       }
-		    });
-		});
-		$('#annee').keyup(function(){
-            $('.clients').hide();
-           var txt = $('#annee').val();
-           //$('.cheque:contains("'+txt+'")').show();
-           $('.clients').each(function(){
-               if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-                   $(this).show();
-               }
-            });
-        });
 	</script>
 </body>
 <!-- END BODY -->
