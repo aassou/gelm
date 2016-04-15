@@ -47,6 +47,20 @@
 			$chargeManager = new ChargesFinitionManager($pdo);
 		}
         $chargeManager->update($charge);
+        //add history data to db
+        $projetManager = new ProjetManager($pdo);
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification",
+            'target' => "Table des ".htmlentities($_POST['typeCharge']),
+            'description' => "Modification des charges ".htmlentities($_POST['typeCharge'])." - Montant : ".$montant." - Designation : ".$designation." - Projet : ".$projetManager->getProjetById($idProjet)->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['charge-update-success']='<strong>Opération valide</strong> : La charge est modifiée avec succès !';
         $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet.'&idSociete='.$idSociete.'&type='.$type;
         header($redirectLink);

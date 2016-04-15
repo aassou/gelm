@@ -34,6 +34,20 @@
 		$chargeManager = new ChargesFinitionManager($pdo);
 	}
     $chargeManager->delete($idCharge);
+    //add history data to db
+    $projetManager = new ProjetManager($pdo);
+    $historyManager = new HistoryManager($pdo);
+    $createdBy = $_SESSION['userMerlaTrav']->login();
+    $created = date('Y-m-d h:i:s');
+    $history = new History(array(
+        'action' => "Suppression",
+        'target' => "Table des ".htmlentities($_POST['typeCharge']),
+        'description' => "Suppression des charges ".htmlentities($_POST['typeCharge'])." - ID : ".$idCharge." - Projet : ".$projetManager->getProjetById($idProjet)->nom(),
+        'created' => $created,
+        'createdBy' => $createdBy
+    ));
+    //add it to db
+    $historyManager->add($history);
     $_SESSION['charge-delete-success']='<strong>Opération valide</strong> : La charge est supprimée avec succès !';
     $redirectLink = 'Location:../projet-charges.php?idProjet='.$idProjet.'&idSociete='.$idSociete.'&type='.$type;
     header($redirectLink);

@@ -23,6 +23,19 @@
         $chequeManager = new ChequeManager($pdo);
         $chequeManager->updateCopieCheque($url, $idCheque);
         $_SESSION['cheque-copie-update-success']="<strong>Opération valide : </strong>La copie chèque est modifiée avec succès.";
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification Copie Chèque",
+            'target' => "Table des chèques",
+            'description' => "Modification de la copie du chèque- ID : ".$idCheque,
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
 	}
     else{
         $_SESSION['cheque-copie-update-error'] = "<strong>Erreur Modification Copie Chèque : </strong>Vous devez séléctionner un fichier.";

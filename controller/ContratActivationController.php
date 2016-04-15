@@ -21,6 +21,8 @@
 	$contratManager = new ContratManager($pdo);
 	$locauxManager = new LocauxManager($pdo);
 	$appartementManager = new AppartementManager($pdo);
+    $maisonManager = new MaisonManager($pdo);
+    $terrainManager = new TerrainManager($pdo);
 	//create classes
 	$contrat = $contratManager->getContratById($idContrat);
 	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete;

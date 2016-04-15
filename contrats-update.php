@@ -348,12 +348,22 @@
 									   }
                                        ?>
                                     </div>
+									<div class="row-fluid">
+                                    	<div class="span3">
+                                          <div class="control-group">
+                                             <label class="control-label" for="note">Note</label>
+                                             <div class="controls">
+                                                <textarea id="note" name="note" class="m-wrap span12"><?= $contrat->note() ?></textarea>
+                                             </div>
+                                          </div>
+                                       </div>
+									</div>
                                     <div class="form-actions">
                                     	<input type="hidden" id="idProjet" name="idProjet" value="<?= $idProjet ?>">
                                     	<input type="hidden" id="idSociete" name="idSociete" value="<?= $idSociete ?>">
                                     	<input type="hidden" id="idContrat" name="idContrat" value="<?= $contrat->id() ?>">
                                     	<a href="contrats-list.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Retour</a>
-                                       <button type="submit" class="btn green">Modifier <i class="icon-refresh m-icon-white"></i></button>
+                                        <button type="submit" class="btn green">Modifier <i class="icon-refresh m-icon-white"></i></button>
                                     </div>
                                  </form>
                                  <!-- END FORM--> 

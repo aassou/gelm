@@ -21,6 +21,7 @@
     $actionMessage = "";
     $typeMessage = "";
     $caisseDetailsManager = new CaisseDetailsManager($pdo);
+    $caisseManager = new CaisseManager($pdo);
     
     if($action == "add"){
         if( !empty($_POST['montant']) ){
@@ -43,6 +44,19 @@
             $caisseDetailsManager->add($caisseDetails);
             $actionMessage = "Opération Valide : Caisse Détails Ajoutée avec succès.";  
             $typeMessage = "success";
+            //add history data to db
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des détails de caisse",
+                'description' => "Ajout d'une opération - Caisse : ".$caisseManager->getCaisseById($idCaisse)->nom()." - Type : ".$typeOperation." - Montant : ".$montant." - Projet : ".$projet,
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
         }
         else{
             $actionMessage = "Erreur Ajout Caisse Détails: Vous devez remplir le champ 'Montant'.";
@@ -51,6 +65,8 @@
     }
     else if($action == "update"){
         $idCaisseDetails = htmlentities($_POST['idCaisseDetails']);
+        $caisseDetails = $caisseDetailsManager->getCaisseDetailsById($idCaisseDetails);
+        $caisse = $caisseManager->getCaisseById($caisseDetails->idCaisse());
         if(!empty($_POST['montant'])){
             $dateOperation = htmlentities($_POST['dateOperation']);
             $personne = htmlentities($_POST['personne']);
@@ -63,10 +79,23 @@
             $caisseDetails = 
             new CaisseDetails(array('id' => $idCaisseDetails,'dateOperation' => $dateOperation, 
             'personne' => $personne, 'designation' => $designation, 'projet' => $projet, 
-            'typeOperation' => $typeOperation, 'montant' => $montant, 'commentaire' => $commentaire));
+            'type' => $typeOperation, 'montant' => $montant, 'commentaire' => $commentaire));
             $caisseDetailsManager->update($caisseDetails);
             $actionMessage = "Opération Valide : Caisse Détails Modifiée avec succès.";
             $typeMessage = "success";
+            //add history data to db
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Modification",
+                'target' => "Table des détails de caisse",
+                'description' => "Modification d'une opération - Caisse : ".$caisse->nom()." - Type : ".$typeOperation." - Montant : ".$montant." - Projet : ".$projet,
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
         }
         else{
             $actionMessage = "Erreur Modification Caisse Détails : Vous devez remplir le champ 'Montant'.";
@@ -75,9 +104,24 @@
     }
     else if($action == "delete"){
         $idCaisseDetails = htmlentities($_POST['idCaisseDetails']);
+        $caisseDetails = $caisseDetailsManager->getCaisseDetailsById($idCaisseDetails);
+        $caisse = $caisseManager->getCaisseById($caisseDetails->idCaisse());
         $caisseDetailsManager->delete($idCaisseDetails);
         $actionMessage = "Opération Valide : Caisse Détail supprimé avec succès.";
         $typeMessage = "success";
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Suppression",
+            'target' => "Table des détails de caisse",
+            'description' => "Suppression d'une opération - Caisse : ".$caisse->nom()." - Type : ".$caisseDetails->type()." - Montant : ".$caisseDetails->montant()." - Projet : ".$caisseDetails->projet(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
     }
     
     $_SESSION['caisse-details-action-message'] = $actionMessage;

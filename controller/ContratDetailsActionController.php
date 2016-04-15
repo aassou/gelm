@@ -24,7 +24,6 @@
     $idProjet = htmlentities($_POST['idProjet']);
     $idSociete = htmlentities($_POST['idSociete']);
     //Component Class Manager
-
     $contratDetailsManager = new ContratDetailsManager($pdo);
 	//Action Add Processing Begin
     	if($action == "add"){
@@ -40,13 +39,28 @@
     				'montant' => $montant,
     				'numeroCheque' => $numeroCheque,
     				'idContratEmploye' => $idContratEmploye,
-    				':created' => $created,
-    				':createdBy' => $createdBy
+    				'created' => $created,
+    				'createdBy' => $createdBy
     			));
                 //add it to db
                 $contratDetailsManager->add($contratDetails);
                 $actionMessage = "Opération Valide : ContratDetails Ajouté(e) avec succès.";  
                 $typeMessage = "success";
+                //add history data to db
+                $projetManager = new ProjetManager($pdo);
+                $historyManager = new HistoryManager($pdo);
+                $projet = $projetManager->getProjetById($idProjet);
+                $createdBy = $_SESSION['userMerlaTrav']->login();
+                $created = date('Y-m-d h:i:s');
+                $history = new History(array(
+                    'action' => "Ajout",
+                    'target' => "Table des détails contrats employés",
+                    'description' => "Ajout de contrat détails employé - Montant :  ".$montant." - Numéro Chèque : ".$numeroCheque." - Projet : ".$projet->nom(),
+                    'created' => $created,
+                    'createdBy' => $createdBy
+                ));
+                //add it to db
+                $historyManager->add($history);
             }
             else{
                 $actionMessage = "Erreur Ajout contratDetails : Vous devez remplir le champ 'dateOperation'.";

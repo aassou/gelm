@@ -36,6 +36,19 @@
             $caisseManager->add($caisse);
             $actionMessage = "Opération Valide : Caisse Ajoutée avec succès.";  
             $typeMessage = "success";
+            //add history data to db
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des caisses",
+                'description' => "Ajout d'une nouvelle caisse - Nom : ".$nom,
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
         }
         else{
             $actionMessage = "Erreur Ajout Caisse : Vous devez remplir le champ 'Nom de caisse'.";
@@ -52,6 +65,19 @@
             $caisseManager->update($caisse);
             $actionMessage = "Opération Valide : Caisse Modifiée avec succès.";
             $typeMessage = "success";
+            //add history data to db
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Modification",
+                'target' => "Table des caisses",
+                'description' => "Modification de la caisse  - Nom : ".$nom,
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
         }
         else{
             $actionMessage = "Erreur Modification Caisse : Vous devez remplir le champ 'Nom de caisse'.";
@@ -60,9 +86,23 @@
     }
     else if($action == "delete"){
         $idCaisse = htmlentities($_POST['idCaisse']);
+        $caisse = $caisseManager->getCaisseByid($idCaisse);
         $caisseManager->delete($idCaisse);
         $actionMessage = "Opération Valide : Caisse supprimée avec succès.";
         $typeMessage = "success";
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Suppression",
+            'target' => "Table des caisses",
+            'description' => "Suppression de la caisse - Nom : ".$caisse->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
     }
     
     $_SESSION['caisse-action-message'] = $actionMessage;

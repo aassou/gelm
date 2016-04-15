@@ -25,7 +25,7 @@
     //Comonent Manager
     $contratEmployeManager = new ContratEmployeManager($pdo);
 	//Action Add Processing Begin
-    	if($action == "add"){
+    if($action == "add"){
         if( !empty($_POST['employe']) ){
 			$dateContrat = htmlentities($_POST['dateContrat']);
             $nombreUnites = htmlentities($_POST['nombreUnites']);
@@ -50,6 +50,21 @@
             $contratEmployeManager->add($contratEmploye);
             $actionMessage = "Opération Valide : ContratEmploye Ajouté(e) avec succès.";  
             $typeMessage = "success";
+            //add history data to db
+            $projetManager = new ProjetManager($pdo);
+            $historyManager = new HistoryManager($pdo);
+            $projet = $projetManager->getProjetById($idProjet);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des contrats employés",
+                'description' => "Ajout contrat - Employé :  ".$employe." - Projet : ".$projet->nom(),
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
         }
         else{
             $actionMessage = "Erreur Ajout contratEmploye : Vous devez remplir le champ 'Employé'.";
@@ -78,6 +93,21 @@
             $contratEmployeManager->update($contratEmploye);
             $actionMessage = "Opération Valide : ContratEmploye Modifié(e) avec succès.";
             $typeMessage = "success";
+            //add history data to db
+            $projetManager = new ProjetManager($pdo);
+            $historyManager = new HistoryManager($pdo);
+            $projet = $projetManager->getProjetById($idProjet);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Modification",
+                'target' => "Table des contrats employés",
+                'description' => "Modification contrat - Employé :  ".$employe." - Projet : ".$projet->nom(),
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
         }
         else{
             $actionMessage = "Erreur Modification ContratEmploye : Vous devez remplir le champ 'Employé'.";
@@ -88,9 +118,25 @@
     //Action Delete Processing Begin
     else if($action == "delete"){
         $idContratEmploye = htmlentities($_POST['idContratEmploye']);
+        $contrat = $contratEmployeManager->getContratEmployeById($idContratEmploye);
         $contratEmployeManager->delete($idContratEmploye);
         $actionMessage = "Opération Valide : ContratEmploye supprimée avec succès.";
         $typeMessage = "success";
+        //add history data to db
+        $projetManager = new ProjetManager($pdo);
+        $historyManager = new HistoryManager($pdo);
+        $projet = $projetManager->getProjetById($idProjet);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Suppression",
+            'target' => "Table des contrats employés",
+            'description' => "Suppression contrat - Employé :  ".$contrat->employe()." - Projet : ".$projet->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
     }
     //Action Delete Processing End
     $_SESSION['contratEmploye-action-message'] = $actionMessage;

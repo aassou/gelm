@@ -78,7 +78,7 @@ class ChargesConstructionManager{
 	public function getChargesConstructionsByIdProjet($idProjet){
 		$chargesConstructions = array();
 		$query = $this->_db->prepare('SELECT * FROM t_chargesconstruction WHERE idProjet=:idProjet
-		ORDER BY id DESC');
+		ORDER BY dateOperation DESC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){

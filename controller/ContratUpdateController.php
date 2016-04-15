@@ -28,6 +28,7 @@
 		$dateCreation = htmlentities($_POST['dateCreation']);
 		$dateRetour = htmlentities($_POST['dateRetour']);
 		$avance = htmlentities($_POST['avance']);
+		$note = htmlentities($_POST['note']);
         $taille = htmlentities($_POST['taille']);
 		$prixNegocie = htmlentities($_POST['prixNegocie']);
 		$modePaiement = htmlentities($_POST['modePaiement']);
@@ -73,15 +74,31 @@
 			'dateRetour' => $dateRetour,
 			'prixVente' => $prixNegocie, 
 			'avance' => $avance,
+			'note' => $note,
 			'taille' => $taille,
 			'modePaiement' => $modePaiement,
-			'id' => $contrat->id(),
+			'id' => $idContrat,
 			'idBien' => $idBien,
 			'typeBien' => $typeBien,
 			'numeroCheque' => $numeroCheque));
 		$contratManager->update($newContrat);
-		$_SESSION['contrat-update-success'] = "<strong>Opération Valide : </strong>Bien Modifié avec succès.";
-		print_r($newContrat);
+        //add history data to db
+        $projetManager = new ProjetManager($pdo);
+        $historyManager = new HistoryManager($pdo);
+        $projet = $projetManager->getProjetById($idProjet);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification",
+            'target' => "Table des contrats clients",
+            'description' => "Modification contrat - Client :  ".$nomClient." - CIN : ".$cin." - ID Contrat : ".$idContrat." - Type bien : ".$typeBien." - ID Bien : ".$idBien." - Projet : ".$projet->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
+		$_SESSION['contrat-update-success'] = "<strong>Opération Valide : </strong>Contrat Modifié avec succès.";
+		//print_r($newContrat);
 		header('Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     }
     else{

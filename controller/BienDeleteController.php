@@ -14,6 +14,8 @@
     //classes loading end
     session_start();
     
+    $historyManager = new HistoryManager($pdo);
+    $projetManager = new ProjetManager($pdo);
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
     $idSociete = htmlentities($_POST['idSociete']);
@@ -36,7 +38,18 @@
 			$terrainManager = new TerrainManager($pdo);
 			$terrainManager->delete($id);
 		}
-        
+        //add history data to db
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Suppression",
+            'target' => "Table des ".htmlentities($_POST['typeImmobiliere']),
+            'description' => "Suppression de ".htmlentities($_POST['typeImmobiliere'])." - ID : ".$id." - Projet : ".$projetManager->getProjetById($idProjet)->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['bien-delete-success']='<strong>Opération valide</strong> : Le Bien Immobilière est supprimé avec succès !';
         $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
         header($redirectLink);

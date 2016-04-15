@@ -104,23 +104,6 @@
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row-fluid">
 					<div class="span12">
-					    <?php
-                        if ( 
-                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                            $_SESSION['userMerlaTrav']->profil() == "manager"
-                            ) { 
-                        ?> 
-						<div class="row-fluid">
-							<div class="pull-right">
-								<!--a href="livraison-add.php" class="btn icn-only blue"-->
-								<a href="#addemploye" data-toggle="modal" class="btn blue">
-									Ajouter Nouveau Employé <i class="icon-plus-sign "></i>
-								</a>
-							</div>
-						</div>
-						<?php
-						} 
-                        ?> 
 						<!-- addemploye box begin-->
 						<div id="addemploye" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -205,27 +188,41 @@
                          <?php } 
                          	unset($_SESSION['employe-add-error']);
                          ?>
-                         <div class="row-fluid">
-							<input class="m-wrap" name="employe" id="employe" type="text" placeholder="employe..." />
 						</div>
-						</div>
-						<div class="portlet box green" id="listemployes">
-							<div class="portlet-title">
-								<h4>Les employes</h4>
-								<div class="tools">
-									<a href="javascript:;" class="collapse"></a>
-									<a href="javascript:;" class="remove"></a>
-								</div>
-							</div>
-							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover" id="sample_editable_1">
+						<div class="portlet box grey">
+                            <div class="portlet-title">
+                                <h4>Liste des employés</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="clearfix">
+                                    <?php
+                                    if ( 
+                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                        ) { 
+                                    ?> 
+                                    <div class="btn-group pull-right">
+                                        <a href="#addemploye" data-toggle="modal" class="btn green">
+                                            Ajouter Nouveau Employé <i class="icon-plus-sign "></i>
+                                        </a>
+                                    </div>
+                                    <?php
+                                    } 
+                                    ?> 
+                                </div>
+                                <table class="table table-bordered table-hover cheque" id="sample_1">
 									<thead>
 										<tr>
+										    <th class="hidden"></th>
 											<th style="width:25%">Nom</th>
 											<th style="width:25%" class="hidden-phone">CIN</th>
-											<th style="width:25%" class="hidden-phone">Adresse</th>
-											<th style="width:25%" class="hidden-phone">Téléphone</th>
+											<th style="width:20%" class="hidden-phone">Adresse</th>
+											<th style="width:20%" class="hidden-phone">Téléphone</th>
+											<th style="width:10%">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -233,41 +230,33 @@
 										if($employeNumber!=0){
 										foreach ($employes as $employe) {
 										?>	
-										<tr class="employes">
-											<td>
-												<div class="btn-group">
-												    <a style="width: 200px" class="btn mini black dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $employe->nom()?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?> 
-												        	<a href="#update<?= $employe->id();?>" data-toggle="modal" data-id="<?= $employe->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?> 
-															<a href="#delete<?= $employe->id();?>" data-toggle="modal" data-id="<?= $employe->id(); ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            }
-                                                            ?> 
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										<tr>
+										    <td class="hidden"></td>
+											<td><?= $employe->nom()?></td>
 											<td class="hidden-phone"><?= $employe->cin() ?></td>
 											<td class="hidden-phone"><?= $employe->adresse()?></td>
 											<td class="hidden-phone"><?= $employe->telephone() ?></td>
+											<td>
+											    <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?> 
+                                                <a title="Modifier" class="btn mini green" href="#update<?= $employe->id();?>" data-toggle="modal" data-id="<?= $employe->id(); ?>">
+                                                    <i class="icon-refresh"></i>    
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?> 
+                                                <a title="Supprimer" class="btn mini red" href="#delete<?= $employe->id();?>" data-toggle="modal" data-id="<?= $employe->id(); ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                ?> 
+											</td>
 										</tr>
 										<!-- updateEmploye box begin-->
 										<div id="update<?= $employe->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -335,7 +324,6 @@
 										} ?>
 									</tbody>
 								</table>
-								</div><!-- END SCROLL DIV -->
 							</div>
 						</div>
 					</div>
@@ -377,7 +365,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
 		$('.employes').show();

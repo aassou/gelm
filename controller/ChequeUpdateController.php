@@ -38,6 +38,22 @@
         $chequeManager = new ChequeManager($pdo);
         $chequeManager->update($cheque);
         $_SESSION['cheque-update-success']="<strong>Opération valide : </strong>Le chèque est modifié avec succès.";
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $projetManager = new ProjetManager($pdo);
+        $cheque = $chequeManager->getChequeById($idCheque);
+        $projet = $projetManager->getProjetById($cheque->idProjet());
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification",
+            'target' => "Table des chèques",
+            'description' => "Modification du chèque - ID : ".$idCheque." - N° : ".$cheque->numero()." - Montant : ".$cheque->montant()." - Compte : ".$cheque->compteBancaire()." - Designation : ".$cheque->designationSociete()."/".$cheque->designationPersonne()." - Projet : ".$projet->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
     }
     else{
         $_SESSION['cheque-update-error'] = "<strong>Erreur Modification Chèque : </strong>Vous devez remplir au moins les champs 'Montant', 'Numéro chèque' et 'Désignation Société'.";

@@ -14,6 +14,7 @@
     //classes loading end
     session_start();
     
+    $projetManager = new ProjetManager($pdo);
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
     $idSociete = htmlentities($_POST['idSociete']);
@@ -39,6 +40,19 @@
 			$terrainManager->updateStatus($status, $id);
 		}
         
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification de Status",
+            'target' => "Table des ".htmlentities($_POST['typeImmobiliere']),
+            'description' => "Modification de ".htmlentities($_POST['typeImmobiliere'])." - ID : ".$id." - Projet : ".$projetManager->getProjetById($idProjet)->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['bien-update-success']='<strong>Opération valide</strong> : Le Bien Immobilière est modifié avec succès !';
         $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
         header($redirectLink);

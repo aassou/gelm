@@ -100,8 +100,7 @@
 				<!--      BEGIN TILES      -->
 				<div class="row-fluid">
 					<div class="span12">
-						<h4><i class="icon-hand-right"></i> Raccourcis</h4>
-						<hr class="line">
+						<h4 class="breadcrumb"><i class="icon-hand-right"></i> Raccourcis</h4>
 						<div class="tiles">
 							<a href="companies.php">
 							<div class="tile bg-green">
@@ -150,6 +149,21 @@
 							</div>
 							</a>
 							<?php } ?>
+							<a href="releve-bancaire.php">
+                            <div class="tile bg-purple">
+                                <div class="tile-body">
+                                    <i class="icon-envelope"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Relevé Bancaire
+                                    </div>
+                                    <div class="number">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
 							<a href="employes.php">
                             <div class="tile bg-yellow">
                                 <div class="corner"></div>
@@ -165,18 +179,17 @@
                                 </div>
                             </div>
                             </a>
-							<a href="users.php">
+							<a href="configuration.php">
 							<div class="tile bg-red">
 								<div class="corner"></div>
 								<div class="tile-body">
-									<i class="icon-user"></i>
+									<i class="icon-wrench"></i>
 								</div>
 								<div class="tile-object">
 									<div class="name">
-										Utilisateurs
+										Paramètrages
 									</div>
 									<div class="number">
-										<?= $usersNumber ?>
 									</div>
 								</div>
 							</div>
@@ -186,8 +199,8 @@
 				</div>
 				<!--      BEGIN TILES      -->
 				<!-- BEGIN DASHBOARD STATS -->
-				<h4><i class="icon-table"></i> Bilans et Statistiques Pour Cette Semaine</h4>
-				<hr class="line">
+				<!--h4><i class="icon-table"></i> Bilans et Statistiques Pour Cette Semaine</h4-->
+				<!--hr class="line">
 				<div class="row-fluid">
 					
 					<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
@@ -196,7 +209,7 @@
 								<i class="icon-shopping-cart"></i>
 							</div>
 							<div class="details">
-								<div class="number">+<!--?= $livraisonsNumberWeek ?--></div>
+								<div class="number"></div>
 								<div class="desc">Livraisons</div>
 							</div>					
 						</div>
@@ -207,12 +220,12 @@
 								<i class="icon-group"></i>
 							</div>
 							<div class="details">
-								<div class="number">+<!--?= $clientNumberWeek ?--></div>
+								<div class="number"></div>
 								<div class="desc">Clients</div>
 							</div>			
 						</div>
 					</div>	
-					<!--div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+					<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
 						<a class="more" href="caisse.php">
 						<div class="dashboard-stat purple">
 							<div class="visual">
@@ -220,25 +233,22 @@
 							</div>
 							<div class="details">
 								<div class="number">
-									<?= number_format($caisseEntreesManager->getTotalCaisseEntrees()-$caisseSortiesManager->getTotalCaisseSorties(), '2', ',', ' ') ?>
 									DH
 								</div>
 								<div class="desc">Bilan de la caisse</div>
 							</div>					
 						</div>
 						</a>
-					</div-->	
-				</div>
+					</div>	
+				</div-->
 				<!-- END DASHBOARD STATS -->
 				<!-- BEGIN DASHBOARD FEEDS -->
 				<!-- ------------------------------------------------------ -->
 				<div class="row-fluid">
 				<div class="span12">
 					<!-- BEGIN PORTLET-->
+					<h4 class="breadcrumb"><i class="icon-bell"></i> Nouveautés</h4>
 					<div class="portlet paddingless">
-						<div class="portlet-title line">
-							<h4><i class="icon-bell"></i>Nouveautés</h4>
-						</div>
 						<div class="portlet-body">
 							<!--BEGIN TABS-->
 							<div class="tabbable tabbable-custom">
@@ -250,7 +260,7 @@
 								</ul>
 								<div class="tab-content">
 									<div class="tab-pane active" id="tab_1_1">
-										<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
+										<div class="scroller" data-height="420px" data-always-visible="1" data-rail-visible1="1">
 											<ul class="feeds">
 												<?php
 												foreach($livraisonsWeek as $livraison){
@@ -403,6 +413,7 @@
 										<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
 											<?php
 											foreach($chequesWeek as $cheque){
+												$projet = $projetManager->getProjetById($cheque->idProjet());
 											?>
 											<div class="row-fluid">
 												<div class="span6 user-info">
@@ -412,6 +423,7 @@
 														</div>
 														<div>
 														    <strong>N°&nbsp;Chèque : </strong><a><?= $cheque->numero() ?></a><br> 
+															<strong>Projet : </strong><a><?= $projet->nom() ?></a><br> 
 														    <strong>Compte Bancaire : </strong><a><?= $cheque->compteBancaire() ?></a><br>
 															<strong>Date : </strong><a><?= date('d/m/Y', strtotime($cheque->dateCheque())) ?></a><br>
 															<strong>Désignation : </strong><a><?= $cheque->designationSociete() ?> / <?= $cheque->designationPersonne() ?></a><br>

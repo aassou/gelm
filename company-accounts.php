@@ -99,22 +99,6 @@
 				<!-- END PAGE HEADER-->
 				<div class="row-fluid">
 					<div class="span12">
-					    <?php
-                        if ( 
-                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                            $_SESSION['userMerlaTrav']->profil() == "manager"
-                            ) { 
-                        ?> 
-						<div class="row-fluid">
-							<div class="pull-right">
-								<a class="btn green" href="#addSocieteCompteBancaire" data-toggle="modal">
-									Nouveau Compte Bancaire <i class="icon-plus-sign m-icon-white"></i>
-								</a>	
-							</div>
-						</div>
-						<?php
-                        } 
-                        ?> 
 						<!-- addSocieteCompte box begin-->
 						<div id="addSocieteCompteBancaire" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -158,20 +142,37 @@
 						 <?php } 
 							unset($_SESSION['bien-action-message']);
 						 ?>
-						<div class="portlet">
-							<div class="portlet-title">
-								<h4>Liste des comptes</h4>
-								<div class="tools">
-									<a href="javascript:;" class="collapse"></a>
-									<a href="javascript:;" class="remove"></a>
-								</div>
-							</div>
-							<div class="portlet-body">
-								<table class="table table-bordered table-advance table-hover">
+						<div class="portlet box light-grey" id="history">
+                            <div class="portlet-title">
+                                <h4>Liste des comptes</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="reload"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="clearfix">
+                                    <?php
+                                    if ( 
+                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                        ) { 
+                                    ?> 
+                                    <div class="btn-group pull-right">
+                                        <a class="btn green" href="#addSocieteCompteBancaire" data-toggle="modal">
+                                            Nouveau Compte Bancaire <i class="icon-plus-sign m-icon-white"></i>
+                                        </a>
+                                    </div>
+                                    <?php
+                                    } 
+                                    ?>
+                                </div>
+								<table class="table table-bordered table-hover" id="sample_1">
 									<thead>
 										<tr>
-											<th>Numéro compte</th>
-											<th class="hidden-phone">Date création</th>
+										    <th class="hidden"></th>
+											<th style="width:50%">Numéro compte</th>
+											<th style="width:40%">Date création</th>
+											<th style="width:10%">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -179,38 +180,25 @@
 										foreach($comptesBancaires as $compte){
 										?>		
 										<tr>
+										    <td class="hidden"></td>
+											<td><?= $compte->numero() ?></td>
+											<td><?= date('d/m/Y', strtotime($compte->dateCreation())) ?></td>
 											<td>
-												<div class="btn-group">
-												    <a style="width: 100px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $compte->numero() ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>						
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?> 										
-												        	<a href="#updateCompte<?= $compte->id();?>" data-toggle="modal" data-id="<?= $compte->id(); ?>">
-																Modifier
-															</a>
-															<?php 
-                                                            }
-															if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) { 
-															    ?>
-															<a href="#deleteCompte<?= $compte->id() ?>" data-toggle="modal" data-id="<?= $compte->id() ?>">
-																Supprimer
-															</a>
-															<?php 
-                                                            } 
-                                                            ?>
-												        </li>
-												    </ul>
-												</div>
-											</td>
-											<td class="hidden-phone"><?= date('d/m/Y', strtotime($compte->dateCreation())) ?></td>
+											<?php
+                                            if ( 
+                                                $_SESSION['userMerlaTrav']->profil() == "admin"
+                                                ) { 
+                                            ?>                                      
+                                            <a title="Modifier" class="btn mini green" href="#updateCompte<?= $compte->id();?>" data-toggle="modal" data-id="<?= $compte->id(); ?>">
+                                                <i class="icon-refresh"></i>    
+                                            </a>
+                                            <a title="Supprimer" class="btn mini red" href="#deleteCompte<?= $compte->id() ?>" data-toggle="modal" data-id="<?= $compte->id() ?>">
+                                                <i class="icon-remove"></i>
+                                            </a>
+                                            <?php 
+                                            } 
+                                            ?>
+                                            </td>
 										</tr>
 										<!-- updateCompte box begin-->
 										<div id="updateCompte<?= $compte->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -315,7 +303,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
 	</script>

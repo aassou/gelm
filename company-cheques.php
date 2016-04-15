@@ -26,7 +26,7 @@
 	    	$chequeManager = new ChequeManager($pdo);
 			$chequeNumber = $chequeManager->getChequeNumbers();
 			if($chequeNumber!=0){
-				$chequePerPage = 100;
+				$chequePerPage = 1000000000;
 		        $pageNumber = ceil($chequeNumber/$chequePerPage);
 		        $p = 1;
 		        if(isset($_GET['p']) and ($_GET['p']>0 and $_GET['p']<=$pageNumber)){
@@ -121,13 +121,13 @@
                             $_SESSION['userMerlaTrav']->profil() == "manager"
                             ) { 
                         ?>  
-						<div class="row-fluid">
+						<!--div class="row-fluid">
 							<div class="pull-right">
 								<a href="#addCheque" data-toggle="modal" class="btn green">
 									Nouveau Chèque <i class="icon-plus-sign "></i>
 								</a>
 							</div>
-						</div>
+						</div-->
 						<?php
                         } 
                         ?>  
@@ -213,23 +213,6 @@
 							</div>
 						</div>
 						<!-- addCheque box end -->
-						<div class="row-fluid">
-							<!--form action="" method="post"-->
-							    <div class="input-box autocomplet_container">
-							    	<input class="m-wrap span2" name="idProjet" id="projet" type="text" placeholder="Projet ..." />
-									<select id="compteBancaire" name="compteBancaire" class="m-wrap span3">
-                                    	<?php foreach($comptesBancaires as $compte){ ?>
-                                    	<option value="<?= $compte->numero() ?>">Compte : <?= $compte->numero() ?></option>
-                                    	<?php } ?>
-                                    </select>
-                                    <input class="m-wrap span2" name="designation" id="designation" type="text" placeholder="Désignation ..." />
-                                    <input class="m-wrap span2" name="annee" id="annee" type="text" placeholder="Année..." />
-                                    <input class="m-wrap span2" name="status" id="status" type="text" placeholder="Status..." />
-									<!--input name="idSociete" value="<?= $idSociete ?>" id="idSociete" type="hidden" /-->
-									<!--input id="search" type="button" class="btn red" value="filtrer"-->
-							    </div>
-							<!--/form-->
-						</div>
 						<!-- BEGIN Terrain TABLE PORTLET-->
 						<?php if(isset($_SESSION['cheque-add-success'])){ ?>
 							<div class="alert alert-success">
@@ -288,18 +271,36 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<table class="table table-bordered table-advance table-hover">
+								<div class="clearfix">
+                                    <div class="btn-group pull-left">
+                                        <a href="#addCheque" data-toggle="modal" class="btn green">
+                                            Nouveau Chèque <i class="icon-plus-sign"></i>
+                                        </a>
+                                    </div>
+                                    <div class="btn-group pull-right">
+                                        <select id="compteBancaire">
+                                            <option value="tous">Tous les comptes bancaires</option>
+                                            <?php foreach( $comptesBancaires as $compte ) { ?>
+                                            <option value="<?= $compte->numero() ?>"><?= $compte->numero() ?></option>
+                                            <?php } ?>
+                                        </select>    
+                                    </div>
+                                </div>
+                                <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
+                                <table class="table table-bordered table-hover cheque" id="sample_1">
 									<thead>
 										<tr>
+											<th class="hidden"></th>
+											<th class="hidden-phone">Date</th>
 											<th>Numéro chèque</th>
 											<th class="hidden-phone">Projet</th>
-											<th class="hidden-phone">Date</th>
 											<th class="hidden-phone">Désignation</th>
 											<th class="hidden">N°Compte</th>
 											<th class="hidden">Annee</th>
 											<th class="hidden-phone">Montant</th>
 											<th class="hidden-phone">Status</th>
 											<th class="hidden-phone">Copie</th>
+											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -322,38 +323,10 @@
 											} 
 										?>		
 										<tr <?= $colorRow ?> class="cheque">
-											<td>
-												<div class="btn-group">
-												    <a style="width: 100px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $cheque->numero() ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>				
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>  												
-												        	<a href="#updateCheque<?= $cheque->id();?>" data-toggle="modal" data-id="<?= $cheque->id(); ?>">
-																Modifier
-															</a>
-															<?php 
-                                                            }
-															if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) { ?>
-															<a href="#deleteCheque<?= $cheque->id() ?>" data-toggle="modal" data-id="<?= $cheque->id() ?>">
-																Supprimer
-															</a>
-															<?php 
-                                                            } 
-                                                            ?>
-												        </li>
-												    </ul>
-												</div>
-											</td>
-											<td class="hidden-phone"><?= $projetManager->getProjetById($cheque->idProjet())->nom() ?></td>
+											<td class="hidden"></td>
 											<td class="hidden-phone"><?= date('d/m/Y', strtotime($cheque->dateCheque())) ?></td>
+											<td><?= $cheque->numero() ?></td>
+											<td class="hidden-phone"><?= $projetManager->getProjetById($cheque->idProjet())->nom() ?></td>
 											<td class="hidden-phone"><?= $cheque->designationSociete().' - '.$cheque->designationPersonne() ?></td>
 											<td class="hidden"><?= $cheque->compteBancaire() ?></td>
 											<td class="hidden"><?= date('Y', strtotime($cheque->dateCheque())) ?></td>
@@ -395,6 +368,22 @@
 												<?php
                                                 } 
                                                 ?> 
+											</td>
+											<td>				
+												<?php
+												if ( 
+													$_SESSION['userMerlaTrav']->profil() == "admin"
+													) { 
+												?>  												
+												<a title="Modifier" class="btn mini green" href="#updateCheque<?= $cheque->id();?>" data-toggle="modal" data-id="<?= $cheque->id(); ?>">
+													<i class="icon-refresh"></i>
+												</a>
+												<a title="Supprimer" class="btn mini red" href="#deleteCheque<?= $cheque->id() ?>" data-toggle="modal" data-id="<?= $cheque->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+												<?php 
+												}
+												?>
 											</td>
 										</tr>
 										<!-- updateCheque box begin-->
@@ -552,11 +541,6 @@
 										}//end of if
 										?>
 									</tbody>
-									<?php
-									if($chequeNumber != 0){
-										echo $pagination;	
-									}
-									?>
 								</table>
 							</div>
 						</div>
@@ -601,7 +585,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
 		$('#modePaiement').on('change',function(){
@@ -654,14 +638,20 @@
 		    });
 		});
 		$('#compteBancaire').click(function(){
-		    $('.cheque').hide();
+		   $('.cheque').hide();
 		   var txt = $('#compteBancaire').val();
 		   //$('.cheque:contains("'+txt+'")').show();
-		   $('.cheque').each(function(){
-		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-		           $(this).show();
-		       }
-		    });
+		   if (txt == "tous") {
+		       $('.cheque').show();
+		   }
+		   else {
+		      $('.cheque').each(function(){
+                   if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+                       $(this).show();
+                   }
+                });    
+		   }
+		   
 		});
 	</script>
 </body>

@@ -488,6 +488,7 @@
                                 <table class="table table-striped table-bordered table-hover" id="sample_1">
 									<thead>
 										<tr>
+										    <th class="hidden"></th>
 											<th>Fournisseur</th>
 											<th class="hidden-phone">Date Livraison</th>
 											<th>Libelle</th>
@@ -495,6 +496,7 @@
 											<th>Total</th>
 											<th class="hidden-phone">Status</th>
 											<th class="hidden-phone">Copie BL</th>
+											<th class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -522,43 +524,8 @@
 											} 
 										?>		
 										<tr class="livraisons">
-											<td>
-												<div class="btn-group">
-												    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $fournisseurManager->getFournisseurById($livraison->idFournisseur())->nom() ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>
-												        	<a href="livraisons-details.php?codeLivraison=<?= $livraison->code() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">
-												        		Détails Livraison
-												        	</a>
-												        	<a href="controller/LivraisonDetailPrintController.php?idLivraison=<?= $livraison->id() ?>" target="_blank">
-												        		Imprimer Détails Livraison
-												        	</a>				
-												        	<?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>							
-												        	<a href="#updateLivraison<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>
-															<a href="#deleteLivraison<?= $livraison->id() ?>" data-toggle="modal" data-id="<?= $livraison->id() ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            } 
-                                                            ?>
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										    <td class="hidden"></td>
+											<td><?= $fournisseurManager->getFournisseurById($livraison->idFournisseur())->nom() ?></td>
 											<td class="hidden-phone"><?= date('d/m/Y', strtotime($livraison->dateLivraison())) ?></td>
 											<td class="hidden-phone"><?= $livraison->libelle() ?></td>
 											<td class="hidden-phone"><?= $livraisonDetailManager->getNombreArticleLivraisonByIdLivraison($livraison->id()) ?></td>
@@ -570,7 +537,7 @@
                                                     $_SESSION['userMerlaTrav']->profil() == "manager"
                                                     ) { 
                                                 ?>      
-												<a class="btn mini <?= $btnColor ?> " href="#updateStatus<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
+												<a class="btn mini <?= $btnColor ?> " title="Modifier Status" href="#updateStatus<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
 													<?= $livraison->status() ?>
 												</a>	
 												<?php
@@ -585,7 +552,7 @@
                                                 ?>      
 											</td>
 											<td>
-												<a class="fancybox-button btn mini" data-rel="fancybox-button" title="<?= $livraison->libelle() ?>" href="<?= $livraison->url() ?>">
+												<a class="fancybox-button btn mini" title="Voir BL" data-rel="fancybox-button" title="<?= $livraison->libelle() ?>" href="<?= $livraison->url() ?>">
 													<i class="icon-zoom-in"></i>	
 												</a>
 												<?php
@@ -594,13 +561,40 @@
                                                     $_SESSION['userMerlaTrav']->profil() == "manager"
                                                     ) { 
                                                 ?> 
-												<a class="btn mini blue" href="#updateCopieBL<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
+												<a class="btn mini blue" title="Modifier BL" href="#updateCopieBL<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
 													<i class=" icon-refresh"></i>	
 												</a>
 												 <?php
                                                 } 
                                                 ?> 
 											</td>
+											<td>
+                                                <a class="btn mini" title="Consulter Détails Livraison" href="livraisons-details.php?codeLivraison=<?= $livraison->code() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">
+                                                    <i class="icon-eye-open"></i>    
+                                                </a>
+                                                <a class="btn mini blue" title="Imprimer Détails Livraison" href="controller/LivraisonDetailPrintController.php?idLivraison=<?= $livraison->id() ?>" target="_blank">
+                                                    <i class="icon-print"></i>
+                                                </a>                
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>                          
+                                                <a class="btn mini green" title="Modifier" href="#updateLivraison<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
+                                                    <i class="icon-refresh"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>
+                                                <a class="btn mini red" title="Supprimer" href="#deleteLivraison<?= $livraison->id() ?>" data-toggle="modal" data-id="<?= $livraison->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php
+                                                } 
+                                                ?>
+                                            </td>
 										</tr>
 										<!-- updateStatus box begin-->
 										<div id="updateStatus<?= $livraison->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -817,34 +811,6 @@
 	        $("#numeroCheque").hide()
 	        }
 	    });
-	    $('.livraisons').show();
-		$('#nomFournisseur').keyup(function(){
-		    $('.livraisons').hide();
-		   var txt = $('#nomFournisseur').val();
-		   $('.livraisons').each(function(){
-		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-		           $(this).show();
-		       }
-		    });
-		});
-		$('#libelle').keyup(function(){
-		    $('.livraisons').hide();
-		   var txt = $('#libelle').val();
-		   $('.livraisons').each(function(){
-		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-		           $(this).show();
-		       }
-		    });
-		});
-		$('#status').keyup(function(){
-		    $('.livraisons').hide();
-		   var txt = $('#status').val();
-		   $('.livraisons').each(function(){
-		       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-		           $(this).show();
-		       }
-		    });
-		});
 	</script>
 </body>
 <!-- END BODY -->

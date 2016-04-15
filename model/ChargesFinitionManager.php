@@ -78,7 +78,7 @@ class ChargesFinitionManager{
 	public function getChargesFinitionsByIdProjet($idProjet){
 		$chargesFinitions = array();
 		$query = $this->_db->prepare('SELECT * FROM t_chargesfinition WHERE idProjet=:idProjet
-		ORDER BY id DESC');
+		ORDER BY dateOperation DESC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){

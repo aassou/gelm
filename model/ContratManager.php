@@ -56,8 +56,10 @@ class ContratManager{
 		$query->closeCursor();
     }*/
 	public function update(Contrat $contrat){
-		$query = $this->_db->prepare('UPDATE t_contrat SET nomClient=:nomClient, cin=:cin, adresse=:adresse, telephone=:telephone,
-		dateCreation=:dateCreation, prixVente=:prixVente, avance=:avance, taille=:taille, idBien=:idBien, typeBien=:typeBien, modePaiement=:modePaiement, 
+		$query = $this->_db->prepare(
+		'UPDATE t_contrat SET nomClient=:nomClient, cin=:cin, adresse=:adresse, telephone=:telephone,
+		dateCreation=:dateCreation, dateRetour=:dateRetour, prixVente=:prixVente, avance=:avance, 
+		note=:note, taille=:taille, idBien=:idBien, typeBien=:typeBien, modePaiement=:modePaiement, 
 		numeroCheque=:numeroCheque WHERE id=:id') 
 		or die(print_r($this->_db->errorInfo()));
 		$query->bindValue(':nomClient', $contrat->nomClient());
@@ -65,8 +67,10 @@ class ContratManager{
 		$query->bindValue(':adresse', $contrat->adresse());
 		$query->bindValue(':telephone', $contrat->telephone());
 		$query->bindValue(':dateCreation', $contrat->dateCreation());
+		$query->bindValue(':dateRetour', $contrat->dateRetour());
 		$query->bindValue(':prixVente', $contrat->prixVente());
 		$query->bindValue(':avance', $contrat->avance());
+		$query->bindValue(':note', $contrat->note());
         $query->bindValue(':taille', $contrat->taille());
 		$query->bindValue(':idBien', $contrat->idBien());
 		$query->bindValue(':typeBien', $contrat->typeBien());

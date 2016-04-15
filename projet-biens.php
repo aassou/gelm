@@ -347,9 +347,10 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
+								<table class="table table-striped table-bordered table-hover" <?php if ($type == "terrains") { echo 'id="sample_1"'; } ?> >
 										<thead>
 											<tr>
+											    <th class="hidden"></th>
 												<th class="hidden-phone">Code</th>
 												<th class="hidden-phone">Titre</th>
 												<th class="hidden-phone">Prix</th>
@@ -357,6 +358,7 @@
 												<th class="hidden-phone">Surplan</th>
 												<th class="hidden-phone">Emplacement</th>
 												<th class="hidden-phone">Status</th>
+												<th class="hidden-phone">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -364,61 +366,35 @@
 											foreach($terrains as $terrain){
 											?>		
 											<tr class="biens">
-												<td>
-													<div class="btn-group">
-													    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-													    	<?= $terrain->nom() ?> 
-													        <i class="icon-angle-down"></i>
-													    </a>
-													    <ul class="dropdown-menu">
-													        <li>			
-													            <?php
-                                                                if ( 
-                                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                    ) { 
-                                                                ?>													
-													        	<a href="#updateTerrain<?= $terrain->id();?>" data-toggle="modal" data-id="<?= $terrain->id(); ?>">
-																	Modifier
-																</a>
-																<?php
-                                                                }
-                                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                                ?>
-																<a href="#deleteTerrain<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>">
-																	Supprimer
-																</a>
-																<?php
-                                                                }
-                                                                ?>
-													        </li>
-													    </ul>
-													</div>
-												</td>
+											    <td class="hidden"></td>
+												<td><?= $terrain->nom() ?></td>
 												<td class="hidden-phone"><?= $terrain->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($terrain->prix(), 2, ',' , ' ') ?></td>
 												<td class="hidden-phone"><?= $terrain->superficie() ?></td>
 												<td class="hidden-phone"><?= $terrain->surplan() ?></td>
 												<td class="hidden-phone"><?= $terrain->emplacement() ?></td>
-												<td class="hidden-phone"><a class="btn mini green"><?= $terrain->status() ?></a>
-													<?php 
-													//if($terrain->status()=="Disponible"){ 
-													?>
-														<!--a href="#updateTerrainStatus<?php //$terrain->id() ?>" data-toggle="modal" data-id="<?php //$terrain->id() ?>" class="btn mini green"><?php //$terrain->status() ?></a-->
-													<?php 
-													//}
-													//else if($terrain->status()=="Vendu"){
-													?>
-														<!--a href="#updateTerrainStatus<?php //$terrain->id() ?>" data-toggle="modal" data-id="<?php //$terrain->id() ?>" class="btn mini red"><?php //$terrain->status() ?></a-->
-													<?php 
-													//}
-													//else{
-													?>
-														<!--a href="#updateTerrainStatus<?php //$terrain->id() ?>" data-toggle="modal" data-id="<?php //$terrain->id() ?>" class="btn mini purple"><?php //$terrain->status() ?></a-->
-													<?php 
-													//}
-													?>
-												</td>
+												<td class="hidden-phone"><a class="btn mini green"><?= $terrain->status() ?></a></td>
+												<td>            
+                                                    <?php
+                                                    if ( 
+                                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                        ) { 
+                                                    ?>                                                  
+                                                    <a class="btn mini green" href="#updateTerrain<?= $terrain->id();?>" data-toggle="modal" data-id="<?= $terrain->id(); ?>">
+                                                        <i class="icon-refresh"></i>
+                                                    </a>
+                                                    <?php
+                                                    }
+                                                    if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                    ?>
+                                                    <a class="btn mini red" href="#deleteTerrain<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>">
+                                                        <i class="icon-remove"></i>    
+                                                    </a>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </td>
 											</tr>
 											<!-- updateTerrainStatus box begin-->
 											<div id="updateTerrainStatus<?= $terrain->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -565,9 +541,10 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
+								<table class="table table-striped table-bordered table-hover" <?php if ($type == "appartements") { echo 'id="sample_1"'; } ?> >
 									<thead>
 										<tr>
+										    <th class="hidden"></th>
 											<th class="hidden-phone">Code</th>
 											<th class="hidden-phone"></th>
 											<th class="hidden-phone">Titre</th>
@@ -579,6 +556,7 @@
 											<th class="hidden-phone">Façade</th>
 											<th class="hidden-phone">Nombre Pièces</th>
 											<th class="hidden-phone">Status</th>
+											<th class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -610,37 +588,8 @@
 											}
 										?>		
 										<tr class="biens">
-											<td>
-												<div class="btn-group">
-												    <a style="width: 100px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $appartement->nom() ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>										
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>      						
-												        	<a href="#updateAppartement<?= $appartement->id();?>" data-toggle="modal" data-id="<?= $appartement->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>
-															<a href="#deleteAppartement<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            }
-                                                            ?>
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										    <td class="hidden"></td>
+											<td><?= $appartement->nom() ?></td>
 											<td class="hidden-phone"><?= $client ?></td>
 											<td class="hidden-phone"><?= $appartement->numeroTitre() ?></td>
 											<td class="hidden-phone"><?= number_format($appartement->prix(), 2, ',', ' ') ?></td>
@@ -669,6 +618,27 @@
                                                 }
                                                 ?>
 										    </td>
+										    <td>                                      
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>                              
+                                                <a class="btn mini green" href="#updateAppartement<?= $appartement->id();?>" data-toggle="modal" data-id="<?= $appartement->id(); ?>">
+                                                    <i class="icon-refresh"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>
+                                                <a class="btn mini red" href="#deleteAppartement<?= $appartement->id() ?>" data-toggle="modal" data-id="<?= $appartement->id() ?>">
+                                                    <i class="icon-remove"></i>    
+                                                </a>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
 										</tr>
 										<!-- updateAppartementStatus box begin-->
 											<div id="updateAppartementStatus<?= $appartement->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -848,9 +818,10 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-									<table class="table table-striped table-bordered table-advance table-hover">
+									<table class="table table-striped table-bordered table-hover" <?php if ($type == "locaux") { echo 'id="sample_1"'; } ?> >
 										<thead>
 											<tr>
+											    <th class="hidden"></th>
 												<th class="hidden-phone">Code</th>
 												<th class="hidden-phone"></th>
 												<th class="hidden-phone">Titre</th>
@@ -861,6 +832,7 @@
 												<th class="hidden-phone">Façade</th>
 												<th class="hidden-phone">Mezzanine</th>
 												<th class="hidden-phone">Status</th>
+												<th class="hidden-phone">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -892,37 +864,8 @@
 												}
 											?>		
 											<tr class="biens">
-												<td>
-													<div class="btn-group">
-													    <a style="width: 100px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-													    	<?= $local->nom() ?> 
-													        <i class="icon-angle-down"></i>
-													    </a>
-													    <ul class="dropdown-menu">
-													        <li>						
-													            <?php
-                                                                if ( 
-                                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                    ) { 
-                                                                ?>   										
-													        	<a href="#updateLocal<?= $local->id();?>" data-toggle="modal" data-id="<?= $local->id(); ?>">
-																	Modifier
-																</a>
-																<?php
-                                                                }
-                                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                                ?>   
-																<a href="#deleteLocal<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>">
-																	Supprimer
-																</a>
-																<?php
-                                                                }
-                                                                ?>   
-													        </li>
-													    </ul>
-													</div>
-												</td>
+											    <td class="hidden"></td>
+												<td><?= $local->nom() ?></td>
 												<td class="hidden-phone"><?= $client ?></td>
 												<td class="hidden-phone"><?= $local->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($local->prix(), 2, ',' , ' ') ?></td>
@@ -949,6 +892,27 @@
                                                 <?php     
                                                 }
                                                 ?>
+                                                </td>
+                                                <td>
+                                                <?php
+                                                    if ( 
+                                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                        ) { 
+                                                    ?>                                          
+                                                    <a class="btn mini green" href="#updateLocal<?= $local->id();?>" data-toggle="modal" data-id="<?= $local->id(); ?>">
+                                                        <i class="icon-refresh"></i>
+                                                    </a>
+                                                    <?php
+                                                    }
+                                                    if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                    ?>   
+                                                    <a class="btn mini red" href="#deleteLocal<?= $local->id() ?>" data-toggle="modal" data-id="<?= $local->id() ?>">
+                                                        <i class="icon-remove"></i>
+                                                    </a>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </td>
 											</tr>
 											<!-- updateLocalStatus box begin-->
@@ -1106,9 +1070,10 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-									<table class="table table-striped table-bordered table-advance table-hover">
+									<table class="table table-striped table-bordered table-hover" <?php if ($type == "maisons") { echo 'id="sample_1"'; } ?> >
 										<thead>
 											<tr>
+											    <th class="hidden"></th>
                                                 <th class="hidden-phone">Code</th>
 												<th class="hidden-phone"></th>
                                                 <th class="hidden-phone">Titre</th>
@@ -1119,6 +1084,7 @@
 												<th class="hidden-phone">Etages</th>
 												<th class="hidden-phone">Emplacement</th>
 												<th class="hidden-phone">Status</th>
+												<th class="hidden-phone">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -1150,37 +1116,8 @@
 												}
 											?>		
 											<tr class="biens">
-												<td>
-													<div class="btn-group">
-													    <a style="width: 80px" class="btn black mini dropdown-toggle" href="#" data-toggle="dropdown">
-													    	<?= $maison->nom() ?> 
-													        <i class="icon-angle-down"></i>
-													    </a>
-													    <ul class="dropdown-menu">
-													        <li>				
-													            <?php
-                                                                if ( 
-                                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                    ) { 
-                                                                ?>   												
-													        	<a href="#updateMaison<?= $maison->id();?>" data-toggle="modal" data-id="<?= $maison->id(); ?>">
-																	Modifier
-																</a>
-																<?php
-                                                                }
-                                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                                ?>   
-																<a href="#deleteMaison<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>">
-																	Supprimer
-																</a>
-																<?php
-                                                                }
-                                                                ?>   
-													        </li>
-													    </ul>
-													</div>
-												</td>
+											    <td class="hidden"></td>
+												<td><?= $maison->nom() ?></td>
 												<td class="hidden-phone"><?= $client ?></td>
 												<td class="hidden-phone"><?= $maison->numeroTitre() ?></td>
 												<td class="hidden-phone"><?= number_format($maison->prix(), 2, ',' , ' ') ?></td>
@@ -1208,6 +1145,27 @@
                                                 }
                                                 ?>
 												</td>
+												<td>
+												<?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>                                                  
+                                                <a class="btn mini green" href="#updateMaison<?= $maison->id();?>" data-toggle="modal" data-id="<?= $maison->id(); ?>">
+                                                    <i class="icon-refresh"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>   
+                                                <a class="btn mini red" href="#deleteMaison<?= $maison->id() ?>" data-toggle="modal" data-id="<?= $maison->id() ?>">
+                                                    <i class="icon-remove"></i>    
+                                                </a>
+                                                <?php
+                                                }
+                                                ?>   
+                                                </td>
 											</tr>
 											<!-- updateMaisonStatus box begin-->
 											<div id="updateMaisonStatus<?= $maison->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -1393,7 +1351,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 			$("#mezzanine").hide();
 			$("#emplacement").hide();

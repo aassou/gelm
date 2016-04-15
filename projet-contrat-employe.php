@@ -111,21 +111,6 @@
                 <!-- END PAGE HEADER-->
                 <div class="row-fluid">
                     <div class="span12">
-                        <?php
-                        if ( 
-                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                            $_SESSION['userMerlaTrav']->profil() == "manager"
-                            ) { 
-                        ?>      
-                        <div>
-                            <div class="pull-right">
-                                <a href="#addContratEmploye" data-toggle="modal" class="btn icn-only green">Nouveau Contrat Employé <i class="icon-plus-sign"></i></a>
-                            </div>
-                        </div>
-                        <?php
-                        } 
-                        ?>
-                        <br><br>
                         <!-- addEmploye box begin-->
                         <div id="addEmploye" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                             <div class="modal-header">
@@ -251,17 +236,37 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                <?php
+                                if ( 
+                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                    ) { 
+                                ?>  
+                                <div class="clearfix">
+                                    <div class="btn-group pull-right">
+                                        <div>
+                                            <div class="pull-right">
+                                                <a href="#addContratEmploye" data-toggle="modal" class="btn icn-only green">Nouveau Contrat Employé <i class="icon-plus-sign"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                } 
+                                ?>
+                                <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
+                                <table class="table table-striped table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
+                                            <th class="hidden"></th>
                                             <th style="width:15%">Employé</th>
                                             <th style="width:10%">Date Contrat</th>
-                                            <th style="width:15%">Prix/Unité</th>
-                                            <th style="width:15%">Nombre Unités</th>
+                                            <th style="width:10%">Prix/Unité</th>
+                                            <th style="width:10%">Nombre Unités</th>
                                             <th style="width:15%">Total Paiements</th>
                                             <th style="width:15%">Total à Payer</th>
                                             <th style="width:15%">Reste</th>
+                                            <th style="width:10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -269,46 +274,38 @@
                                         foreach($contratEmployes as $contrat){
                                         ?>      
                                         <tr class="clients">
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
-                                                        <?= $contrat->employe() ?> 
-                                                        <i class="icon-angle-down"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a href="contrat-employe-detail.php?idContratEmploye=<?= $contrat->id() ?>&idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>">
-                                                                Détails Contrat
-                                                            </a>
-                                                            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>
-                                                            <a href="#updateContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-                                                                Modifier
-                                                            </a>
-                                                            <?php
-                                                            } 
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>
-                                                            <a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-                                                                Supprimer
-                                                            </a>
-                                                            <?php 
-                                                            }
-                                                            ?>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                            <td class="hidden"></td>
+                                            <td><?= $contrat->employe() ?></td>
                                             <td class="hidden-phone"><?= date('d/m/Y', strtotime($contrat->dateContrat()) ) ?></td>
                                             <td><?= number_format($contrat->prixUnitaire(), 2, ',', ' ') ?></td>
                                             <td><?= $contrat->nombreUnites() ?></td>
                                             <td><?= number_format($contratDetaislManager->getContratDetailsTotalByIdContratEmploye($contrat->id()), 2, ',', ' ') ?></td>
                                             <td><?= number_format($contrat->total(), 2, ',', ' ') ?></td>
                                             <td><?= number_format($contrat->total()-$contratDetaislManager->getContratDetailsTotalByIdContratEmploye($contrat->id()), 2, ',', ' ') ?></td>
+                                            <td>
+                                                <a class="btn mini" title="Voir Détails Contrat" href="contrat-employe-detail.php?idContratEmploye=<?= $contrat->id() ?>&idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>">
+                                                    <i class="icon-eye-open"></i>    
+                                                </a>
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>
+                                                <a class="btn mini green" title="Modifier" href="#updateContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                    <i class="icon-refresh"></i>
+                                                </a>
+                                                <?php
+                                                } 
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>
+                                                <a class="btn mini red" title="Supprimer" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php 
+                                                }
+                                                ?>
+                                            </td>
                                         </tr>
                                         <!-- updatePaiement box begin -->
                                         <div id="updateContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -396,7 +393,7 @@
                                         ?>
                                     </tbody>
                                 </table>
-                                </div><!-- END SCROLL DIV -->
+                                <!--/div--><!-- END SCROLL DIV -->
                             </div>
                         </div>
                         <!-- END Terrain TABLE PORTLET-->
@@ -453,7 +450,7 @@
     <script>
         jQuery(document).ready(function() {         
             // initiate layout and plugins
-            //App.setPage("table_editable");
+            App.setPage("table_managed");
             App.init();
         });
         $('.clients').show();

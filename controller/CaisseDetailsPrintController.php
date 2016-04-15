@@ -44,6 +44,7 @@ ob_start();
         
         table, th, td {
             border: 1px solid black;
+			font-size: 10px;
         }
         td, th{
             padding : 5px;
@@ -62,13 +63,13 @@ ob_start();
     <table>
         <tr>
             <th style="width:10%">Date</th>
-            <th style="width:10%">Personne</th>
+            <th style="width:15%">Personne</th>
             <th style="width:20%">Désignation</th>
             <th style="width:10%">Projet</th>
-            <th style="width:10%">Entrée</th>
-            <th style="width:10%">Sortie</th>
-            <th style="width:10%">Reste</th>
-            <th style="width:20%">Commentaire</th>
+            <th style="width:15%">Entrée</th>
+            <th style="width:15%">Sortie</th>
+            <th style="width:15%">Reste</th>
+            <!--th style="width:10%">Comment</th-->
         </tr>
         <?php
         foreach($caisseDetails as $detail){
@@ -85,14 +86,14 @@ ob_start();
             }
         ?>      
         <tr>
-            <td><?= date('d/m/Y', strtotime($detail->dateOperation())) ?></td>
-            <td><?= $detail->personne() ?></td>
-            <td><?= $detail->designation() ?></td>
-            <td><?= $detail->projet() ?></td>
-            <td><?= number_format($montantEntree, 2, ',', ' ') ?></td>
-            <td><?= number_format($montantSortie, 2, ',', ' ') ?></td>
-            <td><?= number_format(0, 2, ',', ' ') ?></td>
-            <td><?= $detail->commentaire() ?></td>
+            <td style="width:10%"><?= date('d/m/Y', strtotime($detail->dateOperation())) ?></td>
+            <td style="width:15%"><?= $detail->personne() ?></td>
+            <td style="width:20%"><?= $detail->designation() ?></td>
+            <td style="width:10%"><?= $detail->projet() ?></td>
+            <td style="width:15%"><?= number_format($montantEntree, 2, ',', ' ') ?></td>
+            <td style="width:15%"><?= number_format($montantSortie, 2, ',', ' ') ?></td>
+            <td style="width:15%"><?= number_format(0, 2, ',', ' ') ?></td>
+            <!--td style="width:10%"><?php //$detail->commentaire() ?></td-->
         </tr>   
         <?php
         }//end of loop

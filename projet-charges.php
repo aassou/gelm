@@ -79,7 +79,7 @@
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->			
 						<h3 class="page-title">
-							Gestion des charges - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
+							Gestion des charges <?= $type ?> - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
@@ -107,7 +107,7 @@
                                 <i class="icon-angle-right"></i> 
                             </li>
 							<li>
-							    <a>Liste des charges</a>
+							    <a>Liste des charges <strong><?= $type ?></strong></a>
 						    </li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
@@ -309,14 +309,16 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
-									<thead>
-										<tr>
-											<th class="hidden-phone">Date Opération</th>
-											<th class="hidden-phone">Désignation</th>
-											<th class="hidden-phone">Bénéficiaire</th>
-											<th class="hidden-phone">Numéro Chèque</th>
-											<th class="hidden-phone">Montant</th>
+								<table class="table table-striped table-bordered table-hover" <?php if ($type == "terrain") { echo 'id="sample_1"'; } ?> >
+                                    <thead>
+                                        <tr>
+                                            <th class="hidden"></th>
+                                            <th style="width:20%" class="hidden-phone">Date Opération</th>
+                                            <th style="width:20%" class="hidden-phone">Désignation</th>
+                                            <th style="width:20%" class="hidden-phone">Bénéficiaire</th>
+                                            <th style="width:15%" class="hidden-phone">Numéro Chèque</th>
+                                            <th style="width:15%" class="hidden-phone">Montant</th>
+                                            <th style="width:10%" class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -324,41 +326,33 @@
 										foreach($chargesTerrain as $terrain){
 										?>		
 										<tr class="charges">
-											<td>
-												<div class="btn-group">
-												    <a class="btn black mini dropdown-toggle dropDownButton" href="#" data-toggle="dropdown">
-												    	<?= date('d/m/Y', strtotime($terrain->dateOperation())) ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>				
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>   												
-												        	<a href="#updateChargeTerrain<?= $terrain->id();?>" data-toggle="modal" data-id="<?= $terrain->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>   
-															<a href="#deleteChargeTerrain<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            } 
-                                                            ?>   
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										    <td class="hidden"></td>
+											<td><?= date('d/m/Y', strtotime($terrain->dateOperation())) ?></td>
 											<td class="hidden-phone"><?= $terrain->designation() ?></td>
 											<td class="hidden-phone"><?= $terrain->beneficiaire() ?></td>
 											<td class="hidden-phone"><?= $terrain->numeroCheque() ?></td>
 											<td class="hidden-phone"><?= $terrain->montant() ?></td>
+											<td>             
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>                                                  
+                                                <a class="btn mini green" title="Modifier" href="#updateChargeTerrain<?= $terrain->id();?>" data-toggle="modal" data-id="<?= $terrain->id(); ?>">
+                                                    <i class="icon-refresh"></i>    
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>   
+                                                <a class="btn mini red" title="Supprimer" href="#deleteChargeTerrain<?= $terrain->id() ?>" data-toggle="modal" data-id="<?= $terrain->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php
+                                                } 
+                                                ?>   
+                                            </td>
 										</tr>
 										<!-- updateChargeTerrain box begin-->
 										<div id="updateChargeTerrain<?= $terrain->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -440,12 +434,13 @@
 										<?php
 										}//end of loop
 										?>
+										</tbody>
+                                </table>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tbody>
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><strong>Total Terrain</strong></td>
-											<td><strong><a><?= number_format($chargesTerrainManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</a></strong></td>
+											<td style="width:75%"><strong>Total Terrain</strong></td>
+											<td style="width:25%"><strong><a><?= number_format($chargesTerrainManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</a></strong></td>
 										</tr>
 									</tbody>
 								</table>
@@ -468,14 +463,16 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
+								<table class="table table-striped table-bordered table-hover" <?php if ($type == "construction") { echo 'id="sample_1"'; } ?> >
 									<thead>
 										<tr>
-											<th class="hidden-phone">Date Opération</th>
-											<th class="hidden-phone">Désignation</th>
-											<th class="hidden-phone">Bénéficiaire</th>
-											<th class="hidden-phone">Numéro Chèque</th>
-											<th class="hidden-phone">Montant</th>
+											<th class="hidden"></th>
+                                            <th style="width:20%" class="hidden-phone">Date Opération</th>
+                                            <th style="width:20%" class="hidden-phone">Désignation</th>
+                                            <th style="width:20%" class="hidden-phone">Bénéficiaire</th>
+                                            <th style="width:15%" class="hidden-phone">Numéro Chèque</th>
+                                            <th style="width:15%" class="hidden-phone">Montant</th>
+                                            <th style="width:10%" class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -483,41 +480,33 @@
 										foreach($chargesConstruction as $construction){
 										?>		
 										<tr class="charges">
-											<td>
-												<div class="btn-group">
-												    <a class="btn black mini dropdown-toggle dropDownButton" href="#" data-toggle="dropdown">
-												    	<?= date('d/m/Y', strtotime($construction->dateOperation())) ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>					
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>   											
-												        	<a href="#updateChargeConstruction<?= $construction->id();?>" data-toggle="modal" data-id="<?= $construction->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>   
-															<a href="#deleteChargeConstruction<?= $construction->id() ?>" data-toggle="modal" data-id="<?= $construction->id() ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            }
-                                                            ?>   
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										    <td class="hidden"></td>
+											<td><?= date('d/m/Y', strtotime($construction->dateOperation())) ?></td>
 											<td class="hidden-phone"><?= $construction->designation() ?></td>
 											<td class="hidden-phone"><?= $construction->beneficiaire() ?></td>
 											<td class="hidden-phone"><?= $construction->numeroCheque() ?></td>
 											<td class="hidden-phone"><?= $construction->montant() ?></td>
+											<td>                 
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>                                              
+                                                <a class="btn mini green" title="Modifier" href="#updateChargeConstruction<?= $construction->id();?>" data-toggle="modal" data-id="<?= $construction->id(); ?>">
+                                                    <i class="icon-refresh"></i>    
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>   
+                                                <a class="btn mini red" title="Supprimer" href="#deleteChargeConstruction<?= $construction->id() ?>" data-toggle="modal" data-id="<?= $construction->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                ?>   
+                                            </td>
 										</tr>
 										<!-- updateChargeConstruction box begin-->
 										<div id="updateChargeConstruction<?= $construction->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -599,19 +588,17 @@
 										<?php
 										}//end of loop
 										?>
+						          </tbody>
+                              </table>
+		                      <table class="table table-striped table-bordered table-hover">
+		                          <tbody>
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><strong>Total Construction</strong></td>
-											<td><strong><a><?= number_format($chargesConstructionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</a></strong></td>
+											<td style="width:75%"><strong>Total Construction</strong></td>
+											<td style="width:25%"><strong><a><?= number_format($chargesConstructionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</a></strong></td>
 										</tr>
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><strong>Total Terrain+Construction</strong></td>
-											<td><strong><a><?= number_format($chargesTerrainManager->getTotalByIdProjet($idProjet)+$chargesConstructionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</a></strong></td>
+											<td style="width:75%"><strong>Total Terrain+Construction</strong></td>
+											<td style="width:25%"><strong><a><?= number_format($chargesTerrainManager->getTotalByIdProjet($idProjet)+$chargesConstructionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</a></strong></td>
 										</tr>
 									</tbody>
 								</table>
@@ -634,14 +621,16 @@
 							</div>
 							<div class="portlet-body">
 								<!--div class="scroller" data-height="500px" data-always-visible="1">< BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover">
+								<table class="table table-striped table-bordered table-hover" <?php if ($type == "finition") { echo 'id="sample_1"'; } ?> >
 									<thead>
 										<tr>
-											<th class="hidden-phone">Date Opération</th>
-											<th class="hidden-phone">Désignation</th>
-											<th class="hidden-phone">Bénéficiaire</th>
-											<th class="hidden-phone">Numéro Chèque</th>
-											<th class="hidden-phone">Montant</th>
+										    <th class="hidden"></th>
+											<th style="width:20%" class="hidden-phone">Date Opération</th>
+											<th style="width:20%" class="hidden-phone">Désignation</th>
+											<th style="width:20%" class="hidden-phone">Bénéficiaire</th>
+											<th style="width:15%" class="hidden-phone">Numéro Chèque</th>
+											<th style="width:15%" class="hidden-phone">Montant</th>
+											<th style="width:10%" class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -649,41 +638,33 @@
 										foreach($chargesFinition as $finition){
 										?>		
 										<tr class="charges">
-											<td class="hidden-phone">
-												<div class="btn-group">
-												    <a class="btn black mini dropdown-toggle dropDownButton" href="#" data-toggle="dropdown">
-												    	<?= date('d/m/Y', strtotime($finition->dateOperation())) ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>				
-												            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>   												
-												        	<a href="#updateChargeFinition<?= $finition->id();?>" data-toggle="modal" data-id="<?= $finition->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>   
-															<a href="#deleteChargeFinition<?= $finition->id() ?>" data-toggle="modal" data-id="<?= $finition->id() ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            } 
-                                                            ?>   
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										    <td class="hidden"></td>
+											<td class="hidden-phone"><?= date('d/m/Y', strtotime($finition->dateOperation())) ?></td>
 											<td class="hidden-phone"><?= $finition->designation() ?></td>
 											<td class="hidden-phone"><?= $finition->beneficiaire() ?></td>
 											<td class="hidden-phone"><?= $finition->numeroCheque() ?></td>
 											<td class="hidden-phone"><?= $finition->montant() ?></td>
+											<td>             
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>                                                  
+                                                <a class="btn mini green" title="Modifier" href="#updateChargeFinition<?= $finition->id();?>" data-toggle="modal" data-id="<?= $finition->id(); ?>">
+                                                    <i class="icon-refresh"></i>    
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>   
+                                                <a class="btn mini red" title="Supprimer" href="#deleteChargeFinition<?= $finition->id() ?>" data-toggle="modal" data-id="<?= $finition->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php
+                                                } 
+                                                ?>   
+                                            </td>
 										</tr>
 										<!-- updateChargeFinition box begin-->
 										<div id="updateChargeFinition<?= $finition->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -765,22 +746,20 @@
 										<?php
 										}//end of loop
 										?>
-										<tr>
-											<td class="hidden-phone"></td>
-											<td class="hidden-phone"></td>
-											<td class="hidden-phone"></td>
-											<td class="hidden-phone"><strong>Total Finition</strong></td>
-											<td class="hidden-phone"><a><strong><?= number_format($chargesFinitionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</strong></a></td>
-										</tr>
-										<tr>
-											<td class="hidden-phone"></td>
-											<td class="hidden-phone"></td>
-											<td class="hidden-phone"></td>
-											<td class="hidden-phone"><strong>Total Terrain+Construction+Finition</strong></td>
-											<td class="hidden-phone"><a><strong><?= number_format($chargesTerrainManager->getTotalByIdProjet($idProjet)+$chargesConstructionManager->getTotalByIdProjet($idProjet)+$chargesFinitionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</strong></a></td>
-										</tr>
 									</tbody>
 								</table>
+								<table class="table table-striped table-bordered table-hover">
+								    <tbody>
+								        <tr>
+                                            <td style="width:75%" class="hidden-phone"><strong>Total Finition</strong></td>
+                                            <td style="width:25%" class="hidden-phone"><a><strong><?= number_format($chargesFinitionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:75%" class="hidden-phone"><strong>Total Terrain+Construction+Finition</strong></td>
+                                            <td style="width:25%" class="hidden-phone"><a><strong><?= number_format($chargesTerrainManager->getTotalByIdProjet($idProjet)+$chargesConstructionManager->getTotalByIdProjet($idProjet)+$chargesFinitionManager->getTotalByIdProjet($idProjet), 2, ',', ' ') ?>&nbsp;DH</strong></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 								<!--/div>< END DIV SCROLLER -->
 							</div>
 						</div>
@@ -829,7 +808,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
 		$('.charges').show();

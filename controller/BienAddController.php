@@ -14,6 +14,8 @@
     //classes loading end
     session_start();
     
+    $historyManager = new HistoryManager($pdo);
+    $projetManager = new ProjetManager($pdo);
     //post input processing
     $idProjet = htmlentities($_POST['idProjet']);
     $idSociete = htmlentities($_POST['idSociete']);
@@ -68,7 +70,18 @@
 				$terrainManager = new TerrainManager($pdo);
 				$terrainManager->add($terrain);
 			}
-	        
+	        //add history data to db
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des ".htmlentities($_POST['typeImmobiliere']),
+                'description' => "Ajout de ".htmlentities($_POST['typeImmobiliere'])." - N° Titre : ".$numeroTitre." - Nom : ".$nom." - Projet : ".$projetManager->getProjetById($idProjet)->nom(),
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
 	        $_SESSION['bien-add-success']='<strong>Opération valide</strong> : Le Bien Immobilière est ajouté avec succès !';
 	        $redirectLink = 'Location:../projet-biens.php?idProjet='.$idProjet.'&type='.$type.'&idSociete='.$idSociete;
 	        header($redirectLink);

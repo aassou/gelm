@@ -81,8 +81,7 @@ class ChequeManager{
 	}
 
 	public function getChequeById($id){
-    	$query = $this->_db->prepare(' SELECT * FROM t_cheque
-		WHERE id=:id)')
+    	$query = $this->_db->prepare(' SELECT * FROM t_cheque WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $id);
 		$query->execute();		
@@ -181,7 +180,7 @@ class ChequeManager{
 	public function getChequesBySocieteByLimits($idSociete, $begin, $end){
 		$cheques = array();
 		$query = $this->_db->prepare('SELECT * FROM t_cheque WHERE idSociete=:idSociete
-		ORDER BY dateCheque DESC LIMIT '.$begin.', '.$end);
+		ORDER BY dateCheque DESC, numero DESC LIMIT '.$begin.', '.$end);
 		$query->bindValue(':idSociete', $idSociete);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){

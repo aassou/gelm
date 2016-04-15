@@ -114,22 +114,6 @@
                 <!-- END PAGE HEADER-->
                 <div class="row-fluid">
                     <div class="span12">
-                        <div><!--div class="row-fluid add-portfolio"-->
-                            <div class="pull-right">
-                                <?php
-                                if ( 
-                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                    $_SESSION['userMerlaTrav']->profil() == "manager"
-                                    ) { 
-                                ?>
-                                <a href="#addPaiement" data-toggle="modal" class="btn icn-only green">Nouveau Paiement <i class="icon-plus-sign"></i></a>
-                                <?php
-                                } 
-                                ?>
-                                <a href="controller/ContratDetailsPrintController.php?idContratEmploye=<?= $contratEmploye->id() ?>&idProjet=<?= $projet->id() ?>" class="btn icn-only blue"><i class="icon-print"></i> Détails Contrat</a>
-                            </div>
-                        </div>
-                        <br><br>
                         <!-- addContratEmploye box begin-->
                         <div id="addPaiement" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                             <div class="modal-header">
@@ -191,16 +175,34 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                <div class="clearfix">
+                                    <?php
+                                    if ( 
+                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                        ) { 
+                                    ?>
+                                    <div class="btn-group pull-right">
+                                        <a href="#addPaiement" data-toggle="modal" class="btn icn-only green">Nouveau Paiement <i class="icon-plus-sign"></i></a>
+                                    </div>
+                                    <?php
+                                    } 
+                                    ?>
+                                    <div class="btn-group pull-left">
+                                        <a href="controller/ContratDetailsPrintController.php?idContratEmploye=<?= $contratEmploye->id() ?>&idProjet=<?= $projet->id() ?>" class="btn icn-only blue"><i class="icon-print"></i> Détails Contrat</a>
+                                    </div>
+                                </div>
+                                <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
+                                <table class="table table-striped table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
+                                            <th class="hidden"></th>
                                             <th style="width:15%">Date Opération</th>
                                             <th style="width:15%">Numéro Chèque</th>
                                             <th style="width:15%">Prix/Unité</th>
                                             <th style="width:15%">Nombre Unités</th>
                                             <th style="width:15%">Montant</th>
-                                            <th style="width:15%"></th>
+                                            <th style="width:15%">Actions</th>
                                             <th style="width:10%"></th>
                                         </tr>
                                     </thead>
@@ -213,45 +215,36 @@
                                             $contratEmployeManager->getContratEmployeById($contrat->idContratEmploye())->nombreUnites();
                                         ?>      
                                         <tr class="clients">
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
-                                                        <?= date('d/m/Y', strtotime($contrat->dateOperation()) ) ?>
-                                                        <i class="icon-angle-down"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a target="_blank" href="controller/PaiementEmployePrintController.php?idContrat=<?= $contrat->id() ?>">
-                                                                Imprimer Contrat
-                                                            </a>
-                                                            <?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?>
-                                                            <a href="#updateContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-                                                                Modifier
-                                                            </a>
-                                                            <?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?>
-                                                            <a href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-                                                                Supprimer
-                                                            </a>
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                            <td class="hidden"></td>
+                                            <td><?= date('d/m/Y', strtotime($contrat->dateOperation()) ) ?></td>
                                             <td><?= $contrat->numeroCheque() ?></td>
                                             <td><?= number_format($prixUnitaire, 2, ',', ' ') ?></td>
                                             <td><?= $nombreUnites ?></td>
                                             <td><?= number_format($contrat->montant(), 2, ',', ' ') ?></td>
-                                            <td></td>
+                                            <td>
+                                                <!--a class="btn mini blue" title="" target="_blank" href="controller/PaiementEmployePrintController.php?idContrat=<?= $contrat->id() ?>">
+                                                    <i class="icon-print"></i>    
+                                                </a-->
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                    ) { 
+                                                ?>
+                                                <a class="btn mini green" title="Modifier" href="#updateContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                    <i class="icon-refresh"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                                ?>
+                                                <a class="btn mini red" title="Supprimer" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <!-- updatePaiement box begin -->
@@ -348,7 +341,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                </div><!-- END SCROLL DIV -->
+                                <!--/div--><!-- END SCROLL DIV -->
                             </div>
                         </div>
                         <!-- END Terrain TABLE PORTLET-->
@@ -405,7 +398,7 @@
     <script>
         jQuery(document).ready(function() {         
             // initiate layout and plugins
-            //App.setPage("table_editable");
+            App.setPage("table_managed");
             App.init();
         });
         $('.clients').show();

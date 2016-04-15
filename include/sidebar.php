@@ -16,7 +16,7 @@
 				or $currentPage=="recherches.php"
 				or $currentPage=="conges.php"
 				or $currentPage=="statistiques.php"
-				or $currentPage=="users.php"
+				or $currentPage=="releve-bancaire.php"
 				or $currentPage=="messages.php"
 				or $currentPage=="user-profil.php"
 				or $currentPage=="clients-search.php"
@@ -109,6 +109,18 @@
 				</li>
 				<!---------------------------- Gestion des Caisses End    -------------------------------------------->
 				<?php } ?>
+				<!---------------------------- Gestion des Employes Begin  -------------------------------------------->
+                <li class="start <?php if($currentPage=="configuration.php"
+                or $currentPage=="users.php"
+                or $currentPage=="history-group.php"
+                or $currentPage=="history.php"
+                ){echo "active ";} ?>">
+                    <a href="configuration.php">
+                    <i class="icon-wrench"></i> 
+                    <span class="title">Paramètrages</span>
+                    </a>
+                </li>
+                <!---------------------------- Gestion des Employes End    -------------------------------------------->
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>

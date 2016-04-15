@@ -236,23 +236,19 @@
                                     </div>
                                 </div>
                                 <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-hover" id="sample_1">
+                                <table class="table table-bordered table-hover" id="sample_1">
 									<thead>
 										<tr>
+										    <th class="hidden"></th>
 											<th style="width:10%">Client</th>
-											<th style="width:10%">Date</th>
+											<th style="width:10%">Dates</th>
 											<th style="width:10%" class="hidden-phone">Type</th>
-											<th style="width:5%">Bien</th>
 											<th style="width:10%" class="hidden-phone">Prix</th>
 											<th style="width:10%" class="hidden-phone">Taille</th>
 											<th style="width:10%" class="hidden-phone">Payé</th>
 											<th style="width:10%" class="hidden-phone">Reste</th>
-											<th style="width:20%" class="hidden-phone">Note</th>
-											<th style="width:5%" class="hidden-phone">Status</th>
-											<?php if(isset($_SESSION['print-quittance'])){ ?>
-												<th>Quittance</th>
-											<?php 
-											} ?>
+											<th style="width:15%" class="hidden-phone">Note</th>
+											<th style="width:15%" class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -279,55 +275,20 @@
 												$bien = $maisonManager->getMaisonById($contrat->idBien());
 												$typeBien = "Maison";
 											}
+                                            //status colors preferences
+                                            $colorRow = "";
+                                            if($contrat->status()=="actif"){
+                                                $colorRow = 'style="background-color:#d2ffca"';
+                                            }
+                                            else{
+                                                $colorRow = 'style="background-color:#ffcac1"';  
+                                            }  
 										?>		
-										<tr class="clients">
-											<td>
-												<div class="btn-group">
-												    <a style="width: 200px" class="btn mini dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $contrat->nomClient() ?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>
-												        	<a target="_blank" href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>">
-												        		Imprimer Contrat
-												        	</a>
-												        	<a target="_blank" href="controller/ClientFichePrintController.php?idContrat=<?= $contrat->id() ?>">
-												        		Imprimer Fiche Client
-												        	</a>
-												        <?php 
-                                                        if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) {
-    												        if ( $contrat->status()=="actif" ) {
-    											        ?>
-        														<a style="color:red" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-        															Désister
-        														</a>
-    														<?php 
-                                                            }
-    														else{
-    														?>	
-        														<a style="color:green" href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-        															Activer
-        														</a>	
-    														<?php	
-    														}
-														    ?>
-														    <a style="color:blue" href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-												        		Modifier
-												        	</a>
-												        	<a style="color:red" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-												        		Supprimer
-												        	</a>
-											        	<?php  
-                                                        }
-                                                        ?>
-												        </li>
-												    </ul>
-												</div>
-											</td>
-											<td><?= date('d/m/Y', strtotime($contrat->dateCreation())) ?></td>
-											<td class="hidden-phone"><?= $typeBien ?></td>
-											<td><?= $bien->nom() ?></td>
+										<tr <?= $colorRow ?> class="clients">
+										    <td class="hidden"></td>
+											<td><?= $contrat->nomClient() ?></td>
+											<td><?= date('d/m/Y', strtotime($contrat->dateCreation())) ?>-<br/><?= date('d/m/Y', strtotime($contrat->dateRetour())) ?></td>
+											<td class="hidden-phone"><?= $typeBien."-".$bien->nom() ?></td>
 											<td class="hidden-phone"><?= number_format($contrat->prixVente(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone"><?= number_format($contrat->taille(), 2, ',', ' ') ?></td>
 											<td class="hidden-phone">
@@ -353,24 +314,42 @@
 											<td class="hidden-phone"><?= number_format($contrat->prixVente()-$contrat->avance(), 2, ',', ' ') ?></td>
 											</td>
 											<td class="hidden-phone"><?= $contrat->note() ?></td>
-											<td class="hidden-phone">
-												<?php if($contrat->status()=="actif"){
-													$status = "<a class=\"btn mini green\">Actif</a>";	
-												}
-												else{
-													$status = "<a class=\"btn mini red\">Désisté</a>";	
-												}
-												echo $status;
-												?>	
-											</td>
-											<?php if(isset($_SESSION['print-quittance']) and $operationsNumber>=1){ ?>
-												<td>
-													<a class="btn mini blue" href="controller/OperationPrintController.php?idOperation=<?= $operationManager->getLastIdByIdContrat($contrat->id()) ?>"> 
-														<i class="m-icon-white icon-print"></i> Imprimer
-													</a>
-												</td>
-											<?php 
-											} ?>
+											<td>
+											    <a title="Imprimer Contrat" class="btn mini blue" target="_blank" href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>">
+                                                    <i class="icon-print"></i>
+                                                </a>
+                                                <?php 
+                                                if ( $_SESSION['userMerlaTrav']->profil()=="admin" ) {
+                                                    if ( $contrat->status()=="actif" ) {
+                                                ?>
+                                                        <a title="Désister" class="btn mini black" href="#desisterContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                            <i class="icon-minus-sign"></i>    
+                                                        </a>
+                                                    <?php 
+                                                    }
+                                                    else{
+                                                    ?>  
+                                                        <a title="Activer" class="btn mini purple" href="#activerContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                            <i class="icon-plus-sign"></i>
+                                                        </a>    
+                                                    <?php   
+                                                    }
+                                                    ?>
+                                                    <a title="Modifier" class="btn mini green" href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                        <i class="icon-refresh"></i>
+                                                    </a>
+                                                    <a title="Supprimer" class="btn mini red" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                        <i class="icon-remove"></i>
+                                                    </a>
+                                                <?php  
+                                                }
+                                                ?>
+                                                <?php if(isset($_SESSION['print-quittance']) and $operationsNumber>=1){ ?>
+                                                    <a title="Imprimer Quittance" class="btn mini grey" href="controller/OperationPrintController.php?idOperation=<?= $operationManager->getLastIdByIdContrat($contrat->id()) ?>"> 
+                                                        <i class="m-icon-white icon-print"></i>
+                                                    </a>
+                                                <?php } ?>
+                                            </td>
 										</tr>
 										<!-- updatePaiementContrat box begin -->
 										<div id="updatePaiementContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >

@@ -44,6 +44,19 @@
 				$client = new Client(array('nom' => $nom, 'cin' => $cin, 'adresse' => $adresse,'telephone1' => $telephone1, 
 		        'telephone2' =>$telephone2, 'email' => $email, 'code' => $codeClient, 'created' => $created));
 		        $clientManager->add($client);	
+                //add history data to db
+                $historyManager = new HistoryManager($pdo);
+                $createdBy = $_SESSION['userMerlaTrav']->login();
+                $created = date('Y-m-d h:i:s');
+                $history = new History(array(
+                    'action' => "Ajout",
+                    'target' => "Table des clients",
+                    'description' => "Ajout du client - Nom : ".$nom." - CIN : ".$cin,
+                    'created' => $created,
+                    'createdBy' => $createdBy
+                ));
+                //add it to db
+                $historyManager->add($history);
 			}
 		}
 		else{

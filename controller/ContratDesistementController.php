@@ -39,6 +39,21 @@
 	}
 	
 	$contratManager->desisterContrat($contrat->id());
+    //add history data to db
+    $projetManager = new ProjetManager($pdo);
+    $historyManager = new HistoryManager($pdo);
+    $projet = $projetManager->getProjetById($idProjet);
+    $createdBy = $_SESSION['userMerlaTrav']->login();
+    $created = date('Y-m-d h:i:s');
+    $history = new History(array(
+        'action' => "Désistement",
+        'target' => "Table des contrats clients",
+        'description' => "Désistement contrat - Client :  ".$contrat->nomClient()." - CIN : ".$contrat->cin()." - ID Contrat : ".$contrat->id()." - Type bien : ".$contrat->typeBien()." - ID Bien : ".$contrat->idBien()." - Projet : ".$projet->nom(),
+        'created' => $created,
+        'createdBy' => $createdBy
+    ));
+    //add it to db
+    $historyManager->add($history);
 	$_SESSION['contrat-desister-success'] = "<strong>Opération valide : </strong>Le contrat est désisté avec succès.";
 	$redirectLink = 'Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
 	header($redirectLink);

@@ -66,6 +66,21 @@
 				$terrainManager = new TerrainManager($pdo);
 				$terrainManager->updateStatus($status, $idBien);
 			}
+            //add history data to db
+            $projetManager = new ProjetManager($pdo);
+            $historyManager = new HistoryManager($pdo);
+            $projet = $projetManager->getProjetById($idProjet);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des contrats clients",
+                'description' => "Ajout de contrat - Client :  ".$nomClient." - Bien : ".$typeBien." - ID Bien : ".$idBien." - Projet : ".$projet->nom(),
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
 			header('Location:../contrats-list.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     	}
 		else{

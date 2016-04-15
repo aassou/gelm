@@ -38,6 +38,23 @@
         $chequeManager = new ChequeManager($pdo);
         $chequeManager->add($cheque);
         $_SESSION['cheque-add-success']="<strong>Opération valide : </strong>Le chèque est ajouté au système avec succès.";
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $projetManager = new ProjetManager($pdo);
+        $societeManager = new SocieteManager($pdo);
+        $projet = $projetManager->getProjetById($idProjet);
+        $societe = $societeManager->getSocieteById($idSociete);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Ajout",
+            'target' => "Table des chèques",
+            'description' => "Ajout de chèque- N° : ".$numeroCheque." - Montant : ".$montant." - Compte : ".$compteBancaire." - Designation : ".$designationSociete."/".$designationPersonne." - Projet : ".$projet->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
     }
     else{
         $_SESSION['cheque-add-error'] = "<strong>Erreur Ajout Chèque : </strong>Vous devez remplir au moins les champs 'Montant', 'Numéro chèque' et 'Désignation Société'.";
