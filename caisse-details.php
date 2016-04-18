@@ -96,15 +96,6 @@
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
-                <div class="row-fluid">
-                    <a class="btn green pull-right" data-toggle="modal" href="#addCaisseDetails">
-                        <i class="icon-plus-sign"></i>
-                        Nouvelle Opération                                  
-                    </a>
-                    <a href="#printCaisseDetails" class="btn blue pull-left" data-toggle="modal">
-                        <i class="icon-print"></i>&nbsp;Détails de Caisse
-                    </a>
-                </div>
                 <!-- printCaisseDetails box begin-->
                 <div id="printCaisseDetails" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                     <div class="modal-header">
@@ -231,17 +222,29 @@
                                 unset($_SESSION['caisse-details-action-message']);
                              ?>
                            <div class="portlet box grey">
-                              <div class="portlet-title">
-                                 <h4><i class="icon-bar-chart"></i>Liste détaillée de la Caisse <?= $caisse->nom() ?></h4>
-                                 <div class="tools">
+                            <div class="portlet-title">
+                                <h4>Liste détaillée de la Caisse Ilha</h4>
+                                <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <a href="javascript:;" class="remove"></a>
-                                 </div>
-                              </div>
-                              <div class="portlet-body">
-                                 <!-- BEGIN FORM-->
-                                 <div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="clearfix">
+                                    <div class="btn-group pull-right">
+                                        <a class="btn green pull-right" data-toggle="modal" href="#addCaisseDetails">
+                                            <i class="icon-plus-sign"></i>
+                                            Nouvelle Opération                                  
+                                        </a>
+                                    </div>
+                                    <div class="btn-group pull-left">
+                                        <a href="#printCaisseDetails" class="btn blue pull-left" data-toggle="modal">
+                                            <i class="icon-print"></i>&nbsp;Détails de Caisse
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
+                                <table class="table table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
                                             <th style="width:10%">Date</th>
@@ -406,7 +409,6 @@
                                         ?>
                                     </tbody>
                                 </table>
-                                </div><!-- END DIV SCROLLER -->
                               </div>
                            </div>
                             <!-- END Charges TABLE PORTLET-->
@@ -455,7 +457,7 @@
     <script>
         jQuery(document).ready(function() {         
             // initiate layout and plugins
-            //App.setPage("table_editable");
+            App.setPage("table_managed");
             App.init();
         });
         $('.duree').on('change',function(){

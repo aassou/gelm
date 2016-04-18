@@ -17,6 +17,7 @@
     	//les sources
     	$idProjet = 0;
     	$projetManager = new ProjetManager($pdo);
+        $societeManager = new SocieteManager($pdo);
 		$clientManager = new ClientManager($pdo);
 		$contratManager = new ContratManager($pdo);
 		$operationManager = new OperationManager($pdo);
@@ -27,6 +28,7 @@
 		if(isset($_GET['idProjet']) and ($_GET['idProjet'])>0 and $_GET['idProjet']<=$projetManager->getLastId()){
 			$idProjet = $_GET['idProjet'];
             $idSociete = $_GET['idSociete'];
+            $societe = $societeManager->getSocieteById($idSociete);
 			$projet = $projetManager->getProjetById($idProjet);
 			/*if(isset($_POST['idClient']) and $_POST['idClient']>0){
 				$idClient = $_POST['idClient'];
@@ -115,13 +117,17 @@
                                 <a href="companies.php">Gestion des sociétés</a>
                                 <i class="icon-angle-right"></i>
                             </li>
+                            <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
 							<li>
 								<i class="icon-briefcase"></i>
 								<a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
                                 <i class="icon-angle-right"></i>
                             </li>
 							<li><a>Liste des Contrats Clients</a></li>
@@ -451,11 +457,6 @@
 										}//end of if
 										?>
 									</tbody>
-									<?php
-									if($contratNumber != 0 and $contratNumber!=-1){
-										echo $pagination;	
-									}
-									?>
 								</table>
 							</div>
 						</div>

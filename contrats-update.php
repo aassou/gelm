@@ -17,6 +17,7 @@
     	$idProjet = 0;
 		//classManagers
     	$projetManager = new ProjetManager($pdo);
+        $societeManager = new SocieteManager($pdo);
 		$contratManager = new ContratManager($pdo);
 		$maisonManager = new MaisonManager($pdo);
 		$appartementManager = new AppartementManager($pdo);
@@ -31,6 +32,7 @@
             $idSociete = $_GET['idSociete'];
 			$idContrat = $_GET['idContrat'];
 			$projet = $projetManager->getProjetById($idProjet);
+            $societe = $societeManager->getSocieteById($idSociete);
 			$contrat = $contratManager->getContratById($idContrat);
 		}
 ?>
@@ -98,8 +100,16 @@
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
                                 <i class="icon-briefcase"></i>
                                 <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>

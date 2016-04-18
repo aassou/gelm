@@ -26,11 +26,26 @@
         'libelle' => $libelle, 'dateLivraison' => $dateLivraison));
         $livraisonManager = new LivraisonManager($pdo);
         $livraisonManager->update($livraison);
+        //add history data to db
+        $fournisseurManager = new FournisseurManager($pdo);
+        $livraison = $livraisonManager->getLivraisonById($idLivraison);
+        $fournisseur = $fournisseurManager->getFournisseurById($livraison->idFournisseur());
+        $projetManager = new ProjetManager($pdo);
+        $projet = $projetManager->getProjetById($idProjet);
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification",
+            'target' => "Table des livraisons",
+            'description' => "Modification Livraison : ID Livraison ".$livraison->id()." - Libelle : ".$livraison->libelle()." - Fournisseur : ".$fournisseur->nom()."/".$fournisseur->societe()." - Projet : ".$projet->nom(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['livraison--detail-update-success']='<strong>Opération valide</strong> : Les informations de la livraison sont modifiées avec succès.';
 		$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
-		/*if( isset($_GET['p']) and $_GET['p']==99 ){
-			$redirectLink = "Location:../livraisons2.php";
-		}*/
         header($redirectLink);
     }
     else{

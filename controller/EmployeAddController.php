@@ -40,6 +40,19 @@
 			'telephone' => $telephone, 'createdBy' => $createdBy, 'created' => $created));
 			$_SESSION['employe-add-success'] = "<strong>Opération Valide : </strong>Employé ajouté avec succès.";
 			$employeManager->add($employe);	
+            //add history data to db
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des employés",
+                'description' => "Ajout Employé : ".$nom." - CIN : ".$cin,
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
 		}
 	}
 	else{

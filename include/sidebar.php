@@ -32,12 +32,14 @@
 				<!---------------------------- Gestion des sociétés Begin  -------------------------------------------->
 				<li class="start <?php if($currentPage=="company.php"
 				or $currentPage=="companies.php"
+				or $currentPage=="company.php"
+				or $currentPage=="companies-group.php"
 				or $currentPage=="company-pieces.php"
 				or $currentPage=="company-projets.php"
 				or $currentPage=="company-cheques.php"
 				or $currentPage=="company-accounts.php"
 				){echo "active ";} ?>">
-					<a href="companies.php">
+					<a href="companies-group.php">
 					<i class="icon-sitemap"></i> 
 					<span class="title">Gestion des sociétés</span>
 					</a>
@@ -47,6 +49,7 @@
 				<li class="start <?php if($currentPage=="projets.php"
 				or $currentPage=="projet-details.php"
 				or $currentPage=="projet-livraisons.php"
+				or $currentPage=="livraisons-validate.php"
 				or $currentPage=="projet-charges.php"
 				or $currentPage=="projet-biens.php"
 				or $currentPage=="livraisons-details.php"

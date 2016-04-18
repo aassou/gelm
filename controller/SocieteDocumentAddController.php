@@ -28,8 +28,8 @@
 	else{
 		$_SESSION['pieces-add-error'] = "<strong>Erreur Ajout Documents : </strong>Vous devez ajouté un document.";
 	}
-	$redirect = "Location:../companies.php";
-	if(isset($_GET['source']) and $_GET['source']==2){
+	$redirect = "Location:../company.php?idSociete=".$idSociete;
+	if ( isset($_GET['source']) and $_GET['source'] == 2 ) {
 		$redirect = "Location:../company-pieces.php?idSociete=".$idSociete;
 	}
 	header($redirect);

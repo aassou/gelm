@@ -214,7 +214,7 @@
                                     } 
                                     ?> 
                                 </div>
-                                <table class="table table-bordered table-hover cheque" id="sample_1">
+                                <table class="table table-striped table-bordered table-hover cheque" id="sample_1">
 									<thead>
 										<tr>
 										    <th class="hidden"></th>

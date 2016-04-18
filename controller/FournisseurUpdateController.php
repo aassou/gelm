@@ -29,6 +29,20 @@
         'telephone1' => $telephone1, 'nature' => $nature, 'email' => $email, 'fax' => $fax));
         $fournisseurManager = new FournisseurManager($pdo);
         $fournisseurManager->update($fournisseur);
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $fournisseur = $fournisseurManager->getFournisseurById($id);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification",
+            'target' => "Table des fournisseurs",
+            'description' => "Modification Fournisseur : ".$fournisseur->nom()." - Societe : ".$fournisseur->societe(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['fournisseur-update-success']='<strong>Opération valide</strong> : Les données du fournisseur '.$nom.' sont modifiées avec succès.';
         header('Location:../fournisseurs.php');
     }

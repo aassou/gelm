@@ -34,6 +34,20 @@ class LivraisonManager{
         $query->execute();
         $query->closeCursor();
     }
+    
+    public function validateLivraisonsNonPayees($idLivraison, $idFournisseur, $idProjet, $status){
+        $query = $this->_db->prepare(
+        'UPDATE t_livraison SET status=:status
+        WHERE id=:id 
+        AND idProjet=:idProjet 
+        AND idFournisseur=:idFournisseur') or die(print_r($this->_db->errorInfo()));
+        $query->bindValue(':id', $idLivraison);
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':status', $status);
+        $query->execute();
+        $query->closeCursor();
+    }
 
 	public function updateCopieBL($url, $idLivraison){
     	$query = $this->_db->prepare(' UPDATE t_livraison SET url=:url

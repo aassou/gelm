@@ -102,7 +102,7 @@
 					<div class="span12">
 						<h4 class="breadcrumb"><i class="icon-hand-right"></i> Raccourcis</h4>
 						<div class="tiles">
-							<a href="companies.php">
+							<a href="companies-group.php">
 							<div class="tile bg-green">
 								<div class="tile-body">
 									<i class="icon-sitemap"></i>

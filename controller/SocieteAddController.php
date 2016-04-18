@@ -24,10 +24,23 @@
         'createdBy' => $createdBy, 'created' =>$created));
         $societeManager = new SocieteManager($pdo);
         $societeManager->add($societe);
+        //add history data to db
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Ajout",
+            'target' => "Table des sociétés",
+            'description' => "Ajout Société : Raison Sociale ".$raisonSociale,
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['company-add-success']="<strong>Opération valide : </strong>La société est ajoutée avec succès.";
     }
     else{
         $_SESSION['company-add-error'] = "<strong>Erreur Ajout Entrées : </strong>Vous devez remplir au moins le champ <Raison Sociale>.";
     }
-	header('Location:../companies.php');
+	header('Location:../companies-group.php');
     

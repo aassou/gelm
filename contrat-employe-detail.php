@@ -18,9 +18,11 @@
         $idProjet = 0;
         $idSociete = $_GET['idSociete'];
         $projetManager = new ProjetManager($pdo);
+        $societeManager = new SocieteManager($pdo);
         $contratEmployeManager = new ContratEmployeManager($pdo);
         $contratDetaislManager = new ContratDetailsManager($pdo);
         $employesManager = new EmployeManager($pdo);
+        $societe = $societeManager->getSocieteById($idSociete);
         if(isset($_GET['idContratEmploye']) and ($_GET['idContratEmploye'])>0 and $_GET['idContratEmploye']<=$contratEmployeManager->getLastId()){
             $idProjet = $_GET['idProjet'];
             $idContratEmploye = $_GET['idContratEmploye'];
@@ -93,12 +95,16 @@
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
                                 <i class="icon-briefcase"></i>
                                 <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
-                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
@@ -203,7 +209,6 @@
                                             <th style="width:15%">Nombre Unités</th>
                                             <th style="width:15%">Montant</th>
                                             <th style="width:15%">Actions</th>
-                                            <th style="width:10%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -245,7 +250,6 @@
                                                 }
                                                 ?>
                                             </td>
-                                            <td></td>
                                         </tr>
                                         <!-- updatePaiement box begin -->
                                         <div id="updateContrat<?= $contrat->id();?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >

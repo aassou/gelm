@@ -29,19 +29,34 @@
         'dateCreation' => $dateCreation, 'idSociete' => $idSociete));
         $projetManager = new ProjetManager($pdo);
         $projetManager->update($projet);
+        //add history data to db
+        $societeManager = new SocieteManager($pdo);
+        $societe = $societeManager->getSocieteById($idSociete);
+        $historyManager = new HistoryManager($pdo);
+        $createdBy = $_SESSION['userMerlaTrav']->login();
+        $created = date('Y-m-d h:i:s');
+        $history = new History(array(
+            'action' => "Modification",
+            'target' => "Table des projets",
+            'description' => "Modification Projet : Nom ".$nom." - Titre : ".$numeroTitre." - Societe : ".$societe->raisonSociale(),
+            'created' => $created,
+            'createdBy' => $createdBy
+        ));
+        //add it to db
+        $historyManager->add($history);
         $_SESSION['projet-update-success']="<strong>Opération valide : </strong>Votre projet '".$nom."' est modifié avec succès.";
-		$redirectLink = "Location:../projets.php";
-		if( isset($_GET['source']) and $_GET['source']==2 ){
-			$redirectLink = "Location:../company-projets.php?idSociete=".$idSociete;	
-		}
+		//$redirectLink = "Location:../projets.php";
+		//if( isset($_GET['source']) and $_GET['source']==2 ){
+			$redirectLink = "Location:../projects-by-company.php?idSociete=".$idSociete;	
+		//}
         header($redirectLink);
     }
     else{
         $_SESSION['projet-update-error'] = "<strong>Erreur Modification Projet : </strong>Vous devez remplir au moins le champ 'Nom'.";
-        $redirectLink = "Location:../projets.php";
-		if( isset($_GET['source']) and $_GET['source']==2 ){
-			$redirectLink = "Location:../company-projets.php?idSociete=".$idSociete;	
-		}
+        //$redirectLink = "Location:../projets.php";
+		//if( isset($_GET['source']) and $_GET['source']==2 ){
+			$redirectLink = "Location:../projects-by-company.php?idSociete=".$idSociete;	
+		//}
         header($redirectLink);
     }
     

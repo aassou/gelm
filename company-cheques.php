@@ -19,6 +19,7 @@
     	if(isset($_GET['idSociete']) and 
     	($_GET['idSociete'] >=1 and $_GET['idSociete'] <= $societeManager->getLastId()) ){
 	    	$idSociete = $_GET['idSociete'];
+            $societe = $societeManager->getSocieteById($idSociete);
 	    	$projetManager = new ProjetManager($pdo);
 			$compteBancaireManager = new CompteBancaireManager($pdo);
 			$projets = $projetManager->getProjetsByIdSociete($idSociete);
@@ -101,7 +102,11 @@
 							</li>
 							<li>
                                 <i class="icon-sitemap"></i>
-                                <a href="companies.php">Gestion des sociétés</a> 
+                                <a href="companies-group.php">Gestion des sociétés</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
                                 <i class="icon-angle-right"></i>
                             </li>
 							<li>

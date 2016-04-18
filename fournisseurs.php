@@ -18,22 +18,6 @@
     	$fournisseursManager = new FournisseurManager($pdo);
 		$fournisseurNumber = $fournisseursManager->getFournisseurNumbers();
 		$fournisseurs = $fournisseursManager->getFournisseurs();
-		/*
-		if($fournisseurNumber!=0){
-			$fournisseurPerPage = 20;
-	        $pageNumber = ceil($fournisseurNumber/$fournisseurPerPage);
-	        $p = 1;
-	        if(isset($_GET['p']) and ($_GET['p']>0 and $_GET['p']<=$pageNumber)){
-	            $p = $_GET['p'];
-	        }
-	        else{
-	            $p = 1;
-	        }
-	        $begin = ($p - 1) * $fournisseurPerPage;
-	        $pagination = paginate('fournisseurs.php', '?p=', $pageNumber, $p);
-			$fournisseurs = $fournisseursManager->getFournisseursByLimits($begin, $fournisseurPerPage);	 
-		}
-		*/
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -104,23 +88,6 @@
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row-fluid">
 					<div class="span12">
-					    <?php
-                        if ( 
-                            $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                            $_SESSION['userMerlaTrav']->profil() == "manager"
-                            ) { 
-                        ?> 
-						<div class="row-fluid">
-							<div class="pull-right">
-								<!--a href="livraison-add.php" class="btn icn-only blue"-->
-								<a href="#addFournisseur" data-toggle="modal" class="btn blue">
-									Ajouter Nouveau Fournisseur <i class="icon-plus-sign "></i>
-								</a>
-							</div>
-						</div>
-						<?php
-                        } 
-                        ?> 
 						<!-- addFournisseur box begin-->
 						<div id="addFournisseur" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -215,31 +182,44 @@
                          <?php } 
                          	unset($_SESSION['fournisseur-add-error']);
                          ?>
-                         <div class="row-fluid">
-							<input class="m-wrap" name="fournisseur" id="fournisseur" type="text" placeholder="Fournisseur..." />
-							<input class="m-wrap" name="nature" id="nature" type="text" placeholder="Nature des matériaux..." />							    </div>
-						</div>
-						<div class="portlet box green" id="listFournisseurs">
-							<div class="portlet-title">
-								<h4>Les fournisseurs</h4>
-								<div class="tools">
-									<a href="javascript:;" class="collapse"></a>
-									<a href="javascript:;" class="remove"></a>
-								</div>
-							</div>
-							<div class="portlet-body">
-								<div class="scroller" data-height="500px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-								<table class="table table-striped table-bordered table-advance table-hover" id="sample_editable_1">
+						<div class="portlet box grey">
+                            <div class="portlet-title">
+                                <h4>Liste des fournisseurs</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="clearfix">
+                                    <?php
+                                    if ( 
+                                        $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                        $_SESSION['userMerlaTrav']->profil() == "manager"
+                                        ) { 
+                                    ?> 
+                                    <div class="btn-group pull-right">
+                                        <a href="#addFournisseur" data-toggle="modal" class="btn green">
+                                            Ajouter Nouveau Fournisseur <i class="icon-plus-sign "></i>
+                                        </a>
+                                    </div>
+                                    <?php
+                                    } 
+                                    ?> 
+                                </div>
+                                <table class="table table-striped table-bordered table-hover cheque" id="sample_1">
 									<thead>
 										<tr>
-											<th style="width:15%">Nom</th>
+										    <th class="hidden"></th>
+											<th style="width:10%">Nom</th>
 											<th style="width:15%">Société</th>
 											<th style="width:20%" class="hidden-phone">Nature des Matériaux</th>
-											<th style="width:20%" class="hidden-phone">Adresse</th>
+											<th style="width:15%" class="hidden-phone">Adresse</th>
 											<th style="width:10%" class="hidden-phone">Date</th>
 											<th style="width:5%" class="hidden-phone">Tél1</th>
 											<th style="width:5%" class="hidden-phone">Fax</th>
 											<th style="width:10%" class="hidden-phone">Email</th>
+											<th style="width:10%" class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -247,41 +227,9 @@
 										if($fournisseurNumber!=0){
 										foreach ($fournisseurs as $fournisseur) {
 										?>	
-										<tr class="fournisseurs">
-											<td>
-												<div class="btn-group">
-												    <a style="width: 200px" class="btn mini black dropdown-toggle" href="#" data-toggle="dropdown">
-												    	<?= $fournisseur->nom()?> 
-												        <i class="icon-angle-down"></i>
-												    </a>
-												    <ul class="dropdown-menu">
-												        <li>
-												        	<!--a href="">
-												        		Réglement
-												        	</a-->
-												        	<?php
-                                                            if ( 
-                                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
-                                                                $_SESSION['userMerlaTrav']->profil() == "manager"
-                                                                ) { 
-                                                            ?> 
-												        	<a href="#update<?= $fournisseur->id();?>" data-toggle="modal" data-id="<?= $fournisseur->id(); ?>">
-																Modifier
-															</a>
-															<?php
-                                                            }
-                                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
-                                                            ?> 
-															<a href="#delete<?= $fournisseur->id();?>" data-toggle="modal" data-id="<?= $fournisseur->id(); ?>">
-																Supprimer
-															</a>
-															<?php
-                                                            } 
-                                                            ?> 
-												        </li>
-												    </ul>
-												</div>
-											</td>
+										<tr>
+										    <td class="hidden"></td>
+											<td><?= $fournisseur->nom()?></td>
 											<td class="hidden-phone"><?= $fournisseur->societe() ?></td>
 											<td class="hidden-phone"><?= $fournisseur->nature() ?></td>
 											<td class="hidden-phone"><?= $fournisseur->adresse()?></td>
@@ -289,6 +237,27 @@
 											<td class="hidden-phone"><?= $fournisseur->telephone1() ?></td>
 											<td class="hidden-phone"><?= $fournisseur->fax() ?></td>
 											<td class="hidden-phone"><?= $fournisseur->email() ?></td>
+											<td>
+											<?php
+                                            if ( 
+                                                $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                $_SESSION['userMerlaTrav']->profil() == "manager"
+                                                ) { 
+                                            ?> 
+                                            <a title="Modifier" class="btn mini green" href="#update<?= $fournisseur->id();?>" data-toggle="modal" data-id="<?= $fournisseur->id(); ?>">
+                                                <i class="icon-refresh"></i>    
+                                            </a>
+                                            <?php
+                                            }
+                                            if ( $_SESSION['userMerlaTrav']->profil() == "admin" ) { 
+                                            ?> 
+                                            <a title="Supprimer" class="btn mini red" href="#delete<?= $fournisseur->id();?>" data-toggle="modal" data-id="<?= $fournisseur->id(); ?>">
+                                                <i class="icon-remove"></i>
+                                            </a>
+                                            <?php
+                                            } 
+                                            ?> 
+										    </td>
 										</tr>
 										<!-- updateFournisseur box begin-->
 										<div id="update<?= $fournisseur->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -375,7 +344,6 @@
 										} ?>
 									</tbody>
 								</table>
-								</div><!-- END SCROLL DIV -->
 							</div>
 						</div>
 					</div>
@@ -417,7 +385,7 @@
 	<script>
 		jQuery(document).ready(function() {			
 			// initiate layout and plugins
-			//App.setPage("table_editable");
+			App.setPage("table_managed");
 			App.init();
 		});
 		$('.fournisseurs').show();

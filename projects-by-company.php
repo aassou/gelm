@@ -23,6 +23,7 @@
             $idSociete = $_GET['idSociete'];
             $projets = $projetsManager->getProjetsByIdSociete($idSociete);
             $projetNumber = ($projetsManager->getProjetsNumberByIdSociete($idSociete));
+            $societe = $societeManager->getSocieteById($idSociete);
         }
         /*$projetPerPage = 5;
         $pageNumber = ceil($projetNumber/$projetPerPage);
@@ -99,7 +100,11 @@
                             </li>
                             <li>
                                 <i class="icon-sitemap"></i>
-                                <a href="companies.php">Gestion des sociétés</a> 
+                                <a href="companies-group.php">Gestion des sociétés</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
@@ -452,7 +457,6 @@
                                             <div class="control-group">
                                                 <div class="controls">  
                                                     <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
-                                                    <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                     <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
                                                     <button type="submit" class="btn red" aria-hidden="true">Oui</button>
                                                 </div>

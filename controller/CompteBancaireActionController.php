@@ -107,5 +107,9 @@
 	}
 	
 	$_SESSION['bien-action-message'] = $actionMessage;
-	header('Location:../company-accounts.php?idSociete='.$idSociete);
+    $redirectLink = 'Location:../company-accounts.php?idSociete='.$idSociete;
+    if ( isset($_POST['source']) and $_POST['source'] == "company" ) {
+        $redirectLink = 'Location:../company.php?idSociete='.$idSociete;    
+    }
+	header($redirectLink);
     

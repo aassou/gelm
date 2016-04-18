@@ -29,7 +29,7 @@
 			if( $fournisseurManager->exists($nom) ){
 				$_SESSION['fournisseur-add-error'] = "<strong>Erreur Ajout Fournisseur : </strong>Un fournisseur existe déjà avec ce nom : ".$nom.".";
 		        $redirectLink = 'Location:../fournisseurs.php#tab_1';
-				if(isset($_GET['p']) and $_GET['p']==1){
+				if ( isset($_GET['p']) and $_GET['p'] == 1 ) {
 					$redirectLink = 'Location:../livraisons.php';
 				}
 		        header($redirectLink);
@@ -50,14 +50,27 @@
 		        'telephone1' => $telephone1, 'nature' =>$nature, 'email' => $email, 'fax' => $fax,
 		        'dateCreation' => $created, 'code' => $codeFournisseur));
 		        $fournisseurManager = new FournisseurManager($pdo);
-		        $fournisseurManager->add($fournisseur);
+		        $fournisseurManager->add($fournisseur); 
+                //add history data to db
+                $historyManager = new HistoryManager($pdo);
+                $createdBy = $_SESSION['userMerlaTrav']->login();
+                $created = date('Y-m-d h:i:s');
+                $history = new History(array(
+                    'action' => "Ajout",
+                    'target' => "Table des fournisseurs",
+                    'description' => "Ajout Fournisseur : ".$nom." - Societe : ".$societe,
+                    'created' => $created,
+                    'createdBy' => $createdBy
+                ));
+                //add it to db
+                $historyManager->add($history);
 				$_SESSION['fournisseur-add-success'] = "<strong>Opération valide : </strong>Le fournisseur '".$nom."' est ajouté avec succès";	
 			}
 	    }
 	    else{
 	        $_SESSION['fournisseur-add-error'] = "<strong>Erreur Ajout Fournisseur : </strong>Vous devez remplir au moins le champ 'Nom'.";
 	        $redirectLink = 'Location:../fournisseurs.php';
-			if(isset($_GET['source']) and $_GET['source']==1){
+			if ( isset($_GET['source']) and $_GET['source'] == 1 ) {
 				$idProjet = htmlentities($_POST['idProjet']);
                 $idSociete = htmlentities($_POST['idSociete']);
 				$redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;
@@ -67,7 +80,7 @@
 	    }	
 	}
 	$redirectLink = 'Location:../fournisseurs.php';
-	if(isset($_GET['source']) and $_GET['source']==1){
+	if ( isset($_GET['source']) and $_GET['source'] == 1 ) {
 		$idProjet = htmlentities($_POST['idProjet']);
 		$idSociete = htmlentities($_POST['idSociete']);
         $redirectLink = 'Location:../projet-livraisons.php?idProjet='.$idProjet.'&idSociete='.$idSociete;

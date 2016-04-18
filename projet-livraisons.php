@@ -16,6 +16,7 @@
     if ( isset($_SESSION['userMerlaTrav']) ){
     	//classManagers
     	$projetManager = new ProjetManager($pdo);
+        $societeManager = new SocieteManager($pdo);
 		$fournisseurManager = new FournisseurManager($pdo);
 		$livraisonManager = new LivraisonManager($pdo);
 		$livraisonDetailManager = new LivraisonDetailManager($pdo);
@@ -30,6 +31,7 @@
 		$titreLivraison ="Liste de toutes les livraisons";
 		$hrefLivraisonBilanPrintController = "controller/LivraisonBilanPrintController.php";
         $idSociete = $_GET['idSociete'];
+        $societe = $societeManager->getSocieteById($idSociete);
 		if(isset($_GET['idProjet']) and 
     	($_GET['idProjet'] >=1 and $_GET['idProjet'] <= $projetManager->getLastId()) ){
     		$idProjet = $_GET['idProjet'];
@@ -160,7 +162,11 @@
 							</li>
 							<li>
                                 <i class="icon-sitemap"></i>
-                                <a href="companies.php">Gestion des sociétés</a>
+                                <a href="companies-group.php">Gestion des sociétés</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
@@ -169,7 +175,7 @@
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
-                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Gestion du projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
+                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
                                 <i class="icon-angle-right"></i>
                             </li>
 							<li>
@@ -580,7 +586,16 @@
                                                     $_SESSION['userMerlaTrav']->profil() == "admin" ||
                                                     $_SESSION['userMerlaTrav']->profil() == "manager"
                                                     ) { 
-                                                ?>                          
+                                                ?>
+                                                <?php
+                                                if($livraison->status() == "Non Pay&eacute;"){
+                                                ?>
+                                                <a class="btn mini purple" title="Valider Paiements" href="livraisons-validate.php?idProjet=<?= $livraison->idProjet() ?>&idSociete=<?= $idSociete ?>&idFournisseur=<?= $livraison->idFournisseur() ?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
+                                                    <i class="icon-check"></i>
+                                                </a> 
+                                                <?php
+                                                }  
+                                                ?>                       
                                                 <a class="btn mini green" title="Modifier" href="#updateLivraison<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
                                                     <i class="icon-refresh"></i>
                                                 </a>

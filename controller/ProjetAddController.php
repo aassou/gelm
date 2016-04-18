@@ -17,7 +17,7 @@
     if( !empty($_POST['nom']) ){
     	$nom = htmlentities($_POST['nom']);
     	$projetManager = new ProjetManager($pdo);
-    	if($projetManager->exists($nomProjet)>0){
+    	if($projetManager->exists($nom)>0){
     		$_SESSION['projet-add-error'] = "<strong>Erreur Ajout Projet : </strong>Un projet existe déjà avec ce nom : ".$nomProjet.".";
 			header('Location:../projets.php');
 			exit;			
@@ -39,6 +39,21 @@
 	        'status' => $status, 'createdBy' => $createdBy, 'created' => $created, 'idSociete' => $idSociete));
 			//add it to db
 	        $projetManager->add($projet);
+	        //add history data to db
+            $societeManager = new SocieteManager($pdo);
+            $societe = $societeManager->getSocieteById($idSociete);
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des projets",
+                'description' => "Ajout Projet : Nom ".$nom." - Titre : ".$numeroTitre." - Societe : ".$societe->raisonSociale(),
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
 	        $_SESSION['projet-add-success']="<strong>Opération valide : </strong>Le projet '".strtoupper($nom)."' est ajouté avec succès !";	
 		}  
     }

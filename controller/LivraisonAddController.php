@@ -35,6 +35,24 @@
 	        'code' => $codeLivraison, 'status' => $status, 'url' => $url, 'modePaiement' => $modePaiement));
 	        $livraisonManager = new LivraisonManager($pdo);
 	        $livraisonManager->add($livraison);
+            //add history data to db
+            $livraison = $livraisonManager->getLivraisonById($idLivraison);
+            $projetManager = new ProjetManager($pdo);
+            $fournisseurManager = new FournisseurManager($pdo);
+            $fournisseur = $fournisseurManager->getFournisseurById($idFournisseur);
+            $projet = $projetManager->getProjetById($idProjet);
+            $historyManager = new HistoryManager($pdo);
+            $createdBy = $_SESSION['userMerlaTrav']->login();
+            $created = date('Y-m-d h:i:s');
+            $history = new History(array(
+                'action' => "Ajout",
+                'target' => "Table des livraisons",
+                'description' => "Ajout Livraison : Libelle : ".$libelle." - Fournisseur : ".$fournisseur->nom()."/".$fournisseur->societe()." - Projet : ".$projet->nom(),
+                'created' => $created,
+                'createdBy' => $createdBy
+            ));
+            //add it to db
+            $historyManager->add($history);
 	        $_SESSION['livraison-add-success']='<strong>Opération valide</strong> : La livraison est ajouté avec succès !';
 			$_SESSION['livraison-detail-fill']='<strong>Détails livraisons</strong> : Ajoutez la liste des articles à votre livraison !';
 	        $redirectLink = 'Location:../livraisons-details.php?codeLivraison='.$codeLivraison.'&idProjet='.$idProjet.'&idSociete='.$idSociete;

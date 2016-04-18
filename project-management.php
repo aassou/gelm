@@ -24,6 +24,7 @@
             $idProjet = $_GET['idProjet'];
             $projet = $projetsManager->getProjetById($idProjet);
             $projetNumber = ($projetsManager->getProjetsNumberByIdSociete($idSociete));
+            $societe = $societeManager->getSocieteById($idSociete);
         }
         /*$projetPerPage = 5;
         $pageNumber = ceil($projetNumber/$projetPerPage);
@@ -104,12 +105,16 @@
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
+                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
                                 <i class="icon-briefcase"></i>
                                 <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a>
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
-                                <a>Gestion du projet <strong><?= $projet->nom() ?></strong></a>
+                                <a>Projet <strong><?= $projet->nom() ?></strong></a>
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
