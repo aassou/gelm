@@ -159,5 +159,15 @@ class MaisonManager{
 		$id = $data['last_id'];
 		return $id;
 	}
+    
+    public function getTotalPrixMaisonByIdProjet($idProjet){
+        $query = $this->_db->prepare('SELECT SUM(prix) AS prixTotal FROM t_maison WHERE idProjet=:idProjet')
+        or die(print_r($this->_db->errorInfo()));
+        $query->bindValue(':idProjet', $idProjet);
+        $query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $data['prixTotal'];
+    }
 
 }

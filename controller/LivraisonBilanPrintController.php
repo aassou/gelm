@@ -28,6 +28,8 @@
     	($_POST['idProjet'] >=1 and $_POST['idProjet'] <= $projetManager->getLastId()) ){
     		$idProjet = htmlentities($_POST['idProjet']);
 			$idFournisseur = htmlentities($_POST['idFournisseur']);
+            $dateFrom = htmlentities($_POST['dateFrom']);
+            $dateTo = htmlentities($_POST['dateTo']);
 			$livraisonNumber = $livraisonManager->getLivraisonsNumberByIdFournisseur($idFournisseur);
 			//if($livraisonNumber != 0){
 			$livraisons = $livraisonManager->getLivraisonsNonPayesByIdFournisseurByProjet($idFournisseur, $idProjet);
@@ -38,9 +40,21 @@
 			//get the sum of livraisons details using livraisons ids (idFournisseur)
 			$livraisonsIds = 
 			$livraisonManager->getLivraisonNonPayesIdsByIdFournisseurByIdProjet($idFournisseur, $idProjet);
-			if ( isset($_POST['printAll']) and !empty($_POST['printAll']) ) {
-                $livraisons = $livraisonManager->getLivraisonsByIdFournisseurByProjet($idFournisseur, $idProjet);
-                $livraisonsIds = $livraisonManager->getLivraisonIdsByIdFournisseurIdProjet($idFournisseur, $idProjet);    
+			if ( isset($_POST['chooseDate']) and !empty($_POST['chooseDate']) ){
+                if ( isset($_POST['printAll']) and !empty($_POST['printAll']) ) {
+                    $livraisons = $livraisonManager->getLivraisonsByIdFournisseurByProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo);
+                    $livraisonsIds = $livraisonManager->getLivraisonIdsByIdFournisseurIdProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo);    
+                }
+                else {
+                    $livraisons = $livraisonManager->getLivraisonsNonPayesByIdFournisseurByProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo);
+                    $livraisonsIds = $livraisonManager->getLivraisonNonPayesIdsByIdFournisseurByIdProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo);   
+                }
+            }
+            else {
+                if ( isset($_POST['printAll']) and !empty($_POST['printAll']) ) {
+                    $livraisons = $livraisonManager->getLivraisonsByIdFournisseurByProjet($idFournisseur, $idProjet);
+                    $livraisonsIds = $livraisonManager->getLivraisonIdsByIdFournisseurIdProjet($idFournisseur, $idProjet);    
+                }
             }
 			$sommeDetailsLivraisons = 0;
 			foreach($livraisonsIds as $idl){

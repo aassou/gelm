@@ -420,4 +420,48 @@ class ContratManager{
 		$query->closeCursor();
         return $data['total'];
     }
+    
+    public function getContratActifIdsByIdProjet($idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_contrat 
+        WHERE idProjet=:idProjet 
+        AND status="actif" ');
+        $query->bindValue(':idProjet', $idProjet);
+        $query->execute();
+        //get result
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        $query->closeCursor();
+        return $ids;
+    }
+
+    public function getContratActifTotalPaiementsByIdProjet($idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT SUM(avance) AS total FROM t_contrat 
+        WHERE idProjet=:idProjet 
+        AND status="actif" ');
+        $query->bindValue(':idProjet', $idProjet);
+        $query->execute();
+        //get result
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $data['total'];
+    }
+    
+    public function getContratActifTotalPrixVenteByIdProjet($idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT SUM(prixVente) AS total FROM t_contrat 
+        WHERE idProjet=:idProjet 
+        AND status="actif" ');
+        $query->bindValue(':idProjet', $idProjet);
+        $query->execute();
+        //get result
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $data['total'];
+    }
 }

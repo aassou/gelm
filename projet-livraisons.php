@@ -334,20 +334,6 @@
 								</form>
 							</div>
 						</div>
-						<!-- addLivraison box end -->
-						<!--div class="row-fluid">
-							<form action="" method="post">
-							    <div class="input-box autocomplet_container">
-							    	<input class="m-wrap" name="recherche" id="nomFournisseur" type="text" onkeyup="autocompletFournisseur()" placeholder="Chercher un fournisseur...">
-										<ul id="fournisseurList"></ul>
-									</input>
-									<input class="m-wrap" name="libelle" id="libelle" type="text" placeholder="Libelle..." />
-									<input class="m-wrap" name="status" id="status" type="text" placeholder="Status..." />
-									<input name="idFournisseur" id="idFournisseur" type="hidden" />
-									<a href="#printLivraisonList" data-toggle="modal" class="btn black"><i class="icon-print"></i>&nbsp;Liste des Livraisons</a>
-							    </div>
-							</form>
-						</div-->
 						<!-- printLivraisonList box begin-->
 						<div id="printLivraisonList" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 							<div class="modal-header">
@@ -366,6 +352,26 @@
                                             </select>
 										</div>
 									</div>
+									<div class="control-group">
+                                        <label class="control-label">Choisir Dates</label>
+                                        <div class="controls">
+                                            <input type="checkbox" id="chooseDate" name="chooseDate" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group" id="dateRange" style="display: none">
+                                        <div class="control-group">
+                                            <div class="controls date date-picker" data-date="" data-date-format="yyyy-mm-dd">
+                                                <input name="dateFrom" id="dateFrom" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+                                                <span class="add-on"><i class="icon-calendar"></i></span>
+                                             </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <div class="controls date date-picker" data-date="" data-date-format="yyyy-mm-dd">
+                                                <input name="dateTo" id="dateTo" class="m-wrap m-ctrl-small date-picker" type="text" value="<?= date('Y-m-d') ?>" />
+                                                <span class="add-on"><i class="icon-calendar"></i></span>
+                                             </div>
+                                        </div>
+                                    </div>
 									<div class="control-group">
                                         <label class="control-label">Tout imprimer</label>
                                         <div class="controls">
@@ -826,6 +832,17 @@
 	        $("#numeroCheque").hide()
 	        }
 	    });
+	    /*$('#chooseDate').on('change', function(){
+            if( $( this ).prop( "checked", true ) ){
+                $("#dateRange").show()
+            }
+            else{
+                $("#dateRange").hide()
+            }
+        });*/
+        $('#chooseDate').click(function() {
+            $("#dateRange").toggle(this.checked);
+        });
 	</script>
 </body>
 <!-- END BODY -->

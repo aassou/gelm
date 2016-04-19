@@ -125,7 +125,7 @@
                             </li>
                             <li>
                                 <i class="icon-check"></i>
-                                <a>Valider les livraisons non payées</a>
+                                <a>Livraisons non payées</a>
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->

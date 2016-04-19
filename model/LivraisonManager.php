@@ -387,6 +387,26 @@ class LivraisonManager{
         }
         return $ids;
     }
+    
+    public function getLivraisonNonPayesIdsByIdFournisseurByIdProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_livraison 
+        WHERE idFournisseur=:idFournisseur 
+        AND idProjet=:idProjet 
+        AND status LIKE :status
+        AND dateLivraison BETWEEN :dateFrom AND :dateTo');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':dateFrom', $dateFrom);
+        $query->bindValue(':dateTo', $dateTo);
+        $query->bindValue(':status', "Non Pay&eacute;");
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+    }
 	
 	public function getLivraisonIdsByIdFournisseurIdProjet($idFournisseur, $idProjet){
 		$ids = array();
@@ -400,6 +420,24 @@ class LivraisonManager{
         }
         return $ids;
 	}
+    
+    public function getLivraisonIdsByIdFournisseurIdProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_livraison 
+        WHERE dateLivraison BETWEEN :dateFrom AND :dateTo
+        AND idFournisseur=:idFournisseur 
+        AND idProjet=:idProjet ');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':dateFrom', $dateFrom);
+        $query->bindValue(':dateTo', $dateTo);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+    }
 	
 	public function getTotalLivraisonsIdFournisseurProjet($idFournisseur, $idProjet){
 		$query = $this->_db->prepare(' SELECT SUM(prixUnitaire*quantite) AS total FROM t_livraison 
@@ -424,6 +462,26 @@ class LivraisonManager{
         $query->closeCursor();
         return $livraisons;
     }
+    
+    public function getLivraisonsByIdFournisseurByProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo){
+        $livraisons = array();
+        $query = $this->_db->prepare(
+        'SELECT * FROM t_livraison 
+        WHERE idFournisseur=:idFournisseur
+        AND idProjet=:idProjet 
+        AND dateLivraison BETWEEN :dateFrom AND :dateTo 
+        ORDER BY dateLivraison DESC');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':dateFrom', $dateFrom);
+        $query->bindValue(':dateTo', $dateTo);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = new Livraison($data);
+        }
+        $query->closeCursor();
+        return $livraisons;
+    }
 	
 	public function getLivraisonsNonPayesByIdFournisseurByProjet($idFournisseur, $idProjet){
         $livraisons = array();
@@ -434,6 +492,28 @@ class LivraisonManager{
         $query->bindValue(':idFournisseur', $idFournisseur);
 		$query->bindValue(':idProjet', $idProjet);
 		$query->bindValue(':status', "Non Pay&eacute;");
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = new Livraison($data);
+        }
+        $query->closeCursor();
+        return $livraisons;
+    }
+    
+    public function getLivraisonsNonPayesByIdFournisseurByProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo){
+        $livraisons = array();
+        $query = $this->_db->prepare(
+        'SELECT * FROM t_livraison 
+        WHERE status LIKE :status 
+        AND idFournisseur=:idFournisseur
+        AND idProjet=:idProjet
+        AND dateLivraison BETWEEN :dateFrom AND :dateTo
+        ORDER BY dateLivraison DESC');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':dateFrom', $dateFrom);
+        $query->bindValue(':dateTo', $dateTo);
+        $query->bindValue(':status', "Non Pay&eacute;");
         $query->execute();
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
             $livraisons[] = new Livraison($data);
@@ -463,4 +543,49 @@ class LivraisonManager{
         $query->closeCursor();
         return $livraisons;
 	}
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function getLivraisonIdsByIdProjet($idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_livraison 
+        WHERE idProjet=:idProjet ');
+        $query->bindValue(':idProjet', $idProjet);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+    }
+    
+    public function getLivraisonNonPayeesIdsByIdProjet($idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_livraison 
+        WHERE idProjet=:idProjet 
+        AND status LIKE :status');
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':status', "Non Pay&eacute;");
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+    }
+    
+    public function getLivraisonPayeesIdsByIdProjet($idProjet){
+        $ids = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_livraison 
+        WHERE idProjet=:idProjet 
+        AND status!=:status');
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':status', "Non Pay&eacute;");
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $ids[] = $data['id'];
+        }
+        return $ids;
+    }
 }

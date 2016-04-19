@@ -26,19 +26,6 @@
             $projetNumber = ($projetsManager->getProjetsNumberByIdSociete($idSociete));
             $societe = $societeManager->getSocieteById($idSociete);
         }
-        /*$projetPerPage = 5;
-        $pageNumber = ceil($projetNumber/$projetPerPage);
-        $p = 1;
-        if(isset($_GET['p']) and ($_GET['p']>0 and $_GET['p']<=$pageNumber)){
-            $p = $_GET['p'];
-        }
-        else{
-            $p = 1;
-        }
-        $begin = ($p - 1) * $projetPerPage;
-        $projets = $projetsManager->getProjetsByLimits($begin, $projetPerPage);
-        $pagination = paginate('projets.php', '?p=', $pageNumber, $p);
-        */
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -422,6 +409,9 @@
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="projet-details.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn yellow fixed-size">Gestion des documents</a>
+                                    </div>
+                                    <div class="portfolio-info">
+                                        <a href="projet-statistique.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn blue fixed-size">Statistiques</a>
                                     </div>
                                 </div>
                             </div>

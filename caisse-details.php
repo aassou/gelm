@@ -165,11 +165,12 @@
                             <div class="control-group">
                                 <label class="control-label">Projet</label>
                                 <div class="controls">
-                                    <select name="projet">
-                                        <?php foreach($projets as $projet){ ?>
-                                        <option value="<?= $projet->nom() ?>"><?= $projet->nom() ?></option>
-                                        <?php } ?>
-                                    </select>
+                                    <input type="text" name="projet" value="" />
+                                    <!--select name="projet">
+                                        <?php //foreach($projets as $projet){ ?>
+                                        <option value="<?php //$projet->nom() ?>"><?php //$projet->nom() ?></option>
+                                        <?php //} ?>
+                                    </select-->
                                 </div>
                             </div>
                             <div class="control-group">

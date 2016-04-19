@@ -38,6 +38,7 @@
 				or $currentPage=="company-projets.php"
 				or $currentPage=="company-cheques.php"
 				or $currentPage=="company-accounts.php"
+				or $currentPage=="charges-communs.php"
 				){echo "active ";} ?>">
 					<a href="companies-group.php">
 					<i class="icon-sitemap"></i> 
@@ -64,6 +65,7 @@
 				or $currentPage=="biens-by-projects.php"
 				or $currentPage=="projets-charges-categories.php"
 				or $currentPage=="project-management.php"
+				or $currentPage=="projet-statistique.php"
 				){echo "active ";} ?>">
 					<a>
 					<i class="icon-briefcase"></i> 

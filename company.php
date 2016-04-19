@@ -351,13 +351,16 @@
                                         <a href="projects-by-company.php?idSociete=<?= $societe->id() ?>" class="btn blue fixed-size">Liste des projets</a>
                                     </div>
                                     <div class="portfolio-info">
-                                        <a href="company-pieces.php?idSociete=<?= $societe->id() ?>" class="btn black fixed-size">Liste des documents</a>
+                                        <a href="charges-communs.php?idSociete=<?= $societe->id() ?>" class="btn grey fixed-size">Charges Communs</a>
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="company-cheques.php?idSociete=<?= $societe->id() ?>" class="btn red fixed-size">Gestion des chèques</a>
                                     </div>
                                     <div class="portfolio-info">
                                         <a href="company-accounts.php?idSociete=<?= $societe->id() ?>" class="btn purple fixed-size">Comptes Bancaires</a>
+                                    </div>
+                                    <div class="portfolio-info">
+                                        <a href="company-pieces.php?idSociete=<?= $societe->id() ?>" class="btn black fixed-size">Liste des documents</a>
                                     </div>
                                 </div>
                             </div>
