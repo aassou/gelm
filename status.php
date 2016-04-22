@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                             </a>
-                            <a href="operations-status-group.php">
+                            <!--a href="operations-status-group.php">
                             <div class="tile bg-blue">
                                 <div class="tile-body">
                                     <i class="icon-money"></i>
@@ -106,7 +106,7 @@
                                     </div>
                                 </div>
                             </div>
-                            </a>
+                            </a-->
                             <a href="properties-status.php">
                             <div class="tile bg-green">
                                 <div class="tile-body">
