@@ -169,5 +169,19 @@ class LocauxManager{
         $query->closeCursor();
         return $data['prixTotal'];
     }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function getLocauxNonVendu(){
+        $locaux = array();
+        $query = $this->_db->query(
+        "SELECT * FROM t_locaux WHERE status='Disponible' ORDER BY id ASC")
+        or die(print_r($this->_db->errorInfo()));
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $locaux[] = new Locaux($data);
+        }
+        $query->closeCursor();
+        return $locaux;
+    }
 
 }

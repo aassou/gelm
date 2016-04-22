@@ -134,5 +134,19 @@ class TerrainManager{
         $query->closeCursor();
         return $data['prixTotal'];
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function getTerrainsNonVendu(){
+        $terrains = array();
+        $query = $this->_db->query(
+        "SELECT * FROM t_terrain WHERE status='Disponible' ORDER BY id ASC")
+        or die(print_r($this->_db->errorInfo()));
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $terrains[] = new Terrain($data);
+        }
+        $query->closeCursor();
+        return $terrains;
+    }
 
 }

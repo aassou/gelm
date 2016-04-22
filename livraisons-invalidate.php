@@ -38,7 +38,7 @@
         ($_GET['idProjet'] >=1 and $_GET['idProjet'] <= $projetManager->getLastId()) ){
             $idProjet = $_GET['idProjet'];
             $fournisseur = $fournisseurManager->getFournisseurById($idFournisseur);
-            $livraisons = $livraisonManager->getLivraisonsNonPayesByIdFournisseurByProjet($idFournisseur, $idProjet);
+            $livraisons = $livraisonManager->getLivraisonsPayesByIdFournisseurByProjet($idFournisseur, $idProjet);
             //print_r($livraisons);
         }       
 ?>
@@ -125,7 +125,7 @@
                             </li>
                             <li>
                                 <i class="icon-check"></i>
-                                <a>Livraisons non payées</a>
+                                <a>Livraisons payées</a>
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -135,52 +135,41 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <!-- BEGIN Terrain TABLE PORTLET-->
-                        <?php if(isset($_SESSION['fournisseur-add-success'])){ ?>
-                            <div class="alert alert-success">
-                                <button class="close" data-dismiss="alert"></button>
-                                <?= $_SESSION['fournisseur-add-success'] ?>     
-                            </div>
-                         <?php } 
-                            unset($_SESSION['fournisseur-add-success']);
-                         ?>
                         <div class="portlet box blue">
                             <div class="portlet-title">
-                                <h4>Liste des livraisons non payées : <?= $fournisseur->nom() ?></h4>
+                                <h4>Liste des livraisons payées : <?= $fournisseur->nom() ?></h4>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <a href="javascript:;" class="remove"></a>
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <form method="post" action="controller/LivraisonsNonPayeesValidateController.php" class="horizontal-form">
+                                <form method="post" action="controller/LivraisonsPayeesInvalidateController.php" class="horizontal-form">
                                     <div class="row-fluid">
                                         <?php
-                                        $sommeLivraisons = 0;
-                                        $sommeLivraisonsNonPaye = 0;
+                                        //$sommeLivraisons = 0;
+                                        //$sommeLivraisonsNonPaye = 0;
                                         foreach($livraisons as $livraison){
-                                            $sommeLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id());
-                                            if ( $livraison->status() == utf8_decode("Non Pay&eacute;")) {
+                                            //$sommeLivraisons += $livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id());
+                                            /*if ( $livraison->status() == utf8_decode("Non Pay&eacute;")) {
                                                 $sommeLivraisonsNonPaye += $livraisonDetailManager->getTotalLivraisonByIdLivraison($livraison->id());
-                                            }
+                                            }*/
                                         ?>
                                                 <input type="checkbox" name="id_livraison[]" value="<?= $livraison->id() ?>">
                                                 N°BL : <?= $livraison->libelle() ?>
-                                                <a class="btn mini red">
+                                                <a class="btn mini green">
                                                     <?= $livraison->status() ?>
                                                 </a>
                                         <?php
                                         }//end of loop
                                         ?>
                                     </div>    
+                                    <br>
                                     <div class="row-fluid">
                                         <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                         <input type="hidden" name="idProjet" value="<?= $idProjet ?>" />
                                         <input type="hidden" name="idFournisseur" value="<?= $idFournisseur ?>" />
-                                        <select class="m-wrap stay-away-right" name="status">
-                                            <option value="Pay&eacute;">Payé</option>
-                                            <option value="Pay&eacute;+TVA">Payé+TVA</option>
-                                        </select>
-                                        <input type="submit" class="btn primary green get-down" value="Valider" />
+                                        <input type="submit" class="btn primary red get-down" value="Invalider" />
                                     </div>
                                 </form>
                             </div>
@@ -197,7 +186,7 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="footer">
-          015 &copy; GELM. Management Application.
+          2015 &copy; GELM. Management Application.
         <div class="span pull-right">
             <span class="go-top"><i class="icon-angle-up"></i></span>
         </div>

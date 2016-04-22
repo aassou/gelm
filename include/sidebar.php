@@ -14,7 +14,14 @@
 				<!---------------------------- Dashboard Begin  -------------------------------------------->
 				<li class="start <?php if($currentPage=="dashboard.php" 
 				or $currentPage=="recherches.php"
+				or $currentPage=="livraisons-group.php"
+				or $currentPage=="livraisons-fournisseur-mois.php"
+				or $currentPage=="livraisons-fournisseur-mois-list.php"
+				or $currentPage=="livraisons-details-archive.php"
 				or $currentPage=="conges.php"
+				or $currentPage=="status.php"
+				or $currentPage=="contrat-status.php"
+				or $currentPage=="properties-status.php"
 				or $currentPage=="statistiques.php"
 				or $currentPage=="releve-bancaire.php"
 				or $currentPage=="messages.php"
@@ -51,6 +58,7 @@
 				or $currentPage=="projet-details.php"
 				or $currentPage=="projet-livraisons.php"
 				or $currentPage=="livraisons-validate.php"
+				or $currentPage=="livraisons-invalidate.php"
 				or $currentPage=="projet-charges.php"
 				or $currentPage=="projet-biens.php"
 				or $currentPage=="livraisons-details.php"
@@ -117,6 +125,8 @@
 				<!---------------------------- Gestion des Employes Begin  -------------------------------------------->
                 <li class="start <?php if($currentPage=="configuration.php"
                 or $currentPage=="users.php"
+                or $currentPage=="clients-archive-group.php"
+                or $currentPage=="clients-archive.php"
                 or $currentPage=="history-group.php"
                 or $currentPage=="history.php"
                 ){echo "active ";} ?>">

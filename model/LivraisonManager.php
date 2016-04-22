@@ -48,6 +48,20 @@ class LivraisonManager{
         $query->execute();
         $query->closeCursor();
     }
+    
+    public function invalidateLivraisonsPayees($idLivraison, $idFournisseur, $idProjet, $status){
+        $query = $this->_db->prepare(
+        'UPDATE t_livraison SET status=:status
+        WHERE id=:id 
+        AND idProjet=:idProjet 
+        AND idFournisseur=:idFournisseur') or die(print_r($this->_db->errorInfo()));
+        $query->bindValue(':id', $idLivraison);
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':status', $status);
+        $query->execute();
+        $query->closeCursor();
+    }
 
 	public function updateCopieBL($url, $idLivraison){
     	$query = $this->_db->prepare(' UPDATE t_livraison SET url=:url
@@ -500,6 +514,23 @@ class LivraisonManager{
         return $livraisons;
     }
     
+    public function getLivraisonsPayesByIdFournisseurByProjet($idFournisseur, $idProjet){
+        $livraisons = array();
+        $query = $this->_db->prepare('SELECT * FROM t_livraison WHERE status<>:status 
+        AND idFournisseur=:idFournisseur
+        AND idProjet=:idProjet 
+        ORDER BY dateLivraison DESC');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':idProjet', $idProjet);
+        $query->bindValue(':status', "Non Pay&eacute;");
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = new Livraison($data);
+        }
+        $query->closeCursor();
+        return $livraisons;
+    }
+    
     public function getLivraisonsNonPayesByIdFournisseurByProjetByDates($idFournisseur, $idProjet, $dateFrom, $dateTo){
         $livraisons = array();
         $query = $this->_db->prepare(
@@ -587,5 +618,68 @@ class LivraisonManager{
             $ids[] = $data['id'];
         }
         return $ids;
+    }
+    
+    public function getLivraisonsByGroup(){
+        $livraisons = array();
+        $query = $this->_db->query('SELECT * FROM t_livraison GROUP BY idFournisseur ORDER BY id DESC');
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = new Livraison($data);
+        }
+        $query->closeCursor();
+        return $livraisons;
+    }
+    
+    public function getLivraisonsByFournisseurGroupByMonth($idFournisseur){
+        $livraisons = array();
+        $query = $this->_db->prepare(
+        "SELECT * FROM t_livraison 
+        WHERE idFournisseur=:idFournisseur 
+        GROUP BY MONTH(dateLivraison), YEAR(dateLivraison)
+        ORDER BY dateLivraison DESC");
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = new Livraison($data);
+        }
+        $query->closeCursor();
+        return $livraisons;
+    }
+    
+    public function getLivraisonsByIdFournisseurByMonthYear($idFournisseur, $date){
+        $idLivraisons = array();
+        $query = $this->_db->prepare(
+        'SELECT id FROM t_livraison 
+        WHERE idFournisseur=:idFournisseur 
+        AND MONTH(dateLivraison)=MONTH(:date) 
+        AND YEAR(dateLivraison)=YEAR(:date)
+        ORDER BY dateLivraison DESC');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':date', $date);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = $data['id'];
+        }
+        $query->closeCursor();
+        return $livraisons;
+    }
+    
+    public function getLivraisonsByIdFournisseurByMoisByAnnee($idFournisseur, $mois, $annee){
+        $livraisons = array();
+        $query = $this->_db->prepare(
+        'SELECT * FROM t_livraison 
+        WHERE idFournisseur=:idFournisseur 
+        AND MONTH(dateLivraison) = :mois
+        AND YEAR(dateLivraison) = :annee 
+        ORDER BY dateLivraison DESC');
+        $query->bindValue(':idFournisseur', $idFournisseur);
+        $query->bindValue(':mois', $mois);
+        $query->bindValue(':annee', $annee);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $livraisons[] = new Livraison($data);
+        }
+        $query->closeCursor();
+        return $livraisons;
     }
 }

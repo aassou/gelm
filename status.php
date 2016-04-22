@@ -61,7 +61,7 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <h3 class="page-title">
-                            Paramètrages
+                            Les états
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -70,8 +70,8 @@
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
-                                <i class="icon-wrench"></i>
-                                <a>Paramètrages</a>
+                                <i class="icon-bar-chart"></i>
+                                <a>Les états</a>
                             </li>
                         </ul>
                     </div>
@@ -80,42 +80,41 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <div class="tiles">
-                            <a href="users.php">
-                            <div class="tile bg-green">
-                                <div class="tile-body">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <div class="tile-object">
-                                    <div class="name">
-                                        Utilisateurs
-                                    </div>
-                                    <div class="number">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            </a>
-                            <a href="clients-archive-group.php">
-                            <div class="tile bg-purple">
+                            <a href="contrat-status.php">
+                            <div class="tile bg-dark-red">
                                 <div class="corner"></div>
                                 <div class="tile-body">
                                     <i class="icon-group"></i>
                                 </div>
                                 <div class="tile-object">
                                     <div class="name">
-                                        Archive des clients
+                                        Etats clients
                                     </div>
                                 </div>
                             </div>
                             </a>
-                            <a href="history-group.php">
-                            <div class="tile bg-grey">
+                            <a href="operations-status-group.php">
+                            <div class="tile bg-blue">
                                 <div class="tile-body">
-                                    <i class="icon-calendar"></i>
+                                    <i class="icon-money"></i>
                                 </div>
                                 <div class="tile-object">
                                     <div class="name">
-                                        Historique
+                                        Etats paiments
+                                    </div>
+                                    <div class="number">
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                            <a href="properties-status.php">
+                            <div class="tile bg-green">
+                                <div class="tile-body">
+                                    <i class="icon-home"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Etats Immobilier
                                     </div>
                                     <div class="number">
                                     </div>
@@ -125,6 +124,64 @@
                         </div>
                     </div>
                 </div>
+                <!--      BEGIN TILES      -->
+                <!-- BEGIN DASHBOARD STATS -->
+                <!--h4 class="breadcrumb"><i class="icon-table"></i> Bilans et Statistiques Pour Cette Semaine</h4>
+                <div class="row-fluid">
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <div class="dashboard-stat yellow">
+                            <div class="visual">
+                                <i class="icon-signal"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <?= $operationsNumberWeek ?>    
+                                </div>
+                                <div class="desc">                                  
+                                    Paiements Clients
+                                </div>
+                            </div>                  
+                        </div>
+                    </div>
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <div class="dashboard-stat green">
+                            <div class="visual">
+                                <i class="icon-shopping-cart"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">+<?= $livraisonsNumberWeek ?></div>
+                                <div class="desc">Livraisons</div>
+                            </div>                  
+                        </div>
+                    </div>
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <div class="dashboard-stat blue">
+                            <div class="visual">
+                                <i class="icon-group"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">+<?= $clientNumberWeek ?></div>
+                                <div class="desc">Clients</div>
+                            </div>          
+                        </div>
+                    </div>  
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <a class="more" href="caisse.php">
+                        <div class="dashboard-stat purple">
+                            <div class="visual">
+                                <i class="icon-money"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <?= number_format($caisseEntreesManager->getTotalCaisseEntrees()-$caisseSortiesManager->getTotalCaisseSorties(), '2', ',', ' ') ?>
+                                </div>
+                                <div class="desc">DH en caisse</div>
+                            </div>                  
+                        </div>
+                        </a>
+                    </div>  
+                </div-->
+                <!-- END DASHBOARD STATS -->
                 <!-- END PAGE HEADER-->
             </div>
             <!-- END PAGE CONTAINER-->  
@@ -134,7 +191,7 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="footer">
-        2015 &copy; ImmoERP. Management Application.
+        2015 &copy; GELM. Management Application.
         <div class="span pull-right">
             <span class="go-top"><i class="icon-angle-up"></i></span>
         </div>

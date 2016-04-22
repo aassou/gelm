@@ -119,7 +119,7 @@ class ChargesCommunsManager{
     public function getChargesCommunsByDatesByIdSociete($idSociete, $dateFrom, $dateTo) {
         $chargesCommuns = array();
         $query = $this->_db->prepare('SELECT * FROM t_chargescommuns WHERE idSociete=:idSociete
-        AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY id DESC');
+        AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY dateOperation ASC');
         $query->bindValue(':idSociete', $idSociete);
         $query->bindValue(':dateFrom', $dateFrom);
         $query->bindValue(':dateTo', $dateTo);

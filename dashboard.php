@@ -133,6 +133,22 @@
 								</div>
 							</div>
 							</a>
+							<a href="livraisons-group.php">
+                            <div class="tile bg-cyan">
+                                <div class="corner"></div>
+                                <div class="tile-body">
+                                    <i class="icon-shopping-cart"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Archive Livraisons
+                                    </div>
+                                    <!--div class="number">
+                                        <?php //$livraisonsNumber ?>
+                                    </div-->
+                                </div>
+                            </div>
+                            </a>
 							<?php if($_SESSION['userMerlaTrav']->login()=="abdessamad"){ ?>
 							<a href="caisses.php">
 							<div class="tile bg-grey">
@@ -149,10 +165,25 @@
 							</div>
 							</a>
 							<?php } ?>
+							<a href="status.php">
+                            <div class="tile bg-dark-red">
+                                <div class="tile-body">
+                                    <i class="icon-tasks"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Les états
+                                    </div>
+                                    <div class="number">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
 							<a href="releve-bancaire.php">
                             <div class="tile bg-purple">
                                 <div class="tile-body">
-                                    <i class="icon-envelope"></i>
+                                    <i class="icon-envelope-alt"></i>
                                 </div>
                                 <div class="tile-object">
                                     <div class="name">

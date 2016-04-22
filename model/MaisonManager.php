@@ -169,5 +169,19 @@ class MaisonManager{
         $query->closeCursor();
         return $data['prixTotal'];
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function getMaisonsNonVendu(){
+        $maisons = array();
+        $query = $this->_db->query(
+        "SELECT * FROM t_maison WHERE status='Disponible' ORDER BY id ASC")
+        or die(print_r($this->_db->errorInfo()));
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $maisons[] = new Maison($data);
+        }
+        $query->closeCursor();
+        return $maisons;
+    }
 
 }

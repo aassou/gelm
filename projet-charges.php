@@ -91,7 +91,7 @@
                             </li>
                             <li>
                                 <i class="icon-sitemap"></i>
-                                <a href="companies.php">Gestion des sociétés</a> 
+                                <a href="companies-group.php">Gestion des sociétés</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>

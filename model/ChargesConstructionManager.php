@@ -78,7 +78,7 @@ class ChargesConstructionManager{
 	public function getChargesConstructionsByIdProjet($idProjet){
 		$chargesConstructions = array();
 		$query = $this->_db->prepare('SELECT * FROM t_chargesconstruction WHERE idProjet=:idProjet
-		ORDER BY dateOperation DESC');
+		ORDER BY dateOperation ASC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->execute();
 		while($data = $query->fetch(PDO::FETCH_ASSOC)){
@@ -104,7 +104,7 @@ class ChargesConstructionManager{
 	public function getChargesConstructionsByDatesByIdProjet($idProjet, $dateFrom, $dateTo){
 		$chargesConstructions = array();
 		$query = $this->_db->prepare('SELECT * FROM t_chargesconstruction WHERE idProjet=:idProjet
-		AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY id DESC');
+		AND dateOperation BETWEEN :dateFrom AND :dateTo ORDER BY id ASC');
 		$query->bindValue(':idProjet', $idProjet);
 		$query->bindValue(':dateFrom', $dateFrom);
 		$query->bindValue(':dateTo', $dateTo);

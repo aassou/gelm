@@ -403,6 +403,8 @@ class ContratManager{
         return $id;
     }
     
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    
 	public function getCodeContrat($code){
         $query = $this->_db->prepare('SELECT code FROM t_contrat WHERE code=:code');
 		$query->bindValue(':code', $code);
@@ -437,6 +439,8 @@ class ContratManager{
         return $ids;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////
+    
     public function getContratActifTotalPaiementsByIdProjet($idProjet){
         $ids = array();
         $query = $this->_db->prepare(
@@ -463,5 +467,65 @@ class ContratManager{
         $data = $query->fetch(PDO::FETCH_ASSOC);
         $query->closeCursor();
         return $data['total'];
+    }
+    
+    public function getContratsActifsEnRetard(){
+        $contrats = array();
+        $query = $this->_db->query(
+        'SELECT * FROM t_contrat 
+        WHERE status="Actif" 
+        AND ( prixVente-avance ) > 0
+        AND dateRetour < CURDATE()');
+        //get result
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
+    }
+    
+    public function getContratsActifsEnCours(){
+        $contrats = array();
+        $query = $this->_db->query(
+        'SELECT * FROM t_contrat 
+        WHERE status="Actif" 
+        AND ( prixVente-avance ) > 0
+        AND dateRetour >= CURDATE()');
+        //get result
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
+    }
+    
+    public function getContratGroupByMonth(){
+        $contrats = array();
+        $query = $this->_db->query(
+        "SELECT * FROM t_contrat 
+        GROUP BY MONTH(dateCreation), YEAR(dateCreation)
+        ORDER BY dateCreation DESC");
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
+    }
+    
+    public function getContratByMonthYear($month, $year){
+        $contrats = array();
+        $query = $this->_db->prepare(
+        "SELECT * FROM t_contrat 
+        WHERE MONTH(dateCreation) = :month
+        AND YEAR(dateCreation) = :year
+        ORDER BY dateCreation DESC");
+        $query->bindValue(':month', $month);
+        $query->bindValue(':year', $year);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $contrats[] = new Contrat($data);
+        }
+        $query->closeCursor();
+        return $contrats;
     }
 }

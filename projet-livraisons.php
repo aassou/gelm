@@ -601,7 +601,14 @@
                                                 </a> 
                                                 <?php
                                                 }  
-                                                ?>                       
+                                                else {
+                                                ?>    
+                                                <a class="btn mini black" title="Invalider Paiements" href="livraisons-invalidate.php?idProjet=<?= $livraison->idProjet() ?>&idSociete=<?= $idSociete ?>&idFournisseur=<?= $livraison->idFournisseur() ?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
+                                                    <i class="icon-check"></i>
+                                                </a> 
+                                                <?php
+                                                }
+                                                ?>                     
                                                 <a class="btn mini green" title="Modifier" href="#updateLivraison<?= $livraison->id();?>" data-toggle="modal" data-id="<?= $livraison->id(); ?>">
                                                     <i class="icon-refresh"></i>
                                                 </a>

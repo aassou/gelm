@@ -28,7 +28,7 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="UTF-8" />
-    <title>ImmoERP - Management Application</title>
+    <title>GELM - Management Application</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -212,7 +212,7 @@
                                                     <div class="control-group">
                                                         <label class="control-label">Libelle</label>
                                                         <div class="controls">
-                                                            <input type="text" name="libelle" value="<?= $releve->libelle() ?>" />
+                                                            <textarea><?= $releve->libelle() ?></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="control-group">
@@ -309,7 +309,7 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="footer">
-        2015 &copy; ImmoERP. Management Application.
+        2015 &copy; GELM. Management Application.
         <div class="span pull-right">
             <span class="go-top"><i class="icon-angle-up"></i></span>
         </div>
