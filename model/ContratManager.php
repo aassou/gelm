@@ -273,9 +273,9 @@ class ContratManager{
         return new Contrat($data);
     }
 
-    public function getContratsHiddenByIdProjet($idProjet, $begin, $end){
+    public function getContratsActifsByIdProjet($idProjet){
         $contrats = array();    
-        $query = $this->_db->prepare("SELECT * FROM t_contrat WHERE idProjet=:idProjet AND status<>'hidden' ORDER BY status, dateCreation LIMIT ".$begin.", ".$end);
+        $query = $this->_db->prepare("SELECT * FROM t_contrat WHERE idProjet=:idProjet AND status<>'hidden' ORDER BY status, dateCreation");
         $query->bindValue(':idProjet', $idProjet);
         $query->execute();
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
@@ -475,7 +475,8 @@ class ContratManager{
         'SELECT * FROM t_contrat 
         WHERE status="Actif" 
         AND ( prixVente-avance ) > 0
-        AND dateRetour < CURDATE()');
+        AND dateRetour < CURDATE()
+        ORDER BY dateRetour ASC');
         //get result
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
             $contrats[] = new Contrat($data);
@@ -490,7 +491,8 @@ class ContratManager{
         'SELECT * FROM t_contrat 
         WHERE status="Actif" 
         AND ( prixVente-avance ) > 0
-        AND dateRetour >= CURDATE()');
+        AND dateRetour >= CURDATE()
+        ORDER BY dateRetour ASC');
         //get result
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
             $contrats[] = new Contrat($data);

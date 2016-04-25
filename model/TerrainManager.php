@@ -72,6 +72,42 @@ class TerrainManager{
 		$query->closeCursor();
 		return $nombre;
 	}
+    
+    public function getNumberBiens(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_terrain')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
+    
+    public function getNumberBienDisbonible(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_terrain WHERE status="Disponible" ')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
+    
+    public function getNumberBienVendu(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_terrain WHERE status="Vendu" ')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
+
+    public function getNumberBienPromesseVente(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_terrain WHERE status="Promesse de Vente" ')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
 
 	public function getTerrainById($id){
     	$query = $this->_db->prepare(' SELECT * FROM t_terrain

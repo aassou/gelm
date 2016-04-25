@@ -13,6 +13,7 @@
     //classes loading end
     session_start();
     if(isset($_SESSION['userMerlaTrav'])){
+        
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -36,6 +37,8 @@
     <link rel="stylesheet" type="text/css" href="assets/chosen-bootstrap/chosen/chosen.css" />
     <link rel="stylesheet" type="text/css" href="assets/uniform/css/uniform.default.css" />
     <link rel="stylesheet" type="text/css" href="assets/gritter/css/jquery.gritter.css" />
+    <link href="assets/glyphicons/css/glyphicons.css" rel="stylesheet" />
+    <link href="assets/glyphicons_halflings/css/halflings.css" rel="stylesheet" />
     <link rel="shortcut icon" href="favicon.ico" />
 </head>
 <!-- END HEAD -->
@@ -60,129 +63,48 @@
                 <!-- BEGIN PAGE HEADER-->
                 <div class="row-fluid">
                     <div class="span12">
+                        <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Les états
+                            Etats Immobilier 
                         </h3>
                         <ul class="breadcrumb">
                             <li>
-                                <i class="icon-home"></i>
+                                <i class="icon-dashboard"></i>
                                 <a href="dashboard.php">Accueil</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
                                 <i class="icon-bar-chart"></i>
-                                <a>Les états</a>
+                                <a href="status.php">Les états</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-home"></i>
+                                <a>Etats Immobilière</a>
                             </li>
                         </ul>
+                        <!-- END PAGE TITLE & BREADCRUMB-->
                     </div>
                 </div>
                 <!--      BEGIN TILES      -->
                 <div class="row-fluid">
                     <div class="span12">
                         <div class="tiles">
-                            <a href="contrat-status.php">
-                            <div class="tile bg-dark-red">
-                                <div class="corner"></div>
-                                <div class="tile-body">
-                                    <i class="icon-group"></i>
-                                </div>
-                                <div class="tile-object">
-                                    <div class="name">
-                                        Etats clients
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="properties-status.php?type=appartements" class="btn btn-box red">
+                                Appartements
                             </a>
-                            <!--a href="operations-status-group.php">
-                            <div class="tile bg-blue">
-                                <div class="tile-body">
-                                    <i class="icon-money"></i>
-                                </div>
-                                <div class="tile-object">
-                                    <div class="name">
-                                        Etats paiments
-                                    </div>
-                                    <div class="number">
-                                    </div>
-                                </div>
-                            </div>
-                            </a-->
-                            <a href="properties-status-types.php">
-                            <div class="tile bg-green">
-                                <div class="tile-body">
-                                    <i class="icon-home"></i>
-                                </div>
-                                <div class="tile-object">
-                                    <div class="name">
-                                        Etats Immobilier
-                                    </div>
-                                    <div class="number">
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="properties-status.php?type=maisons" class="btn btn-box green">
+                                Maisons
+                            </a>
+                            <a href="properties-status.php?type=locaux" class="btn btn-box blue">
+                                Locaux Commerciaux
+                            </a>
+                            <a href="properties-status.php?type=terrains" class="btn btn-box yellow">
+                                Terrains
                             </a>
                         </div>
                     </div>
                 </div>
-                <!--      BEGIN TILES      -->
-                <!-- BEGIN DASHBOARD STATS -->
-                <!--h4 class="breadcrumb"><i class="icon-table"></i> Bilans et Statistiques Pour Cette Semaine</h4>
-                <div class="row-fluid">
-                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
-                        <div class="dashboard-stat yellow">
-                            <div class="visual">
-                                <i class="icon-signal"></i>
-                            </div>
-                            <div class="details">
-                                <div class="number">
-                                    <?= $operationsNumberWeek ?>    
-                                </div>
-                                <div class="desc">                                  
-                                    Paiements Clients
-                                </div>
-                            </div>                  
-                        </div>
-                    </div>
-                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
-                        <div class="dashboard-stat green">
-                            <div class="visual">
-                                <i class="icon-shopping-cart"></i>
-                            </div>
-                            <div class="details">
-                                <div class="number">+<?= $livraisonsNumberWeek ?></div>
-                                <div class="desc">Livraisons</div>
-                            </div>                  
-                        </div>
-                    </div>
-                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
-                        <div class="dashboard-stat blue">
-                            <div class="visual">
-                                <i class="icon-group"></i>
-                            </div>
-                            <div class="details">
-                                <div class="number">+<?= $clientNumberWeek ?></div>
-                                <div class="desc">Clients</div>
-                            </div>          
-                        </div>
-                    </div>  
-                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
-                        <a class="more" href="caisse.php">
-                        <div class="dashboard-stat purple">
-                            <div class="visual">
-                                <i class="icon-money"></i>
-                            </div>
-                            <div class="details">
-                                <div class="number">
-                                    <?= number_format($caisseEntreesManager->getTotalCaisseEntrees()-$caisseSortiesManager->getTotalCaisseSorties(), '2', ',', ' ') ?>
-                                </div>
-                                <div class="desc">DH en caisse</div>
-                            </div>                  
-                        </div>
-                        </a>
-                    </div>  
-                </div-->
-                <!-- END DASHBOARD STATS -->
-                <!-- END PAGE HEADER-->
             </div>
             <!-- END PAGE CONTAINER-->  
         </div>

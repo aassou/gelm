@@ -16,16 +16,46 @@
     if( isset($_SESSION['userMerlaTrav']) ){
         //les sources
         $projetManager = new ProjetManager($pdo);
-        $appartementManager = new AppartementManager($pdo);
-        $locauxManager = new LocauxManager($pdo);
-        $maisonManager = new MaisonManager($pdo);
-        $terrainManager = new TerrainManager($pdo);
         $contratManager = new ContratManager($pdo);
         $clientManager = new ClientManager($pdo);
-        $appartements = $appartementManager->getAppartementsNonVendu();
-        $locaux = $locauxManager->getLocauxNonVendu();
-        $maisons = $maisonManager->getMaisonsNonVendu();
-        $terrains = $maisonManager->getMaisonsNonVendu();
+        $biensDiponible = 0;
+        $biensVendu = 0;
+        $biensPromesseVente = 0;
+        $biens = 0;
+        //begin process
+        $type = $_GET['type'];
+        if ( $type ==  "appartements" ) {
+            $appartementManager = new AppartementManager($pdo);
+            $appartements = $appartementManager->getAppartementsNonVendu();
+            $biens = $appartementManager->getNumberBiens();
+            $biensDiponible = $appartementManager->getNumberBienDisbonible();
+            $biensVendu = $appartementManager->getNumberBienVendu();
+            $biensPromesseVente = $appartementManager->getNumberBienPromesseVente();
+        }
+        else if ( $type ==  "locaux" ) {
+            $locauxManager = new LocauxManager($pdo);
+            $locaux = $locauxManager->getLocauxNonVendu();
+            $biens = $locauxManager->getNumberBiens();
+            $biensDiponible = $locauxManager->getNumberBienDisbonible();
+            $biensVendu = $locauxManager->getNumberBienVendu();
+            $biensPromesseVente = $locauxManager->getNumberBienPromesseVente();
+        }
+        else if ( $type ==  "maisons" ) {
+            $maisonManager = new MaisonManager($pdo);
+            $maisons = $maisonManager->getMaisonsNonVendu();
+            $biens = $maisonManager->getNumberBiens();
+            $biensDiponible = $maisonManager->getNumberBienDisbonible();
+            $biensVendu = $maisonManager->getNumberBienVendu();
+            $biensPromesseVente = $maisonManager->getNumberBienPromesseVente();
+        }
+        else if ( $type ==  "terrains" ) {
+            $terrainManager = new TerrainManager($pdo);
+            $terrains = $terrainManager->getTerrainsNonVendu();
+            $biens = $terrainManager->getNumberBiens();
+            $biensDiponible = $terrainManager->getNumberBienDisbonible();
+            $biensVendu = $terrainManager->getNumberBienVendu();
+            $biensPromesseVente = $terrainManager->getNumberBienPromesseVente();
+        }
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -76,7 +106,7 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Les états des biens immobiliers non vendu   
+                            Liste des biens immobiliers disponibles
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -91,7 +121,11 @@
                             </li>
                             <li>
                                 <i class="icon-home"></i>
-                                <a href="projets.php">Etats Immobilière</a>
+                                <a href="properties-status-types.php">Etats Immobilière</a>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <a>Etats des <strong><?= ucfirst($type) ?></strong></a>
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -105,11 +139,17 @@
                             <input class="m-wrap" name="criteria" id="criteria" type="text" placeholder="Chercher Par Code, Status..." />
                         </div-->
                         <!-- BEGIN APPARTEMENTS TABLE PORTLET-->
-                        <h3>Liste des appartements</h3>
-                        <div class="portlet appartements">
+                        <?php if ( $type ==  "appartements" ) { ?>
+                        <div class="portlet box grey">
+                            <div class="portlet-title">
+                                <h4>Liste des appartements : <?= $biensDiponible ?> Disponilbe - <?= $biensPromesseVente ?> Promesse de vente - <?= $biensVendu ?> Vendu - <?= $biens ?> Total</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
                             <div class="portlet-body">
-                                <div class="scroller" data-height="400px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                <table class="table table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%">Code</th>
@@ -158,14 +198,20 @@
                                 </table>
                             </div>
                         </div>
-                        </div><!-- END DIV SCROLLER -->
+                        <?php } ?>
                         <!-- END APPARTEMENTS TABLE PORTLET-->
                         <!-- BEGIN LOCAUX TABLE PORTLET-->
-                        <h3>Liste des locaux commerciaux</h3>
-                        <div class="portlet">
+                        <?php if ( $type ==  "locaux" ) { ?>
+                        <div class="portlet box grey">
+                            <div class="portlet-title">
+                                <h4>Liste des locaux commerciaux : <?= $biensDiponible ?> Disponilbe - <?= $biensPromesseVente ?> Promesse de vente - <?= $biensVendu ?> Vendu - <?= $biens ?> Total</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
                             <div class="portlet-body">
-                                <div class="scroller" data-height="400px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                <table class="table table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
                                             <th>Code</th>
@@ -206,14 +252,20 @@
                                 </table>
                             </div>
                         </div>
-                        </div><!-- END DIV SCROLLER -->
+                        <?php } ?>
                         <!-- END LOCAUX TABLE PORTLET-->
                         <!-- BEGIN MAISONS TABLE PORTLET-->
-                        <h3>Liste des maisons</h3>
-                        <div class="portlet appartements">
+                        <?php if ( $type ==  "maisons" ) { ?>
+                        <div class="portlet box grey">
+                            <div class="portlet-title">
+                                <h4>Liste des maisons : <?= $biensDiponible ?> Disponilbe - <?= $biensPromesseVente ?> Promesse de vente - <?= $biensVendu ?> Vendu - <?= $biens ?> Total</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
                             <div class="portlet-body">
-                                <div class="scroller" data-height="400px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                <table class="table table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">Code</th>
@@ -254,14 +306,20 @@
                                 </table>
                             </div>
                         </div>
-                        </div><!-- END DIV SCROLLER -->
+                        <?php } ?>
                         <!-- END MAISONS TABLE PORTLET-->
                         <!-- BEGIN TERRAINS TABLE PORTLET-->
-                        <h3>Liste des terrains</h3>
-                        <div class="portlet appartements">
+                        <?php if ( $type ==  "terrains" ) { ?>
+                        <div class="portlet box grey">
+                            <div class="portlet-title">
+                                <h4>Liste des terrains : <?= $biensDiponible ?> Disponilbe - <?= $biensPromesseVente ?> Promesse de vente - <?= $biensVendu ?> Vendu - <?= $biens ?> Total</h4>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
                             <div class="portlet-body">
-                                <div class="scroller" data-height="400px" data-always-visible="1"><!-- BEGIN DIV SCROLLER -->
-                                <table class="table table-striped table-bordered table-advance table-hover">
+                                <table class="table table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">Code</th>
@@ -300,7 +358,7 @@
                                 </table>
                             </div>
                         </div>
-                        </div><!-- END DIV SCROLLER -->
+                        <?php } ?>
                         <!-- END TERRAINS TABLE PORTLET-->
                     </div>
                 </div>
@@ -341,18 +399,8 @@
     <script>
         jQuery(document).ready(function() {         
             // initiate layout and plugins
-            //App.setPage("table_editable");
+            App.setPage("table_managed");
             App.init();
-        });
-        $('.appartements').show();
-        $('#criteria').keyup(function(){
-            $('.appartements').hide();
-           var txt = $('#criteria').val();
-           $('.appartements').each(function(){
-               if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-                   $(this).show();
-               }
-            });
         });
         $('#status').on('change',function(){
             if( $(this).val()!=="Disponible"){

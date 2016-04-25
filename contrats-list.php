@@ -30,29 +30,10 @@
             $idSociete = $_GET['idSociete'];
             $societe = $societeManager->getSocieteById($idSociete);
 			$projet = $projetManager->getProjetById($idProjet);
-			/*if(isset($_POST['idClient']) and $_POST['idClient']>0){
-				$idClient = $_POST['idClient'];
-				$contrats = $contratManager->getContratsByIdClientByIdProjet($idClient, $idProjet);
-				$contratNumber = -1;
-			}
-			else{*/
-				$contratNumber = $contratManager->getContratsNumberByIdProjet($idProjet);
-				if($contratNumber != 0){
-					$contratPerPage = 10000000000;
-			        $pageNumber = ceil($contratNumber/$contratPerPage);
-			        $p = 1;
-			        if(isset($_GET['p']) and ($_GET['p']>0 and $_GET['p']<=$pageNumber)){
-			            $p = $_GET['p'];
-			        }
-			        else{
-			            $p = 1;
-			        }
-			        $begin = ($p - 1) * $contratPerPage;
-			        $pagination = paginate('contrats-list.php?idProjet='.$idProjet, '&p=', $pageNumber, $p);
-					//$contrats = $contratManager->getContratsByIdProjet($idProjet, $begin, $contratPerPage);
-                    $contrats = $contratManager->getContratsHiddenByIdProjet($idProjet, $begin, $contratPerPage);
-				}		
-			//}	
+			$contratNumber = $contratManager->getContratsNumberByIdProjet($idProjet);
+			if($contratNumber != 0){
+                $contrats = $contratManager->getContratsActifsByIdProjet($idProjet);
+			}	
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -249,12 +230,13 @@
 											<th style="width:10%">Client</th>
 											<th style="width:10%">Dates</th>
 											<th style="width:10%" class="hidden-phone">Type</th>
-											<th style="width:10%" class="hidden-phone">Prix</th>
-											<th style="width:10%" class="hidden-phone">Taille</th>
-											<th style="width:10%" class="hidden-phone">Payé</th>
+											<th style="width:8%" class="hidden-phone">Prix</th>
+											<th style="width:8%" class="hidden-phone">Taille</th>
+											<th style="width:8%" class="hidden-phone">Payé</th>
 											<th style="width:10%" class="hidden-phone">Reste</th>
-											<th style="width:15%" class="hidden-phone">Note</th>
-											<th style="width:15%" class="hidden-phone">Actions</th>
+											<th style="width:11%" class="hidden-phone">Note</th>
+											<th style="width:12%" class="hidden-phone">Status</th>
+											<th style="width:13%" class="hidden-phone">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -283,12 +265,27 @@
 											}
                                             //status colors preferences
                                             $colorRow = "";
-                                            if($contrat->status()=="actif"){
+                                            if ( $contrat->status() == "actif" ) {
                                                 $colorRow = 'style="background-color:#d2ffca"';
                                             }
-                                            else{
+                                            else {
                                                 $colorRow = 'style="background-color:#ffcac1"';  
                                             }  
+                                            //status bien color conf
+                                            $statusBienColor = "";
+                                            $statusBienLink = "";
+                                            if ( $bien->status() ==  "Vendu" ) {
+                                                $statusBienColor = "red";
+                                                $statusBienLink = "#changeBienStatus".$bien->id();
+                                            }
+                                            else if ( $bien->status() == "Disponible" ) {
+                                                $statusBienColor = "green";
+                                                $statusBienLink = "";
+                                            } 
+                                            else {
+                                                $statusBienColor = "blue";
+                                                $statusBienLink = "#changeBienStatus".$bien->id();
+                                            }
 										?>		
 										<tr <?= $colorRow ?> class="clients">
 										    <td class="hidden"></td>
@@ -320,6 +317,7 @@
 											<td class="hidden-phone"><?= number_format($contrat->prixVente()-$contrat->avance(), 2, ',', ' ') ?></td>
 											</td>
 											<td class="hidden-phone"><?= $contrat->note() ?></td>
+											<td class="hidden-phone"><a href="<?= $statusBienLink ?>" data-toggle="modal" data-id="<?= $bien->id() ?>" class="btn mini <?= $statusBienColor ?>"><?= $bien->status() ?></a></td>
 											<td>
 											    <a title="Imprimer Contrat" class="btn mini blue" target="_blank" href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>">
                                                     <i class="icon-print"></i>
@@ -401,6 +399,40 @@
 											</div>
 										</div>
 										<!-- delete box end -->		
+										<!-- changeBienStatus box begin-->
+                                        <div id="changeBienStatus<?= $bien->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                <h3>Changer status du bien </h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-horizontal loginFrm" action="controller/ChangeBienStatusController.php" method="post">
+                                                    <p>Êtes-vous sûr de vouloir changer le status du bien ?</p>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Status</label>
+                                                        <div class="controls">
+                                                            <select name="status">
+                                                                <option value="<?= $bien->status() ?>" id="<?= $bien->status() ?>"><?= $bien->status() ?></option>
+                                                                <option disabled="disabled">-----------------------</option>
+                                                                <option value="Vendu" id="Vendu">Vendu</option>
+                                                                <option value="Promesse de Vente" id="Promesse de Vente">Promesse de Vente</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="right-label"></label>
+                                                        <input type="hidden" name="typeBien" value="<?= $contrat->typeBien() ?>" />
+                                                        <input type="hidden" name="idBien" value="<?= $bien->id() ?>" />
+                                                        <input type="hidden" name="idContrat" value="<?= $contrat->id() ?>" />
+                                                        <input type="hidden" name="idProjet" value="<?= $projet->id() ?>" />
+                                                        <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+                                                        <button type="submit" class="btn red" aria-hidden="true">Oui</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- changeBienStatus box end --> 
 										<!-- activation box begin-->
 										<div id="activerContrat<?= $contrat->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
 											<div class="modal-header">

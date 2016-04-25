@@ -2152,7 +2152,7 @@ var App = function () {
             "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ records per page",
+                "sLengthMenu": "_MENU_ Lignes par page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"
@@ -2185,7 +2185,7 @@ var App = function () {
             "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ per page",
+                "sLengthMenu": "_MENU_ Lignes par page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"
@@ -2218,7 +2218,7 @@ var App = function () {
             "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ per page",
+                "sLengthMenu": "_MENU_ Lignes par page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"

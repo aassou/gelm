@@ -103,18 +103,18 @@
                             </div>
                         </div>
                         <div class="portlet-body">
-                                <strong>Liste des clients en retard</strong>
-                                <table class="table table-striped table-bordered table-hover">
+                                <h3>Liste des clients en retard</h3>
+                                <table class="table table-striped table-bordered table-hover" id="sample_1">
                                     <thead>
                                         <tr>
+                                            <th style="width: 5%">Actions</th>
                                             <th style="width: 20%">Client</th>
                                             <th style="width: 15%">Projet</th>
                                             <th style="width: 20%">Bien</th>
                                             <th style="width: 10%">Montant</th>
                                             <th style="width: 10%">Date Création</th>
                                             <th style="width: 10%">Date Retour</th>
-                                            <th style="width: 10%">Status</th>
-                                            <th style="width: 5%">Actions</th>
+                                            <th style="width: 10%">Status</th>  
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -158,6 +158,15 @@
                                             }
                                         ?>
                                         <tr>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn black dropdown-toggle" data-toggle="dropdown"><i class="icon-exclamation-sign"></i></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a>Tél : <strong><?= $element->telephone() ?></strong></a></li>
+                                                        <li><a href="#sendMailA<?= $element->id() ?>" data-toggle="modal" data-id="<?= $element->id() ?>" title="Envoyer Email">Email : <strong>vide@vide.com</strong></a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                             <td><?= $element->nomClient() ?></td>
                                             <td><?= $projet->nom() ?></td>
                                             <td><?= $typeBien.' - '.$niveau.'e: '.$bien->nom() ?></td>
@@ -165,7 +174,6 @@
                                             <td><?= date('d/m/Y', strtotime($element->dateCreation())) ?></td>
                                             <td><?= date('d/m/Y', strtotime($element->dateRetour())) ?></td>
                                             <td><?= $link ?></td>
-                                            <td><a href="#sendMailA<?= $element->id() ?>" data-toggle="modal" data-id="<?= $element->id() ?>" class="btn blue mini" title="Envoyer Email"><i class="icon-envelope-alt"></i></a></td>
                                         </tr>
                                         <!-- SendMail box begin-->
                                         <div id="sendMailA<?= $element->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -231,10 +239,11 @@
                                         ?>
                                     </tbody>
                                 </table>
-                                <strong>Liste des clients en cours</strong>
-                                <table class="table table-striped table-bordered table-hover">
+                                <h3>Liste des clients en cours</h3>
+                                <table class="table table-striped table-bordered table-hover" id="sample_2">
                                     <thead>
                                         <tr>
+                                            <th style="width: 5%">Actions</th>
                                             <th style="width: 20%">Client</th>
                                             <th style="width: 15%">Projet</th>
                                             <th style="width: 20%">Bien</th>
@@ -242,7 +251,6 @@
                                             <th style="width: 10%">Date Création</th>
                                             <th style="width: 10%">Date Retour</th>
                                             <th style="width: 10%">Status</th>
-                                            <th style="width: 5%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -286,6 +294,15 @@
                                             }
                                         ?>
                                         <tr>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn black dropdown-toggle" data-toggle="dropdown"><i class="icon-exclamation-sign"></i></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a>Tél : <strong><?= $element->telephone() ?></strong></a></li>
+                                                        <li><a href="#sendMailA<?= $element->id() ?>" data-toggle="modal" data-id="<?= $element->id() ?>" title="Envoyer Email">Email : <strong>vide@vide.com</strong></a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                             <td><?= $element->nomClient() ?></td>
                                             <td><?= $projet->nom() ?></td>
                                             <td><?= $typeBien.' - '.$niveau.'e: '.$bien->nom() ?></td>
@@ -293,7 +310,6 @@
                                             <td><?= date('d/m/Y', strtotime($element->dateCreation())) ?></td>
                                             <td><?= date('d/m/Y', strtotime($element->dateRetour())) ?></td>
                                             <td><?= $link ?></td>
-                                            <td><a href="#sendMailA<?= $element->id() ?>" data-toggle="modal" data-id="<?= $element->id() ?>" class="btn blue mini" title="Envoyer Email"><i class="icon-envelope-alt"></i></a></td>
                                         </tr>
                                         <!-- SendMail box begin-->
                                         <div id="sendMailA<?= $element->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >

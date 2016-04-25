@@ -106,8 +106,6 @@
                 <!--      BEGIN TILES      -->
                 <div class="row-fluid">
                     <div class="span12">
-                        <!--h4><i class="icon-hand-right"></i> Raccourcis</h4-->
-                        <hr class="line">
                         <div class="tiles">
                             <a href="projet-biens.php?idProjet=<?= $idProjet ?>&type=appartements&idSociete=<?= $idSociete ?>" class="btn btn-box red">
                                 Appartements

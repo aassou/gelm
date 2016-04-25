@@ -31,7 +31,7 @@
 	}
 	if( $contrat->typeBien()=="appartement" ){
 		if( $appartementManager->getAppartementById($contrat->idBien())->status()=="Disponible" ){
-			$appartementManager->updateStatus("Vendu", $contrat->idBien());
+			$appartementManager->updateStatus($status, $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
 			header($redirectLink);
@@ -59,7 +59,7 @@
 	}
 	else if( $contrat->typeBien()=="maison" ){
 		if( $maisonManager->getMaisonById($contrat->idBien())->status()=="Disponible" ){
-			$maisonManager->updateStatus("Vendu", $contrat->idBien());
+			$maisonManager->updateStatus($status, $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
 			header($redirectLink);
@@ -73,7 +73,7 @@
 	}
 	else if( $contrat->typeBien()=="terrain" ){
 		if( $terrainManager->getTerrainById($contrat->idBien())->status()=="Disponible" ){
-			$terrainManager->updateStatus("Vendu", $contrat->idBien());
+			$terrainManager->updateStatus($status, $contrat->idBien());
 			$contratManager->activerContrat($idContrat);
 			$_SESSION['contrat-activation-success'] = "<strong>Opération valide : </strong>Le contrat est activé avec succès.";
 			header($redirectLink);

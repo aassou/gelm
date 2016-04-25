@@ -111,6 +111,42 @@ class AppartementManager{
 		$query->closeCursor();
 		return $nombre;
 	}
+    
+    public function getNumberBiens(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_appartement')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
+    
+    public function getNumberBienDisbonible(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_appartement WHERE status="Disponible" ')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
+    
+    public function getNumberBienVendu(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_appartement WHERE status="Vendu" ')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
+
+    public function getNumberBienPromesseVente(){
+        $query = $this->_db->query(' SELECT COUNT(*) AS nombre FROM t_appartement WHERE status="Promesse de Vente" ')
+        or die (print_r($this->_db->errorInfo()));
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $nombre = $data['nombre']; 
+        $query->closeCursor();
+        return $nombre;
+    }
 	
 	public function getNumberBienVenduByIdProjet($idProjet){
     	$query = $this->_db->prepare(' SELECT COUNT(*) AS nombre FROM t_appartement WHERE idProjet=:idProjet AND status="Vendu" ')

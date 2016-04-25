@@ -22,6 +22,7 @@
 				or $currentPage=="status.php"
 				or $currentPage=="contrat-status.php"
 				or $currentPage=="properties-status.php"
+				or $currentPage=="properties-status-types.php"
 				or $currentPage=="statistiques.php"
 				or $currentPage=="releve-bancaire.php"
 				or $currentPage=="messages.php"
