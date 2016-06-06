@@ -112,19 +112,19 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <!--div class="clearfix">
+                                <div class="clearfix">
                                     <div class="btn-group pull-right">
-                                        <a class="btn blue " href="controller/ClientsSituationsPrintController.php?idProjet=<?php //$idProjet ?>">
+                                        <a class="btn blue " href="controller/ClientArchivePrintController.php?mois=<?= $mois ?>&annee=<?= $annee ?>">
                                             <i class="icon-print"></i>
                                              Version Imprimable
                                         </a>
                                     </div>
-                                    <div class="btn-group pull-left">
+                                    <!--div class="btn-group pull-left">
                                         <a class="btn green" href="contrats-add.php?idProjet=<?php //$idProjet ?>&idSociete=<?php //$idSociete ?>">
                                             Nouveau Contrat Client <i class="icon-plus-sign"></i>
                                         </a>
-                                    </div>
-                                </div-->
+                                    </div-->
+                                </div>
                                 <!--div class="scroller" data-height="500px" data-always-visible="1"--><!-- BEGIN DIV SCROLLER -->
                                 <table class="table table-bordered table-hover" id="sample_1">
                                     <thead>

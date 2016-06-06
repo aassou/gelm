@@ -108,8 +108,22 @@
                                 </div>
                             </div>
                             </a>
-                            <a href="history-group.php">
+                            <a href="todos-archive.php">
                             <div class="tile bg-grey">
+                                <div class="tile-body">
+                                    <i class="icon-check"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Archive des tâches
+                                    </div>
+                                    <div class="number">
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                            <a href="history-group.php">
+                            <div class="tile bg-red">
                                 <div class="tile-body">
                                     <i class="icon-calendar"></i>
                                 </div>

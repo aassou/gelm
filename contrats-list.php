@@ -339,12 +339,30 @@
                                                     <?php   
                                                     }
                                                     ?>
+                                                <?php  
+                                                }
+                                                ?>
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin" ||
+                                                    $_SESSION['userMerlaTrav']->profil() == "manager" 
+                                                    ) { 
+                                                ?>        
                                                     <a title="Modifier" class="btn mini green" href="contrats-update.php?idContrat=<?= $contrat->id() ?>&idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
                                                         <i class="icon-refresh"></i>
                                                     </a>
-                                                    <a title="Supprimer" class="btn mini red" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-                                                        <i class="icon-remove"></i>
-                                                    </a>
+                                                    
+                                                <?php  
+                                                }
+                                                ?>
+                                                <?php
+                                                if ( 
+                                                    $_SESSION['userMerlaTrav']->profil() == "admin"
+                                                    ) { 
+                                                ?>
+                                                <a title="Supprimer" class="btn mini red" href="#deleteContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
+                                                    <i class="icon-remove"></i>
+                                                </a>
                                                 <?php  
                                                 }
                                                 ?>

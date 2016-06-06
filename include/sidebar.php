@@ -20,6 +20,7 @@
 				or $currentPage=="livraisons-details-archive.php"
 				or $currentPage=="conges.php"
 				or $currentPage=="status.php"
+				or $currentPage=="todos.php"
 				or $currentPage=="contrat-status.php"
 				or $currentPage=="properties-status.php"
 				or $currentPage=="properties-status-types.php"
@@ -47,6 +48,7 @@
 				or $currentPage=="company-cheques.php"
 				or $currentPage=="company-accounts.php"
 				or $currentPage=="charges-communs.php"
+				or $currentPage=="todo-societe.php"
 				){echo "active ";} ?>">
 					<a href="companies-group.php">
 					<i class="icon-sitemap"></i> 
@@ -75,6 +77,7 @@
 				or $currentPage=="projets-charges-categories.php"
 				or $currentPage=="project-management.php"
 				or $currentPage=="projet-statistique.php"
+				or $currentPage=="todo-projet.php"
 				){echo "active ";} ?>">
 					<a>
 					<i class="icon-briefcase"></i> 
@@ -130,6 +133,7 @@
                 or $currentPage=="clients-archive.php"
                 or $currentPage=="history-group.php"
                 or $currentPage=="history.php"
+                or $currentPage=="todos-archive.php"
                 ){echo "active ";} ?>">
                     <a href="configuration.php">
                     <i class="icon-wrench"></i> 

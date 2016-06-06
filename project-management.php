@@ -411,6 +411,9 @@
                                         <a href="projet-details.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn yellow fixed-size">Gestion des documents</a>
                                     </div>
                                     <div class="portfolio-info">
+                                        <a href="todo-projet.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn red-stripe fixed-size">Tâches Projet</a>
+                                    </div>
+                                    <div class="portfolio-info">
                                         <a href="projet-statistique.php?idProjet=<?= $projet->id() ?>&idSociete=<?= $idSociete ?>" class="btn blue fixed-size">Statistiques</a>
                                     </div>
                                 </div>

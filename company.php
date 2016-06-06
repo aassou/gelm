@@ -360,6 +360,9 @@
                                         <a href="company-accounts.php?idSociete=<?= $societe->id() ?>" class="btn purple fixed-size">Comptes Bancaires</a>
                                     </div>
                                     <div class="portfolio-info">
+                                        <a href="todo-societe.php?idSociete=<?= $societe->id() ?>" class="btn yellow fixed-size">Tâches de société</a>
+                                    </div>
+                                    <div class="portfolio-info">
                                         <a href="company-pieces.php?idSociete=<?= $societe->id() ?>" class="btn black fixed-size">Liste des documents</a>
                                     </div>
                                 </div>
