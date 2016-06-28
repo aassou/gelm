@@ -9,6 +9,7 @@ class TodoProjet{
     private $_responsable;
     private $_description;
     private $_idProjet;
+    private $_idSociete;
 	private $_created;
 	private $_createdBy;
 	private $_updated;
@@ -58,6 +59,10 @@ class TodoProjet{
     public function setIdProjet($idProjet){
         $this->_idProjet = $idProjet;
     }
+    
+    public function setIdSociete($idSociete){
+        $this->_idSociete = $idSociete;
+    }
 
 	public function setCreated($created){
         $this->_created = $created;
@@ -102,6 +107,10 @@ class TodoProjet{
     
     public function idProjet(){
         return $this->_idProjet;
+    }
+    
+    public function idSociete(){
+        return $this->_idSociete;
     }
 
 	public function created(){

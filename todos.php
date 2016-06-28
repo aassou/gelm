@@ -24,7 +24,13 @@
         $users = $usersManager->getUsers();
         //$mails = $mailManager->getMails();
         $projets = $projetManager->getProjets();
-        $todos = $todoManager->getTodosNotHidden();
+        $todos = 0;//$todoManager->getTodosNotHidden();
+        $societes = $societeManager->getSocietes();
+        
+        if ( isset($_POST['idSociete']) ) {
+            $idSociete = htmlentities($_POST['idSociete']);
+            $todos = $todoManager->getTodosNotHiddenByIdSociete($idSociete);
+        }
         
 ?>
 <!DOCTYPE html>
@@ -77,7 +83,7 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Gestion des tâches
+                            Gestion des tâches en cours
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -87,7 +93,7 @@
                             </li>
                             <li>
                                 <i class="icon-check"></i>
-                                <a>Gestion des tâches</a> 
+                                <a>Les tâches en cours</a> 
                             </li>
                         </ul>
                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -96,6 +102,35 @@
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
                 <!-- BEGIN PORTLET-->
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="portlet">
+                            <div class="portlet-title line">
+                                <h4>Choisir société</h4>
+                                <!--div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div-->
+                            </div>
+                            <div class="portlet-body" id="chats">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <select name="idSociete" class="m-wrap" >
+                                                <?php foreach($societes as $societe){ ?>
+                                                <option value="<?= $societe->id() ?>"><?= $societe->raisonSociale() ?></option>
+                                                <?php } ?>    
+                                            </select>    
+                                         </div>
+                                    </div>
+                                    <div class="btn-cont"> 
+                                        <button type="submit" class="btn blue icn-only"><i class="icon-search icon-white"></i>&nbsp;Chercher</button>
+                                    </div>
+                                </form>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row-fluid">
                     <div class="span12">
                         <div class="portlet">
@@ -119,10 +154,15 @@
                                                 <option value="Done">Done</option>
                                                 <option value="Done-Hide">Done-Hide</option>
                                             </select>
-                                            <select style="width: 180px" class="m-wrap" name="idProjet">
-                                                <option value="0">Autre</option>
+                                            <select style="width: 250px" class="m-wrap" name="idProjet" id="projet-choice">
                                                 <?php foreach($projets as $projet){ ?>
                                                 <option value="<?= $projet->id() ?>"><?= $projet->nom() ?></option>    
+                                                <?php } ?>    
+                                                <option value="0">Autre</option>
+                                            </select>    
+                                            <select style="width: 250px; display: none" class="m-wrap" name="idSociete" id="societe-choice">
+                                                <?php foreach($societes as $societe){ ?>
+                                                <option value="<?= $societe->id() ?>"><?= $societe->raisonSociale() ?></option>
                                                 <?php } ?>    
                                             </select>    
                                             <input style="width: 300px" class="span4 m-wrap" type="text" name="description" placeholder="Description" />
@@ -152,6 +192,7 @@
                             </thead>
                             <tbody>
                                     <?php
+                                    if ( $todos != 0 ){ 
                                     foreach($todos as $todo){
                                         $projetName = "";
                                         if ($todo->idProjet() == 0) {
@@ -181,6 +222,7 @@
                                             <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />
+                                            <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
                                         <?php } ?>
                                     </td>
                                     <td>
@@ -188,6 +230,7 @@
                                             <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />
+                                            <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
                                         <?php } ?>
                                     </td>
                                     <td>
@@ -195,6 +238,7 @@
                                             <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />
+                                            <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
                                         <?php } ?>
                                     </td>
                                     <td>
@@ -202,6 +246,7 @@
                                             <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />    
+                                            <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
                                         <?php } ?>
                                     </td>
                                     <!-- updateTodo box begin-->
@@ -273,7 +318,8 @@
                                     <!-- updateTodo box end -->
                                     </tr>    
                                     <?php 
-                                    }
+                                    }//end for
+                                    }//end if
                                     ?>
                             </tbody>
                         </table>
@@ -323,6 +369,14 @@
             // initiate layout and plugins
             App.setPage("table_managed");  // set current page
             App.init();
+            $('#projet-choice').on('change',function(){
+                if( $(this).val()==="0"){
+                    $("#societe-choice").show();
+                }
+                else{
+                    $("#societe-choice").hide();
+                }
+            });
         });
     </script>
     <!-- END JAVASCRIPTS -->

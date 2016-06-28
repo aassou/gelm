@@ -21,6 +21,7 @@
     $actionMessage = "";
     $typeMessage = "";
     $idProjet = htmlentities($_POST['idProjet']);
+    $idSociete = "";
     //$idSociete = htmlentities($_POST['idSociete']);
     //Component Class Manager
 
@@ -37,6 +38,12 @@
 			$status = 0;
 			$createdBy = $_SESSION['userMerlaTrav']->login();
             $created = date('Y-m-d h:i:s');
+            if ( $idProjet == 0 ) {
+                $idSociete = htmlentities($_POST['idSociete']);
+            } 
+            else {
+                $idSociete = $projet->idSociete();
+            }
             //create object
             $todo = new TodoProjet(array(
 				'todo' => $todo,
@@ -45,6 +52,8 @@
 				'responsable' => $responsable,
 				'description' => $description,
 				'idProjet' => $idProjet,
+				'idSociete' => $idSociete,
+				'idSociete' => $idSociete,
 				'created' => $created,
             	'createdBy' => $createdBy
 			));
@@ -78,6 +87,7 @@
 				'responsable' => $responsable,
                 'description' => $description,
                 'idProjet' => $idProjet,
+                'idSociete' => $idSociete,
 				'updated' => $updated,
             	'updatedBy' => $updatedBy
 			));

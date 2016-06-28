@@ -13,12 +13,6 @@
     //classes loading end
     session_start();
     if(isset($_SESSION['userMerlaTrav'])){
-        $projetManager = new ProjetManager($pdo);
-        $societeManager = new SocieteManager($pdo);
-        $idProjet = $_GET['idProjet'];
-        $idSociete = $_GET['idSociete'];
-        $societe = $societeManager->getSocieteById($idSociete);
-        
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -42,8 +36,6 @@
     <link rel="stylesheet" type="text/css" href="assets/chosen-bootstrap/chosen/chosen.css" />
     <link rel="stylesheet" type="text/css" href="assets/uniform/css/uniform.default.css" />
     <link rel="stylesheet" type="text/css" href="assets/gritter/css/jquery.gritter.css" />
-    <link href="assets/glyphicons/css/glyphicons.css" rel="stylesheet" />
-    <link href="assets/glyphicons_halflings/css/halflings.css" rel="stylesheet" />
     <link rel="shortcut icon" href="favicon.ico" />
 </head>
 <!-- END HEAD -->
@@ -68,59 +60,129 @@
                 <!-- BEGIN PAGE HEADER-->
                 <div class="row-fluid">
                     <div class="span12">
-                        <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Gestion des charges - Projet : <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong> 
+                            Gestion des tâches
                         </h3>
                         <ul class="breadcrumb">
                             <li>
-                                <i class="icon-dashboard"></i>
+                                <i class="icon-home"></i>
                                 <a href="dashboard.php">Accueil</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
-                                <i class="icon-sitemap"></i>
-                                <a href="companies-group.php">Gestion des sociétés</a> 
-                                <i class="icon-angle-right"></i>
-                            </li>
-                            <li>
-                                <a href="company.php?idSociete=<?= $societe->id() ?>"><strong>Société <?= $societe->raisonSociale() ?></strong></a> 
-                                <i class="icon-angle-right"></i>
-                            </li>
-                            <li>
-                                <i class="icon-briefcase"></i>
-                                <a href="projects-by-company.php?idSociete=<?= $idSociete ?>">Gestion des projets</a> 
-                                <i class="icon-angle-right"></i>
-                            </li>
-                            <li>
-                                <a href="project-management.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>">Projet <strong><?= $projetManager->getProjetById($idProjet)->nom() ?></strong></a>
-                                <i class="icon-angle-right"></i>
-                            </li>
-                            <li>
-                                <a>Gestion des charges</a> 
+                                <i class="icon-check"></i>
+                                <a>Gestion des tâches</a>
                             </li>
                         </ul>
-                        <!-- END PAGE TITLE & BREADCRUMB-->
                     </div>
                 </div>
                 <!--      BEGIN TILES      -->
                 <div class="row-fluid">
                     <div class="span12">
-                        <!--h4><i class="icon-hand-right"></i> Raccourcis</h4-->
-                        <hr class="line">
                         <div class="tiles">
-                            <a href="projet-charges.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>&type=terrain" class="btn btn-box green">
-                                Charges Terrain
+                            <a href="todos.php">
+                            <div class="tile bg-dark-red">
+                                <div class="corner"></div>
+                                <div class="tile-body">
+                                    <i class="icon-check-empty"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Tâches en cours
+                                    </div>
+                                </div>
+                            </div>
                             </a>
-                            <a href="projet-charges.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>&type=construction" class="btn btn-box red">
-                                Charges Construction
-                            </a>
-                            <a href="projet-charges.php?idProjet=<?= $idProjet ?>&idSociete=<?= $idSociete ?>&type=finition" class="btn btn-box blue">
-                                Charges Finition
+                            <!--a href="operations-status-group.php">
+                            <div class="tile bg-blue">
+                                <div class="tile-body">
+                                    <i class="icon-money"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Etats paiments
+                                    </div>
+                                    <div class="number">
+                                    </div>
+                                </div>
+                            </div>
+                            </a-->
+                            <a href="todos-archive.php">
+                            <div class="tile bg-green">
+                                <div class="tile-body">
+                                    <i class="icon-check"></i>
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Archive
+                                    </div>
+                                    <div class="number">
+                                    </div>
+                                </div>
+                            </div>
                             </a>
                         </div>
                     </div>
                 </div>
+                <!--      BEGIN TILES      -->
+                <!-- BEGIN DASHBOARD STATS -->
+                <!--h4 class="breadcrumb"><i class="icon-table"></i> Bilans et Statistiques Pour Cette Semaine</h4>
+                <div class="row-fluid">
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <div class="dashboard-stat yellow">
+                            <div class="visual">
+                                <i class="icon-signal"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <?= $operationsNumberWeek ?>    
+                                </div>
+                                <div class="desc">                                  
+                                    Paiements Clients
+                                </div>
+                            </div>                  
+                        </div>
+                    </div>
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <div class="dashboard-stat green">
+                            <div class="visual">
+                                <i class="icon-shopping-cart"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">+<?= $livraisonsNumberWeek ?></div>
+                                <div class="desc">Livraisons</div>
+                            </div>                  
+                        </div>
+                    </div>
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <div class="dashboard-stat blue">
+                            <div class="visual">
+                                <i class="icon-group"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">+<?= $clientNumberWeek ?></div>
+                                <div class="desc">Clients</div>
+                            </div>          
+                        </div>
+                    </div>  
+                    <div class="span3 responsive" data-tablet="span3" data-desktop="span3">
+                        <a class="more" href="caisse.php">
+                        <div class="dashboard-stat purple">
+                            <div class="visual">
+                                <i class="icon-money"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <?= number_format($caisseEntreesManager->getTotalCaisseEntrees()-$caisseSortiesManager->getTotalCaisseSorties(), '2', ',', ' ') ?>
+                                </div>
+                                <div class="desc">DH en caisse</div>
+                            </div>                  
+                        </div>
+                        </a>
+                    </div>  
+                </div-->
+                <!-- END DASHBOARD STATS -->
+                <!-- END PAGE HEADER-->
             </div>
             <!-- END PAGE CONTAINER-->  
         </div>

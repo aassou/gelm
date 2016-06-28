@@ -12,8 +12,8 @@ class TodoProjetManager{
 	//BAISC CRUD OPERATIONS
 	public function add(TodoProjet $todo){
     	$query = $this->_db->prepare(' INSERT INTO t_todoprojet (
-		todo, priority, status, responsable, description, idProjet, created, createdBy)
-		VALUES (:todo, :priority, :status, :responsable, :description, :idProjet ,:created, :createdBy)')
+		todo, priority, status, responsable, description, idProjet, idSociete, created, createdBy)
+		VALUES (:todo, :priority, :status, :responsable, :description, :idProjet, :idSociete, :created, :createdBy)')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':todo', $todo->todo());
         $query->bindValue(':priority', $todo->priority());
@@ -22,6 +22,7 @@ class TodoProjetManager{
         $query->bindValue(':description', $todo->description());
         $query->bindValue(':status', $todo->status());
         $query->bindValue(':idProjet', $todo->idProjet());
+        $query->bindValue(':idSociete', $todo->idSociete());
 		$query->bindValue(':created', $todo->created());
 		$query->bindValue(':createdBy', $todo->createdBy());
 		$query->execute();
@@ -31,7 +32,7 @@ class TodoProjetManager{
 	public function update(TodoProjet $todo){
     	$query = $this->_db->prepare(' UPDATE t_todoprojet SET 
 		todo=:todo, status=:status, priority=:priority, responsable=:responsable, 
-		description=:description, idProjet=:idProjet, updated=:updated, updatedBy=:updatedBy
+		description=:description, idProjet=:idProjet, idSociete=:idSociete, updated=:updated, updatedBy=:updatedBy
 		WHERE id=:id')
 		or die (print_r($this->_db->errorInfo()));
 		$query->bindValue(':id', $todo->id());
@@ -41,6 +42,7 @@ class TodoProjetManager{
         $query->bindValue(':responsable', $todo->responsable());
         $query->bindValue(':description', $todo->description());
         $query->bindValue(':idProjet', $todo->idProjet());
+        $query->bindValue(':idSociete', $todo->idSociete());
 		$query->bindValue(':updated', $todo->updated());
 		$query->bindValue(':updatedBy', $todo->updatedBy());
 		$query->execute();
@@ -161,6 +163,22 @@ class TodoProjetManager{
         $query->execute();
         $data = $query->fetch(PDO::FETCH_ASSOC);
         return $data['todoNumber'];
+    }
+
+    public function getTodosNotHiddenByIdSociete($idSociete){
+        $todos = array();
+        $query = $this->_db->prepare(
+        'SELECT * FROM t_todoprojet
+        WHERE priority<>"Done-Hide"
+        AND idSociete=:idSociete
+        ORDER BY id DESC');
+        $query->bindValue(':idSociete', $idSociete);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $todos[] = new TodoProjet($data);
+        }
+        $query->closeCursor();
+        return $todos;
     }
 
 }
