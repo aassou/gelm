@@ -31,6 +31,10 @@
             $idSociete = htmlentities($_POST['idSociete']);
             $todos = $todoManager->getTodosNotHiddenByIdSociete($idSociete);
         }
+        else if ( isset($_GET['idSociete']) ) {
+            $idSociete = htmlentities($_GET['idSociete']);
+            $todos = $todoManager->getTodosNotHiddenByIdSociete($idSociete);
+        }
         
 ?>
 <!DOCTYPE html>
@@ -93,6 +97,11 @@
                             </li>
                             <li>
                                 <i class="icon-check"></i>
+                                <a href="tasks.php">Gestion des tâches</a> 
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="icon-check-empty"></i>
                                 <a>Les tâches en cours</a> 
                             </li>
                         </ul>
@@ -219,7 +228,7 @@
                                     <tr>
                                     <td>
                                         <?php if ( $todo->priority() == "Todo" ) { ?>
-                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
+                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>&idSociete=<?= $idSociete ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />
                                             <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
@@ -227,7 +236,7 @@
                                     </td>
                                     <td>
                                         <?php if ( $todo->priority() == "InternalProcess" ) { ?>
-                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
+                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>&idSociete=<?= $idSociete ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />
                                             <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
@@ -235,7 +244,7 @@
                                     </td>
                                     <td>
                                         <?php if ( $todo->priority() == "ExternalProcess" ) { ?>
-                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
+                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>&idSociete=<?= $idSociete ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />
                                             <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
@@ -243,7 +252,7 @@
                                     </td>
                                     <td>
                                         <?php if ( $todo->priority() == "Done" ) { ?>
-                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>"><i class="icon-remove"></i></a>
+                                            <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>&idSociete=<?= $idSociete ?>"><i class="icon-remove"></i></a>
                                             <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                             <br />    
                                             <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
@@ -286,12 +295,22 @@
                                                 <div class="control-group">
                                                     <label class="control-label">Projet</label>
                                                     <div class="controls">
-                                                        <select class="m-wrap" name="idProjet">
+                                                        <select class="m-wrap project-choice" name="idProjet">
                                                             <option value="<?= $todo->idProjet() ?>"><?= $projetName ?></option>
                                                             <option disabled="disabled">---------------------------</option>
-                                                            <option value="0">Autre</option>
                                                             <?php foreach($projets as $projet){ ?>
                                                             <option value="<?= $projet->id() ?>"><?= $projet->nom() ?></option>    
+                                                            <?php } ?>    
+                                                            <option value="x">Autre</option>
+                                                        </select>  
+                                                    </div>
+                                                </div>
+                                                <div class="control-group societes-choice" style="display: none" >
+                                                    <label class="control-label">Société</label>
+                                                    <div class="controls">
+                                                        <select class="m-wrap" name="idSocieteNew">
+                                                            <?php foreach($societes as $societe){ ?>
+                                                            <option value="<?= $societe->id() ?>"><?= $societe->raisonSociale() ?></option>
                                                             <?php } ?>    
                                                         </select>  
                                                     </div>
@@ -305,6 +324,7 @@
                                                 <div class="modal-footer">
                                                     <div class="control-group">
                                                         <input type="hidden" name="idTodo" value="<?= $todo->id() ?>" />
+                                                        <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
                                                         <input type="hidden" name="action" value="update" />
                                                         <div class="controls">  
                                                             <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
@@ -375,6 +395,14 @@
                 }
                 else{
                     $("#societe-choice").hide();
+                }
+            });
+            $('.project-choice').on('change',function(){
+                if( $(this).val()==="x"){
+                    $(".societes-choice").show();
+                }
+                else{
+                    $(".societes-choice").hide();
                 }
             });
         });

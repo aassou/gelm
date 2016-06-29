@@ -53,7 +53,6 @@
 				'description' => $description,
 				'idProjet' => $idProjet,
 				'idSociete' => $idSociete,
-				'idSociete' => $idSociete,
 				'created' => $created,
             	'createdBy' => $createdBy
 			));
@@ -79,6 +78,15 @@
 			$status = 0;
 			$updatedBy = $_SESSION['userMerlaTrav']->login();
             $updated = date('Y-m-d h:i:s');
+            if ( $idProjet == "x" ) {
+                $idSociete = htmlentities($_POST['idSocieteNew']);
+            } 
+            else if ( $idProjet == 0 ) {
+                $idSociete = htmlentities($_POST['idSociete']);
+            }
+            else {
+                $idSociete = $projet->idSociete();
+            }
             $todo = new TodoProjet(array(
 				'id' => $idTodo,
 				'todo' => $todo,
@@ -105,7 +113,7 @@
     else if($action == "update-priority"){
         $idTodo = htmlentities($_POST['idTodo']);
         $priority = htmlentities($_POST['priority']);
-        $todoManager->updatePriority($idTodo);
+        $todoManager->updatePriority($idTodo, $priority);
         $actionMessage = "Opération Valide : Todo Modifié avec succès.";
         $typeMessage = "success";
     }
@@ -122,8 +130,15 @@
     $_SESSION['todo-type-message'] = $typeMessage;
     //header('Location:../todo-projet.php?idProjet='.$idProjet.'&idSociete='.$idSociete);
     $redirektLink = "Location:../todos.php";
+    if ( isset($_POST['idSociete']) ) {
+        $idSociete = htmlentities($_POST['idSociete']);
+        $redirektLink = "Location:../todos.php?idSociete=".$idSociete;    
+    }
     if ( isset($_POST['source']) and $_POST['source'] == "todos-archive" ) {
-        $redirektLink = "Location:../todos-archive.php";    
+        $idSociete = htmlentities($_POST['idSociete']);
+        $mois = htmlentities($_POST['mois']);
+        $annee = htmlentities($_POST['annee']);
+        $redirektLink = "Location:../todos-archive.php?idSociete=".$idSociete."&mois=".$mois."&annee=".$annee;    
     }
     header($redirektLink);
 

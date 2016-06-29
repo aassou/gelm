@@ -31,6 +31,8 @@
 				or $currentPage=="clients-search.php"
 				or $currentPage=="fournisseurs-search.php"
 				or $currentPage=="employes-projet-search.php"
+				or $currentPage=="todos-archive.php"
+				or $currentPage=="tasks.php"
 				){echo "active ";} ?>">
 					<a href="dashboard.php">
 					<i class="icon-dashboard"></i> 
@@ -133,7 +135,6 @@
                 or $currentPage=="clients-archive.php"
                 or $currentPage=="history-group.php"
                 or $currentPage=="history.php"
-                or $currentPage=="todos-archive.php"
                 ){echo "active ";} ?>">
                     <a href="configuration.php">
                     <i class="icon-wrench"></i> 

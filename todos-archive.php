@@ -24,8 +24,20 @@
         $users = $usersManager->getUsers();
         //$mails = $mailManager->getMails();
         $projets = $projetManager->getProjets();
-        $todos = $todoManager->getTodosHidden();
-        
+        $todos = 0;
+        $societes = $societeManager->getSocietes();
+        if ( isset($_POST['idSociete']) ) {
+            $idSociete = htmlentities($_POST['idSociete']);
+            $mois = htmlentities($_POST['mois']);
+            $annee = htmlentities($_POST['annee']);
+            $todos = $todoManager->getTodosHiddenByIdSociete($idSociete, $mois, $annee);
+        }
+        else if ( isset($_GET['idSociete']) and isset($_GET['mois']) and isset($_GET['annee']) ) {
+            $idSociete =$_GET['idSociete'];
+            $mois = $_GET['mois'];
+            $annee = $_GET['annee'];
+            $todos = $todoManager->getTodosHiddenByIdSociete($idSociete, $mois, $annee);
+        }
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -77,7 +89,7 @@
                     <div class="span12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                         <h3 class="page-title">
-                            Archive des tâches
+                            Gestion des tâches archivés
                         </h3>
                         <ul class="breadcrumb">
                             <li>
@@ -86,8 +98,8 @@
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
-                                <i class="icon-wrench"></i>
-                                <a href="configuration.php">Paramètrages</a> 
+                                <i class="icon-check"></i>
+                                <a href="tasks.php">Gestion des tâches</a> 
                                 <i class="icon-angle-right"></i>
                             </li>
                             <li>
@@ -116,6 +128,43 @@
                 </div>
                 <div class="row-fluid">
                     <div class="span12">
+                        <div class="portlet">
+                            <div class="portlet-title line">
+                                <h4>Choisir société et date</h4>
+                                <!--div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div-->
+                            </div>
+                            <div class="portlet-body" id="chats">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <select name="idSociete" class="m-wrap" >
+                                                <?php foreach($societes as $societe){ ?>
+                                                <option value="<?= $societe->id() ?>"><?= $societe->raisonSociale() ?></option>
+                                                <?php } ?>    
+                                            </select>  
+                                            <select style="width:50px" name="mois" class="m-wrap" >
+                                                <?php for($i=1; $i<13; $i++){ ?>
+                                                <option value="<?= $i ?>"><?= $i ?></option>  
+                                                <?php } ?>
+                                            </select>
+                                            <select style="width:100px" name="annee" class="m-wrap" >
+                                                <option value="2016">2016</option>  
+                                            </select>    
+                                         </div>
+                                    </div>
+                                    <div class="btn-cont"> 
+                                        <button type="submit" class="btn blue icn-only"><i class="icon-search icon-white"></i>&nbsp;Chercher</button>
+                                    </div>
+                                </form>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
                         <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
                         <table class="table table-striped table-hover">
                             <thead>
@@ -125,6 +174,7 @@
                             </thead>
                             <tbody>
                                     <?php
+                                    if ( $todos != 0 ) { 
                                     foreach($todos as $todo){
                                         $projetName = "";
                                         if ($todo->idProjet() == 0) {
@@ -139,9 +189,51 @@
                                     <tr>
                                     <td>
                                         <a href="include/delete-task-projet.php?idTask=<?= $todo->id() ?>&source=todos-archive"><i class="icon-remove"></i></a>
-                                        <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
+                                        <a title="Responsable : <?= $todo->responsable() ?> | Description : <?= $todo->description() ?> | Projet : <?= $projetName ?>" href="#updateStatusTodo<?= $todo->id() ?>" data-toggle="modal" data-id="<?= $todo->id() ?>" class="btn <?= $color ?> get-down delete-checkbox"><?= $todo->todo() ?></a>
                                         <br />
+                                        <a><?= date('d/m/Y', strtotime($todo->created())) ?></a>
                                     </td>
+                                    <!-- updateTodo box begin-->
+                                    <div id="updateStatusTodo<?= $todo->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <h3>Modifier Todo Projet</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal" action="controller/TodoProjetActionController.php" method="post">
+                                                <div class="control-group">
+                                                    <label class="control-label">Status</label>
+                                                    <div class="controls">
+                                                        <select name="priority">
+                                                            <option value="<?= $todo->priority() ?>"><?= $todo->priority() ?></option>
+                                                            <option disabled="disabled">-----------------</option>
+                                                            <option value="Todo">Todo</option>
+                                                            <option value="InternalProcess">InternalProcess</option>
+                                                            <option value="ExternalProcess">ExternalProcess</option>
+                                                            <option value="Done">Done</option>
+                                                            <option value="Done-Hide">Done-Hide</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="control-group">
+                                                        <input type="hidden" name="idTodo" value="<?= $todo->id() ?>" />
+                                                        <input type="hidden" name="idProjet" value="<?= $todo->idProjet() ?>" />
+                                                        <input type="hidden" name="idSociete" value="<?= $idSociete ?>" />
+                                                        <input type="hidden" name="mois" value="<?= $mois ?>" />
+                                                        <input type="hidden" name="annee" value="<?= $annee ?>" />
+                                                        <input type="hidden" name="action" value="update-priority" />
+                                                        <input type="hidden" name="source" value="todos-archive" />
+                                                        <div class="controls">  
+                                                            <button class="btn" data-dismiss="modal"aria-hidden="true">Non</button>
+                                                            <button type="submit" class="btn red" aria-hidden="true">Oui</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- updateTodo box end -->
                                     <!-- updateTodo box begin-->
                                     <div id="updateTodo<?= $todo->id() ?>" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
                                         <div class="modal-header">
@@ -212,7 +304,8 @@
                                     <!-- updateTodo box end -->
                                     </tr>    
                                     <?php 
-                                    }
+                                    }//end for
+                                    }//end if
                                     ?>
                             </tbody>
                         </table>

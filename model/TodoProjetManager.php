@@ -49,11 +49,11 @@ class TodoProjetManager{
 		$query->closeCursor();
 	}
 
-    public function updatePriority(TodoProjet $todo){
+    public function updatePriority($idTodo, $priority){
         $query = $this->_db->prepare(' UPDATE t_todoprojet SET priority=:priority WHERE id=:id')
         or die (print_r($this->_db->errorInfo()));
-        $query->bindValue(':id', $todo->id());
-        $query->bindValue(':priority', $todo->priority());
+        $query->bindValue(':id', $idTodo);
+        $query->bindValue(':priority', $priority);
         $query->execute();
         $query->closeCursor();
     }
@@ -173,6 +173,26 @@ class TodoProjetManager{
         AND idSociete=:idSociete
         ORDER BY id DESC');
         $query->bindValue(':idSociete', $idSociete);
+        $query->execute();
+        while($data = $query->fetch(PDO::FETCH_ASSOC)){
+            $todos[] = new TodoProjet($data);
+        }
+        $query->closeCursor();
+        return $todos;
+    }
+    
+    public function getTodosHiddenByIdSociete($idSociete, $mois, $annee){
+        $todos = array();
+        $query = $this->_db->prepare(
+        'SELECT * FROM t_todoprojet
+        WHERE priority="Done-Hide"
+        AND idSociete=:idSociete
+        AND MONTH(created)=:mois
+        AND YEAR(created)=:annee
+        ORDER BY id DESC');
+        $query->bindValue(':idSociete', $idSociete);
+        $query->bindValue(':mois', $mois);
+        $query->bindValue(':annee', $annee);
         $query->execute();
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
             $todos[] = new TodoProjet($data);
