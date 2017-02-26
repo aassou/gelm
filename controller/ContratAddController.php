@@ -19,30 +19,30 @@
     if( !empty($_POST['idProjet']) and !empty($_POST['nomClient'])){	
     	if( !empty($_POST['typeBien']) ){
     		if( !empty($_POST['prixNegocie']) ){
-    			$prixNegocie = htmlentities($_POST['prixNegocie']);
+    			$prixNegocie = htmlentities($_POST['prixNegocie'])-$mutation;
     		}
 			else{
 			$_SESSION['contrat-add-error'] = "<strong>Erreur Création Contrat : </strong>Vous devez remplir le 'Prix négocié'.";	
 			header('Location:../contrats-add.php?idProjet='.$idProjet.'&codeClient='.$codeClient);
 			exit;
 			}
-			$nomClient = htmlentities($_POST['nomClient']);
-			$cin = htmlentities($_POST['cin']);
-			$telephone = htmlentities($_POST['telephone']);
-			$adresse = htmlentities($_POST['adresse']);
-			$noteClient = htmlentities($_POST['note']);
+			$nomClient = openssl_encrypt(htmlentities($_POST['nomClient']), $method, $password, true, $iv);
+			$cin = openssl_encrypt(htmlentities($_POST['cin']), $method, $password, true, $iv);
+			$telephone = openssl_encrypt(htmlentities($_POST['telephone']), $method, $password, true, $iv);
+			$adresse = openssl_encrypt(htmlentities($_POST['adresse']), $method, $password, true, $iv);
+			$noteClient = openssl_encrypt(htmlentities($_POST['note']), $method, $password, true, $iv);
 			$typeBien = htmlentities($_POST['typeBien']);
 			$dateCreation = htmlentities($_POST['dateCreation']);
 			$dateRetour = htmlentities($_POST['dateRetour']);
 			$idBien = htmlentities($_POST['bien']);
-			$avance = htmlentities($_POST['avance']);
-            $taille = htmlentities($_POST['taille']);
-			$modePaiement = htmlentities($_POST['modePaiement']);
+			$avance = htmlentities($_POST['avance'])-$mutation;
+            $taille = htmlentities($_POST['taille'])-$mutation;
+			$modePaiement = openssl_encrypt(htmlentities($_POST['modePaiement']), $method, $password, true, $iv);
 			$codeContrat = uniqid().date('YmdHis');
 			$status = htmlentities($_POST['status']);
 			$numeroCheque = 0;
 			if( isset($_POST['numeroCheque']) ){
-				$numeroCheque = htmlentities($_POST['numeroCheque']);
+				$numeroCheque = openssl_encrypt(htmlentities($_POST['numeroCheque']), $method, $password, true, $iv);
 			}
 			$contratManager = new ContratManager($pdo);
 			$contrat = new Contrat(array('nomClient' => $nomClient, 'cin' => $cin, 'adresse' => $adresse,

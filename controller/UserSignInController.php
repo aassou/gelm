@@ -23,10 +23,15 @@ else{
     $login = htmlspecialchars($_POST['login']);
     $password = htmlspecialchars($_POST['password']);
     $userManager = new UserManager($pdo);
-    if($userManager->exists($login, $password)){
+    if($userManager->exists2($login)){
 		if($userManager->getStatus($login)!=0){
-			$_SESSION['userMerlaTrav'] = $userManager->getUserByLoginPassword($login, $password);
-			$redirectLink='../dashboard.php';	
+		    if ( password_verify($password, $userManager->getPasswordByLogin($login)) ) {
+			    $_SESSION['userMerlaTrav'] = $userManager->getUserByLogin($login);
+			    $redirectLink='../dashboard.php';
+            }	
+            else {
+                $_SESSION['signin-error']="<strong>Erreur Connexion</strong> : Mot de passe incorrecte.";    
+            }
 		}
 		else{
 			$_SESSION['signin-error']="<strong>Erreur Connexion</strong> : Votre compte est inactif.";	

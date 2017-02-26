@@ -1,2 +1,2 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
+include('include/params.php');

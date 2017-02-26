@@ -17,16 +17,16 @@
     //post input processing
     $idSociete = htmlentities($_POST['idSociete']);
     if(!empty($_POST['numeroCheque']) and !empty($_POST['montant']) and !empty($_POST['designationSociete'])){
-        $montant = htmlentities($_POST['montant']);
-		$numeroCheque = htmlentities($_POST['numeroCheque']);    
-        $designationSociete = htmlentities($_POST['designationSociete']);
-		$designationPersonne = htmlentities($_POST['designationPersonne']);
+        $montant = htmlentities($_POST['montant'])+$mutation;
+		$numeroCheque = openssl_encrypt(htmlentities($_POST['numeroCheque']), $method, $password, true, $iv);    
+        $designationSociete = openssl_encrypt(htmlentities($_POST['designationSociete']), $method, $password, true, $iv);
+		$designationPersonne = openssl_encrypt(htmlentities($_POST['designationPersonne']), $method, $password, true, $iv);
 		$dateCheque = htmlentities($_POST['dateCheque']);
 		$idProjet = htmlentities($_POST['idProjet']);
 		$createdBy = $_SESSION['userMerlaTrav']->login();
 		$created = date('d/m/Y h:m');
 		$statut = htmlentities($_POST['statut']);
-		$compteBancaire = htmlentities($_POST['compteBancaire']);
+		$compteBancaire = openssl_encrypt(htmlentities($_POST['compteBancaire']), $method, $password, true, $iv);
 		$url = "";
         if(file_exists($_FILES['urlCheque']['tmp_name']) || is_uploaded_file($_FILES['urlCheque']['tmp_name'])) {
 			$url = imageProcessing($_FILES['urlCheque'], '/pieces/pieces_cheque/');

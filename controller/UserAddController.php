@@ -30,6 +30,7 @@ else{
 		$rpassword = htmlentities($_POST['rpassword']);
 		$profil = htmlentities($_POST['profil']);
 		if($password==$rpassword){
+		    $password = password_hash($password, PASSWORD_DEFAULT);
 			$user = new User(array('login'=>$login, 'password'=>$password, 'created'=>date('Y-m-d'), 'profil'=>$profil, 'status'=>1));
 			$userManager->add($user);
 			$_SESSION['user-add-success'] = "<strong>Opération Validée</strong> : Utilisateur ajouté avec succès.";	

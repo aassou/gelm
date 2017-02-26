@@ -578,7 +578,7 @@
 												$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($appartement->id(), 'appartement');
 												if ( $contratNumber > 0 ) {
 													$contrat = $contratManager->getContratByIdBienByTypeBien($appartement->id(), 'appartement');
-													$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+													$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv);
 													$dateRetour = $contrat->dateRetour();
 												}
 												$status = '<a href="#updateAppartementStatus'.$appartement->id().'" data-toggle="modal" data-id="'.$appartement->id().'" class="btn mini red">'.$appartement->status().'</a>';
@@ -587,7 +587,7 @@
 												$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($appartement->id(), 'appartement');
 												if ( $contratNumber > 0 ) {
 													$contrat = $contratManager->getContratByIdBienByTypeBien($appartement->id(), 'appartement');
-													$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+													$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv);
 													$dateRetour = $contrat->dateRetour();
 												}
 												$status = '<a href="#updateAppartementStatus'.$appartement->id().'" data-toggle="modal" data-id="'.$appartement->id().'" class="btn mini blue">'.$appartement->status().'</a>';
@@ -854,7 +854,7 @@
 													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($local->id(), 'localCommercial');
 													if ( $contratNumber > 0 ) {
 														$contrat = $contratManager->getContratByIdBienByTypeBien($local->id(), 'localCommercial');
-														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv);
 														$dateRetour = $contrat->dateRetour();
 													}
 													$status = '<a href="#updateLocalStatus'.$local->id().'" data-toggle="modal" data-id="'.$local->id().'" class="btn mini red">'.$local->status().'</a>';
@@ -863,7 +863,7 @@
 													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($local->id(), 'localCommercial');
 													if ( $contratNumber > 0 ) {
 														$contrat = $contratManager->getContratByIdBienByTypeBien($local->id(), 'localCommercial');
-														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv);
 														$dateRetour = $contrat->dateRetour();
 													}
 													$status = '<a href="#updateLocalStatus'.$local->id().'" data-toggle="modal" data-id="'.$local->id().'" class="btn mini blue">'.$local->status().'</a>';
@@ -1106,7 +1106,7 @@
 													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($maison->id(), 'maison');
 													if ( $contratNumber > 0 ) {
 														$contrat = $contratManager->getContratByIdBienByTypeBien($maison->id(), 'maison');
-														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv);
 														$dateRetour = $contrat->dateRetour();
 													}
 													$status = '<a href="#updateMaisonStatus'.$maison->id().'" data-toggle="modal" data-id="'.$maison->id().'" class="btn mini red">'.$maison->status().'</a>';
@@ -1115,7 +1115,7 @@
 													$contratNumber = $contratManager->getContratNumberByIdBienByTypeBien($maison->id(), 'maison');
 													if ( $contratNumber > 0 ) {
 														$contrat = $contratManager->getContratByIdBienByTypeBien($maison->id(), 'maison');
-														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.$contrat->nomClient();
+														$client = '<a target="_blank" href="controller/ContratPrintController.php?idContrat='.$contrat->id().'">'.openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv);
 														$dateRetour = $contrat->dateRetour();
 													}
 													$status = '<a href="#updateMaisonStatus'.$maison->id().'" data-toggle="modal" data-id="'.$maison->id().'" class="btn mini blue">'.$maison->status().'</a>';

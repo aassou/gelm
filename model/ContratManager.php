@@ -11,9 +11,9 @@ class ContratManager{
     //CRUD operations
     public function add(Contrat $contrat){
         $query = $this->_db->prepare('
-        INSERT INTO t_contrat (dateCreation, prixVente, avance, taille, modePaiement, 
+        INSERT INTO t_contrat (dateCreation, dateRetour, prixVente, avance, taille, modePaiement, 
         nomClient, cin, adresse, note, telephone, idProjet, idBien, typeBien, status, numeroCheque)
-        VALUES (:dateCreation, :prixVente, :avance, :taille, :modePaiement, :nomClient, :cin, :adresse, :note, :telephone,  
+        VALUES (:dateCreation, :dateRetour, :prixVente, :avance, :taille, :modePaiement, :nomClient, :cin, :adresse, :note, :telephone,  
 		 :idProjet, :idBien, :typeBien, :status, :numeroCheque)') 
         or die(print_r($this->_db->errorInfo()));
 		$query->bindValue(':nomClient', $contrat->nomClient());
@@ -22,6 +22,7 @@ class ContratManager{
 		$query->bindValue(':note', $contrat->note());
 		$query->bindValue(':telephone', $contrat->telephone());
         $query->bindValue(':dateCreation', $contrat->dateCreation());
+        $query->bindValue(':dateRetour', $contrat->dateRetour());
         $query->bindValue(':prixVente', $contrat->prixVente());
         $query->bindValue(':avance', $contrat->avance());
         $query->bindValue(':taille', $contrat->taille());

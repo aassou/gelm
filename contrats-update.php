@@ -154,7 +154,7 @@
                                           <div class="control-group autocomplet_container">
                                              <label class="control-label" for="nomClient">Nom</label>
                                              <div class="controls">
-                                                <input type="text" id="nomClient" name="nomClient" class="m-wrap span12" value="<?= $contrat->nomClient() ?>" onkeyup="autocompletClient()">
+                                                <input type="text" id="nomClient" name="nomClient" class="m-wrap span12" value="<?= openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv) ?>" onkeyup="autocompletClient()">
                                                 <ul id="clientList"></ul>
                                              </div>
                                           </div>
@@ -163,7 +163,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="cin">CIN</label>
                                              <div class="controls">
-                                                <input type="text" id="cin" name="cin" value="<?= $contrat->cin() ?>" class="m-wrap span12">
+                                                <input type="text" id="cin" name="cin" value="<?= openssl_decrypt($contrat->cin(), $method, $password, true, $iv) ?>" class="m-wrap span12">
                                              </div>
                                           </div>
                                        </div>
@@ -171,7 +171,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="adresse">Adresse</label>
                                              <div class="controls">
-                                                <input type="text" id="adresse" name="adresse" value="<?= $contrat->adresse() ?>" class="m-wrap span12">
+                                                <input type="text" id="adresse" name="adresse" value="<?= openssl_decrypt($contrat->adresse(), $method, $password, true, $iv) ?>" class="m-wrap span12">
                                              </div>
                                           </div>
                                        </div>
@@ -179,7 +179,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="telephone">Téléphone</label>
                                              <div class="controls">
-                                                <input type="text" id="telephone" name="telephone" value="<?= $contrat->telephone() ?>" class="m-wrap span12">
+                                                <input type="text" id="telephone" name="telephone" value="<?= openssl_decrypt($contrat->telephone(), $method, $password, true, $iv) ?>" class="m-wrap span12">
                                              </div>
                                           </div>
                                        </div>
@@ -294,7 +294,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="prixNegocie">Prix négocié</label>
                                              <div class="controls">
-                                                <input type="text" id="prixNegocie" name="prixNegocie" class="m-wrap span12" value="<?= $contrat->prixVente() ?>">
+                                                <input type="text" id="prixNegocie" name="prixNegocie" class="m-wrap span12" value="<?= $contrat->prixVente()+$mutation ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -302,7 +302,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="avance">Avance</label>
                                              <div class="controls">
-                                                <input type="text" id="avance" name="avance" class="m-wrap span12" value="<?= $contrat->avance() ?>">
+                                                <input type="text" id="avance" name="avance" class="m-wrap span12" value="<?= $contrat->avance()+$mutation ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -310,7 +310,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="taille">Taille</label>
                                              <div class="controls">
-                                                <input type="text" id="taille" name="taille" class="m-wrap span12" value="<?= $contrat->taille() ?>">
+                                                <input type="text" id="taille" name="taille" class="m-wrap span12" value="<?= $contrat->taille()+$mutation ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -320,7 +320,7 @@
                                              <div class="controls">
                                                 <div class="controls">
 													<select name="modePaiement" id="modePaiement">
-														<option value="<?= $contrat->modePaiement() ?>"><?= $contrat->modePaiement() ?></option>
+														<option value="<?= openssl_decrypt($contrat->modePaiement(), $method, $password, true, $iv) ?>"><?= openssl_decrypt($contrat->modePaiement(), $method, $password, true, $iv) ?></option>
 														<option disabled="disabled">----------------</option>
 														<option value="Especes">Espèces</option>
 														<option value="Cheque">Chèque</option>
@@ -338,7 +338,7 @@
                                           <div class="control-group">
                                              <label class="control-label">N°Chèque</label>
                                              <div class="controls">
-                                                <input type="text" name="numeroCheque" class="m-wrap" value="<?= $contrat->numeroCheque() ?>">
+                                                <input type="text" name="numeroCheque" class="m-wrap" value="<?= openssl_decrypt($contrat->numeroCheque(), $method, $password, true, $iv) ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -363,7 +363,7 @@
                                           <div class="control-group">
                                              <label class="control-label" for="note">Note</label>
                                              <div class="controls">
-                                                <textarea id="note" name="note" class="m-wrap span12"><?= $contrat->note() ?></textarea>
+                                                <textarea id="note" name="note" class="m-wrap span12"><?= openssl_decrypt($contrat->note(), $method, $password, true, $iv) ?></textarea>
                                              </div>
                                           </div>
                                        </div>

@@ -113,4 +113,21 @@ class UserManager{
         return new User($data);
     }
     
+    public function getUserByLogin($login){
+        $query = $this->_db->prepare('SELECT * FROM t_user WHERE login=:login');
+        $query->bindValue(':login', $login);
+        $query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return new User($data);
+    }
+    
+    public function getPasswordByLogin($login){
+        $query = $this->_db->prepare('SELECT password FROM t_user WHERE login=:login');
+        $query->bindValue(':login', $login);
+        $query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $data['password'];
+    }
 }

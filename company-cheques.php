@@ -330,12 +330,12 @@
 										<tr <?= $colorRow ?> class="cheque">
 											<td class="hidden"></td>
 											<td class="hidden-phone"><?= date('d/m/Y', strtotime($cheque->dateCheque())) ?></td>
-											<td><?= $cheque->numero() ?></td>
+											<td><?= openssl_decrypt($cheque->numero(), $method, $password, true, $iv) ?></td>
 											<td class="hidden-phone"><?= $projetManager->getProjetById($cheque->idProjet())->nom() ?></td>
-											<td class="hidden-phone"><?= $cheque->designationSociete().' - '.$cheque->designationPersonne() ?></td>
-											<td class="hidden"><?= $cheque->compteBancaire() ?></td>
+											<td class="hidden-phone"><?= openssl_decrypt($cheque->designationSociete(), $method, $password, true, $iv).' - '.openssl_decrypt($cheque->designationPersonne(), $method, $password, true, $iv) ?></td>
+											<td class="hidden"><?= openssl_decrypt($cheque->compteBancaire(), $method, $password, true, $iv) ?></td>
 											<td class="hidden"><?= date('Y', strtotime($cheque->dateCheque())) ?></td>
-											<td class="hidden-phone"><?= number_format($cheque->montant(), 2, ',', ' ') ?></td>
+											<td class="hidden-phone"><?= number_format($cheque->montant()+$mutation, 2, ',', ' ') ?></td>
 											<td class="hidden-phone">
 											    <?php
                                                 if ( 
@@ -358,7 +358,7 @@
                                                 ?>  	
 											</td>
 											<td>
-												<a class="fancybox-button btn mini" data-rel="fancybox-button" title="<?= $cheque->numero() ?>" href="<?= $cheque->url() ?>">
+												<a class="fancybox-button btn mini" data-rel="fancybox-button" title="<?= openssl_decrypt($cheque->numero(), $method, $password, true, $iv) ?>" href="<?= $cheque->url() ?>">
 													<i class="icon-zoom-in"></i>	
 												</a>
 												<?php
@@ -447,13 +447,13 @@
 													<div class="control-group">
 														<label class="control-label">Numéro Chèque</label>
 														<div class="controls">
-															<input type="text" name="numeroCheque" value="<?= $cheque->numero() ?>" />
+															<input type="text" name="numeroCheque" value="<?= openssl_decrypt($cheque->numero(), $method, $password, true, $iv) ?>" />
 														</div>
 													</div>
 													<div class="control-group">
 														<label class="control-label">Montant</label>
 														<div class="controls">
-															<input type="text" name="montant" value="<?= $cheque->montant() ?>" />
+															<input type="text" name="montant" value="<?= $cheque->montant()-$mutation ?>" />
 														</div>
 													</div>
 													<div class="control-group">
@@ -466,8 +466,8 @@
 													<div class="control-group">
 														<label class="control-label">Désignation</label>
 														<div class="controls">
-															<input class="span5" type="text" name="designationSociete" value="<?= $cheque->designationSociete() ?>" />
-															<input class="span5" type="text" name="designationPersonne" value="<?= $cheque->designationPersonne() ?>" />
+															<input class="span5" type="text" name="designationSociete" value="<?= openssl_decrypt($cheque->designationSociete(), $method, $password, true, $iv) ?>" />
+															<input class="span5" type="text" name="designationPersonne" value="<?= openssl_decrypt($cheque->designationPersonne(), $method, $password, true, $iv) ?>" />
 														</div>
 													</div>
 													<div class="control-group">
@@ -503,7 +503,7 @@
 											</div>
 											<div class="modal-body">
 												<form class="form-horizontal loginFrm" action="controller/ChequeCopieUpdateController.php" method="post" enctype="multipart/form-data">
-													<p>Êtes-vous sûr de vouloir modifier la copie du chèque <strong>N°<?= $cheque->numero() ?></strong> ?</p>
+													<p>Êtes-vous sûr de vouloir modifier la copie du chèque <strong>N°<?= openssl_decrypt($cheque->numero(), $method, $password, true, $iv) ?></strong> ?</p>
 													<div class="control-group">
 														<label class="right-label"></label>
 														<div class="control-group">
@@ -529,7 +529,7 @@
 											</div>
 											<div class="modal-body">
 												<form class="form-horizontal loginFrm" action="controller/ChequeDeleteController.php" method="post">
-													<p>Êtes-vous sûr de vouloir supprimer le chèque <strong>N°<?= $cheque->numero() ?></strong> ?</p>
+													<p>Êtes-vous sûr de vouloir supprimer le chèque <strong>N°<?= openssl_decrypt($cheque->numero(), $method, $password, true, $iv) ?></strong> ?</p>
 													<div class="control-group">
 														<label class="right-label"></label>
 														<input type="hidden" name="idSociete" value="<?= $idSociete ?>" />

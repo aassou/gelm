@@ -289,11 +289,11 @@
 										?>		
 										<tr <?= $colorRow ?> class="clients">
 										    <td class="hidden"></td>
-											<td><?= $contrat->nomClient() ?></td>
+											<td><?= openssl_decrypt($contrat->nomClient(), $method, $password, true, $iv) ?></td>
 											<td><?= date('d/m/Y', strtotime($contrat->dateCreation())) ?>-<br/><?= date('d/m/Y', strtotime($contrat->dateRetour())) ?></td>
 											<td class="hidden-phone"><?= $typeBien."-".$bien->nom() ?></td>
-											<td class="hidden-phone"><?= number_format($contrat->prixVente(), 2, ',', ' ') ?></td>
-											<td class="hidden-phone"><?= number_format($contrat->taille(), 2, ',', ' ') ?></td>
+											<td class="hidden-phone"><?= number_format($contrat->prixVente()+$mutation, 2, ',', ' ') ?></td>
+											<td class="hidden-phone"><?= number_format($contrat->taille()+$mutation, 2, ',', ' ') ?></td>
 											<td class="hidden-phone">
 											    <?php
                                                 if ( 
@@ -302,21 +302,21 @@
                                                     ) { 
                                                 ?>
 												<a href="#updatePaiementContrat<?= $contrat->id() ?>" data-toggle="modal" data-id="<?= $contrat->id() ?>">
-													<?= number_format($contrat->avance(), 2, ',', ' ') ?></td>
+													<?= number_format($contrat->avance()+$mutation, 2, ',', ' ') ?></td>
 												</a>
 												<?php
                                                 }
                                                 else {
                                                 ?>
                                                 <a>
-                                                    <?= number_format($contrat->avance(), 2, ',', ' ') ?></td>
+                                                    <?= number_format($contrat->avance()+$mutation, 2, ',', ' ') ?></td>
                                                 </a>
                                                 <?php    
                                                 }     
                                                 ?>
-											<td class="hidden-phone"><?= number_format($contrat->prixVente()-$contrat->avance(), 2, ',', ' ') ?></td>
+											<td class="hidden-phone"><?= number_format( ($contrat->prixVente() + $mutation) - ($contrat->avance() + $mutation) , 2, ',', ' ') ?></td>
 											</td>
-											<td class="hidden-phone"><?= $contrat->note() ?></td>
+											<td class="hidden-phone"><?= openssl_decrypt($contrat->note(), $method, $password, true, $iv) ?></td>
 											<td class="hidden-phone"><a href="<?= $statusBienLink ?>" data-toggle="modal" data-id="<?= $bien->id() ?>" class="btn mini <?= $statusBienColor ?>"><?= $bien->status() ?></a></td>
 											<td>
 											    <a title="Imprimer Contrat" class="btn mini blue" target="_blank" href="controller/ContratPrintController.php?idContrat=<?= $contrat->id() ?>">

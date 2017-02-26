@@ -21,20 +21,20 @@
 	$contrat = $contratManager->getContratById($idContrat);
 	//form process
     if( !empty($_POST['prixNegocie']) and !empty($_POST['nomClient'])){
-		$nomClient = htmlentities($_POST['nomClient']);
-		$cin = htmlentities($_POST['cin']);
-		$telephone = htmlentities($_POST['telephone']);
-		$adresse = htmlentities($_POST['adresse']);
+		$nomClient = openssl_encrypt(htmlentities($_POST['nomClient']), $method, $password, true, $iv);
+		$cin = openssl_encrypt(htmlentities($_POST['cin']), $method, $password, true, $iv);
+		$telephone = openssl_encrypt(htmlentities($_POST['telephone']), $method, $password, true, $iv);
+		$adresse = openssl_encrypt(htmlentities($_POST['adresse']), $method, $password, true, $iv);
 		$dateCreation = htmlentities($_POST['dateCreation']);
 		$dateRetour = htmlentities($_POST['dateRetour']);
-		$avance = htmlentities($_POST['avance']);
-		$note = htmlentities($_POST['note']);
-        $taille = htmlentities($_POST['taille']);
-		$prixNegocie = htmlentities($_POST['prixNegocie']);
-		$modePaiement = htmlentities($_POST['modePaiement']);
+		$avance = htmlentities($_POST['avance'])-$mutation;
+		$note = openssl_encrypt(htmlentities($_POST['note']), $method, $password, true, $iv);
+        $taille = htmlentities($_POST['taille'])-$mutation;
+		$prixNegocie = htmlentities($_POST['prixNegocie'])-$mutation;
+		$modePaiement = openssl_encrypt(htmlentities($_POST['modePaiement']), $method, $password, true, $iv);
 		$numeroCheque = $contrat->numeroCheque();
 		if( isset($_POST['numeroCheque']) ){
-			$numeroCheque = htmlentities($_POST['numeroCheque']);
+			$numeroCheque = openssl_encrypt(htmlentities($_POST['numeroCheque']), $method, $password, true, $iv);
 		}
 		//special treatment for bien of contrat object
 		$idBien = $contrat->idBien();
