@@ -18,7 +18,7 @@
     $idSociete = htmlentities($_POST['idSociete']);
     if(!empty($_POST['numeroCheque']) and !empty($_POST['montant']) and !empty($_POST['designationSociete'])){
         $idCheque = htmlentities($_POST['idCheque']);
-        $montant = htmlentities($_POST['montant'])+$mutation;
+        $montant = htmlentities($_POST['montant'])-$mutation;
 		$numeroCheque = openssl_encrypt(htmlentities($_POST['numeroCheque']), $method, $password, true, $iv);    
         $designationSociete = openssl_encrypt(htmlentities($_POST['designationSociete']), $method, $password, true, $iv);
 		$designationPersonne = openssl_encrypt(htmlentities($_POST['designationPersonne']), $method, $password, true, $iv);

@@ -34,9 +34,9 @@ while($data = $result->fetch(PDO::FETCH_ASSOC)){
 $cheque = array();
 
 $selectQuery = "SELECT * FROM t_cheque";
-$pdo1 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
-$pdo2 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
-$result = $pdo1->query($selectQuery);
+//$pdo1 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
+//$pdo2 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
+$result = $pdo->query($selectQuery);
 
 while($data = $result->fetch(PDO::FETCH_ASSOC)){
     $id = $data['id'];
@@ -49,7 +49,7 @@ while($data = $result->fetch(PDO::FETCH_ASSOC)){
     $updateQuery = "UPDATE t_cheque SET numero='".$numero."', designationSociete='".$designationSociete."', 
     designationPersonne='".$designationPersonne."', compteBancaire='".$compteBancaire."', 
     montant=".$montant." WHERE id=".$id;
-    $pdo2->query($updateQuery) or die(print_r($pdo2->errorInfo()));
+    $pdo->query($updateQuery);
     echo $updateQuery;
     echo "<br>";
     echo "----------------------------------------------------------------------------------";
