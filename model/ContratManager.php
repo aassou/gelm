@@ -231,7 +231,7 @@ class ContratManager{
     
     public function getContrats(){
         $contrats = array();
-        $query = $this->_db->query('SELECT * FROM t_contrat GROUP BY idClient');
+        $query = $this->_db->query('SELECT * FROM t_contrat ORDER BY idClient');
         //get result
         while($data = $query->fetch(PDO::FETCH_ASSOC)){
             $contrats[] = new Contrat($data);

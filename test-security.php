@@ -1,44 +1,63 @@
 <?php
-include("config.php");
-/*
-$contrats = array();
-
-$selectQuery = "SELECT * FROM t_contrat";
-$pdo1 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
-$pdo2 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
-$result = $pdo1->query($selectQuery);
-
-while($data = $result->fetch(PDO::FETCH_ASSOC)){
-    $id = $data['id'];
-    $nomClient = openssl_encrypt($data['nomClient'], $method, $password, true, $iv);
-    $cin = openssl_encrypt($data['cin'], $method, $password, true, $iv);
-    $adresse = openssl_encrypt($data['adresse'], $method, $password, true, $iv);
-    $telephone = openssl_encrypt($data['telephone'], $method, $password, true, $iv);
-    $numeroCheque = openssl_encrypt($data['numeroCheque'], $method, $password, true, $iv);
-    $note = openssl_encrypt($data['note'], $method, $password, true, $iv);
-    $modePaiement = openssl_encrypt($data['modePaiement'], $method, $password, true, $iv);
-    $taille = $data['taille']-$mutation;
-    $avance = $data['avance']-$mutation;
-    $prixVente = $data['prixVente']-$mutation;
-    //update the whole table
-    $updateQuery = "UPDATE t_contrat SET nomClient='".$nomClient."', cin='".$cin."', adresse='".$adresse."', 
-    telephone='".$telephone."', numeroCheque='".$numeroCheque."', note='".$note."', modePaiement='".$modePaiement."', 
-    taille=".$taille.", avance=".$avance.", prixVente=".$prixVente." WHERE id=".$id;
-    $pdo2->query($updateQuery) or die(print_r($pdo2->errorInfo()));
-    echo $updateQuery;
-    echo "<br>";
-    echo "----------------------------------------------------------------------------------";
-    echo "<br>";
+function classLoad ($myClass) {
+    if(file_exists('model/'.$myClass.'.php')){
+        include('model/'.$myClass.'.php');
+    }
+    elseif(file_exists('controller/'.$myClass.'.php')){
+        include('controller/'.$myClass.'.php');
+    }
 }
-*/
-$cheque = array();
+spl_autoload_register("classLoad"); 
+include("config.php");
 
-$selectQuery = "SELECT * FROM t_cheque";
+$contratManager = new ContratManager($pdo);
+$contrats = $contratManager->getContrats();
+
+foreach ($contrats as $contrat){
+    $contratManager->update(new Contrat(
+        array( 'id' => $contrat->id(),
+               'nomClient' => openssl_encrypt($contrat->nomClient(), $method, $password, true, $iv),
+               'cin' => openssl_encrypt($contrat->cin(), $method, $password, true, $iv),
+               'adresse' => openssl_encrypt($contrat->adresse(), $method, $password, true, $iv),
+               'telephone' => openssl_encrypt($contrat->telephone(), $method, $password, true, $iv),
+               'prixVente' => ($contrat->prixVente()-$mutation),
+               'avance' => ($contrat->avance()-$mutation),
+               'taille' => ($contrat->taille()-$mutation),
+               'idBien' => $contrat->idBien(),
+               'typeBien' => $contrat->typeBien(),
+               'modePaiement' => openssl_encrypt($contrat->modePaiement(), $method, $password, true, $iv),
+               'numeroCheque' => openssl_encrypt($contrat->numeroCheque(), $method, $password, true, $iv),
+               'note' => openssl_encrypt($contrat->note(), $method, $password, true, $iv),
+               'dateRetour' => $contrat->dateRetour(),
+               'dateCreation' => $contrat->dateCreation(),
+               )
+    ));
+}
+
+
+/*
+$chequeManager = new ChequeManager($pdo);
+$cheques = $chequeManager->getCheques();
+
+//$selectQuery = "SELECT * FROM t_cheque";
 //$pdo1 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
 //$pdo2 = new PDO('mysql:host=localhost;dbname=gelm', 'root', '');
-$result = $pdo->query($selectQuery);
+//$result = $pdo->query($selectQuery);
 
-while($data = $result->fetch(PDO::FETCH_ASSOC)){
+foreach ($cheques as $cheque){
+    $chequeManager->update(new Cheque(
+                    array('id' => $cheque->id(),
+                          'dateCheque' => $cheque->dateCheque(),
+                          'idProjet' => $cheque->idProjet(),
+                          'statut' => $cheque->statut(),
+                          'numero' => openssl_encrypt($cheque->numero(), $method, $password, true, $iv),
+                          'designationSociete' => openssl_encrypt($cheque->designationSociete(), $method, $password, true, $iv),
+                          'designationPersonne' => openssl_encrypt($cheque->designationPersonne(), $method, $password, true, $iv),
+                          'compteBancaire' => openssl_encrypt($cheque->compteBancaire(), $method, $password, true, $iv),
+                          'montant' => ($cheque->montant()-$mutation)
+                          )
+                    )
+                );
     $id = $data['id'];
     $numero = openssl_encrypt($data['numero'], $method, $password, true, $iv);
     $designationSociete = openssl_encrypt($data['designationSociete'], $method, $password, true, $iv);
@@ -54,5 +73,5 @@ while($data = $result->fetch(PDO::FETCH_ASSOC)){
     echo "<br>";
     echo "----------------------------------------------------------------------------------";
     echo "<br>";
-}
+}*/
 
